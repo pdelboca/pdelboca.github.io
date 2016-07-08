@@ -9,12 +9,11 @@ dl, dd, ol, ul, figure {
 }
 
 
-
 /**
  * Basic styling
  */
 body {
-    font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
+    font: $base-font-family;
     color: $text-color;
     background-color: $background-color;
     -webkit-text-size-adjust: 100%;
@@ -82,7 +81,6 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: $base-font-weight;
     margin-bottom: 0px;
 }
 
@@ -93,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
  */
 a {
     color: $text-color;
-    text-decoration: none;
+    text-decoration: underline;
 
     &:hover {
         color: darken($text-color, 30%);
