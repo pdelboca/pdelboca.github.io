@@ -9,7 +9,7 @@
 title: Patricio Del Boca
 email: your-email@domain.com
 description: > # this means to ignore newlines until "baseurl:"
-  Blog sobre Datos Abiertos, Gobierno Abierto y la Corrupción del Mundo.<br>
+  Blog sobre Datos Abiertos, Gobierno Abierto y la Corrupción del Mundo.
   Alta Gracia, Córdoba, Argentina.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://yourdomain.com" # the base hostname & protocol for your site
