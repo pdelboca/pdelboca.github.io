@@ -1,0 +1,150 @@
+---
+title: "Solicitudes de Acceso a la Información Pública 2015"
+author: "Patricio del Boca"
+date: "July 8, 2016"
+output: html_document
+---
+## Introducción
+
+La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015".
+
+Algunas preguntas que se me vienen en mente son:
+ - ¿Quiénes piden información?
+ - ¿Sobre qué temas?
+ - ¿Qué tan eficiente fue el estado para respoder?
+ - ¿Qué cantidad de solicitudes se generan?
+
+```{r}
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal() + 
+            theme(axis.text.x = element_text(angle = 60, hjust = 1))) 
+```
+
+
+### Obtención de datos y Limpieza de Datos
+```{r}
+df <- read.csv("http://datos.gob.ar/dataset/8bc053c8-efc2-485d-97d3-915c476d2741/resource/63952097-cdba-4fdd-be84-65fb400bdb1a/download/acceso-informacion-publica.csv")
+
+df$fecha_de_la_respuesta <- strptime(df$fecha_de_la_respuesta, 
+                                     format="%M/%d/%Y")
+
+df$fecha_de_recepcion_de_la_solicitud_por_el_enlace <- strptime(
+  df$fecha_de_recepcion_de_la_solicitud_por_el_enlace,
+  format = "%M/%d/%Y")
+
+df$fecha_de_recepcion_de_la_solicitud_por_el_organismo <- strptime(
+  df$fecha_de_recepcion_de_la_solicitud_por_el_organismo,
+  format="%M/%d/%Y"
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- tolower(
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "en el plazo de 20 días",
+  "10-20 días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "se contestó, pero luego de los 20 días",
+  "20+ días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "30 días",
+  "20+ días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "en el plazo de 10 días",
+  "0-10 días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "en el plazo máximo de 20 días",
+  "10-20 días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- gsub(
+  "en el plazo máximo de 20 días",
+  "10-20 días",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- ifelse(
+  df$plazo_en_el_que_se_contesto_la_solicitud == "",
+  "Pedientes/Derivadas/Devueltas",
+  df$plazo_en_el_que_se_contesto_la_solicitud
+)
+
+df$plazo_en_el_que_se_contesto_la_solicitud <- factor(
+  df$plazo_en_el_que_se_contesto_la_solicitud,
+  levels=c("0-10 días","10-20 días", "20+ días", "aún no se contestó", "Pedientes/Derivadas/Devueltas")
+)
+```
+
+#### ¿Qué tan eficiente fue el estado para respoder?
+```{r}
+tabla_contingencia <- function(data = df, column = column){
+  tabla <- df %>%
+      select_(column) %>% 
+      group_by_(column) %>% 
+      summarise(cantidad = n()) %>% 
+      mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+  tabla
+}
+
+tabla_estado <- tabla_contingencia(df, "estado")
+
+ggplot(data = tabla_estado, aes(x=reorder(estado, -cantidad), y=cantidad)) + 
+  geom_bar(stat = "identity") + 
+  geom_text(aes(x=estado,
+                y=cantidad,
+                label=paste0(porcentaje," (",cantidad,")")),
+                vjust=-0.2) +
+  ggtitle("Estado de Solicitudes 2015.")
+
+tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
+
+ggplot(data = tabla_condicion, aes(x=reorder(condicion_de_respuesta,-cantidad), y=cantidad)) + 
+  geom_bar(stat = "identity") + 
+  geom_text(aes(x=condicion_de_respuesta,
+                y=cantidad,
+                label=paste0(porcentaje," (",cantidad,")")),
+                vjust=-0.2) +
+  ggtitle("Respuesta a las Solicitudes 2015.")
+
+tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
+
+ggplot(data = tabla_plazo, aes(x=plazo_en_el_que_se_contesto_la_solicitud, y=cantidad)) + 
+  geom_bar(stat = "identity") + 
+  geom_text(aes(x=plazo_en_el_que_se_contesto_la_solicitud,
+                y=cantidad,
+                label=paste0(porcentaje," (",cantidad,")")),
+                vjust=-0.2) +
+  ggtitle("Plazo en las respuestas a las Solicitudes 2015.")
+
+```
+
+#### ¿Quiénes piden información?
+
+```{r}
+tabla_perfil <- tabla_contingencia(df, "perfil_del_solicitante")
+
+ggplot(tabla_perfil, aes(x=reorder(perfil_del_solicitante,cantidad), y=cantidad)) +
+  geom_bar(stat = "identity") + coord_flip() +
+    geom_text(aes(x=perfil_del_solicitante,
+                y=cantidad,
+                label=paste0(porcentaje," (",cantidad,")")),
+                hjust=-0.2) +
+  ggtitle("Cantidad de Solicitudes por Perfil del Solicitante")
+```
+
+
