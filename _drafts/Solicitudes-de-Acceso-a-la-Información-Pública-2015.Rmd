@@ -98,42 +98,34 @@ df$perfil_del_solicitante <- as.factor(df$perfil_del_solicitante)
 tabla_contingencia <- function(data = df, column = column){
   tabla <- df %>%
       select_(column) %>% 
-      group_by_(column) %>% 
+      group_by_(var = column) %>% 
       summarise(cantidad = n()) %>% 
       mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
   tabla
 }
 
+grafico_barras_contingencia <- function(df, titulo){
+g <- ggplot(data = df, aes(x=var, y=cantidad)) + 
+  geom_bar(stat = "identity") + 
+  geom_text(aes(x=var,
+                y=cantidad,
+                label=paste0(porcentaje," (",cantidad,")")),
+                vjust=-0.2) +
+  ggtitle(titulo)
+
+g
+}
+
 tabla_estado <- tabla_contingencia(df, "estado")
-
-ggplot(data = tabla_estado, aes(x=reorder(estado, -cantidad), y=cantidad)) + 
-  geom_bar(stat = "identity") + 
-  geom_text(aes(x=estado,
-                y=cantidad,
-                label=paste0(porcentaje," (",cantidad,")")),
-                vjust=-0.2) +
-  ggtitle("Estado de Solicitudes 2015.")
-
+p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado.")
+p1
 tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
-
-ggplot(data = tabla_condicion, aes(x=reorder(condicion_de_respuesta,-cantidad), y=cantidad)) + 
-  geom_bar(stat = "identity") + 
-  geom_text(aes(x=condicion_de_respuesta,
-                y=cantidad,
-                label=paste0(porcentaje," (",cantidad,")")),
-                vjust=-0.2) +
-  ggtitle("Respuesta a las Solicitudes 2015.")
-
+p2 <- grafico_barras_contingencia(tabla_condicion, "Respuestas a las solicitudes.")
+p2
 tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
-
-ggplot(data = tabla_plazo, aes(x=plazo_en_el_que_se_contesto_la_solicitud, y=cantidad)) + 
-  geom_bar(stat = "identity") + 
-  geom_text(aes(x=plazo_en_el_que_se_contesto_la_solicitud,
-                y=cantidad,
-                label=paste0(porcentaje," (",cantidad,")")),
-                vjust=-0.2) +
-  ggtitle("Plazo en las respuestas a las Solicitudes 2015.")
-
+p3 <- grafico_barras_contingencia(tabla_plazo, 
+                                  "Plazo en las respuestas a las Solicitudes 2015.")
+p3
 ```
 
 #### ¿Quiénes piden información?
