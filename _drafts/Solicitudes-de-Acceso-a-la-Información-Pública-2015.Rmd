@@ -88,6 +88,9 @@ df$plazo_en_el_que_se_contesto_la_solicitud <- factor(
   df$plazo_en_el_que_se_contesto_la_solicitud,
   levels=c("0-10 días","10-20 días", "20+ días", "aún no se contestó", "Pedientes/Derivadas/Devueltas")
 )
+
+df$perfil_del_solicitante <- tolower(df$perfil_del_solicitante)
+df$perfil_del_solicitante <- as.factor(df$perfil_del_solicitante)
 ```
 
 #### ¿Qué tan eficiente fue el estado para respoder?
@@ -146,5 +149,3 @@ ggplot(tabla_perfil, aes(x=reorder(perfil_del_solicitante,cantidad), y=cantidad)
                 hjust=-0.2) +
   ggtitle("Cantidad de Solicitudes por Perfil del Solicitante")
 ```
-
-
