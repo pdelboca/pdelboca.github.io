@@ -4,21 +4,24 @@ author: "Patricio del Boca"
 date: "July 8, 2016"
 output: html_document
 ---
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+```
+
 ## Introducción
 
 La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015".
 
 Algunas preguntas que se me vienen en mente son:
+
  - ¿Quiénes piden información?
  - ¿Sobre qué temas?
  - ¿Qué tan eficiente fue el estado para respoder?
  - ¿Qué cantidad de solicitudes se generan?
 
 ```{r}
-library(ggplot2)
+library(rbokeh)
 library(dplyr)
-theme_set(theme_minimal() + 
-            theme(axis.text.x = element_text(angle = 60, hjust = 1))) 
 ```
 
 
@@ -105,39 +108,26 @@ tabla_contingencia <- function(data = df, column = column){
 }
 
 grafico_barras_contingencia <- function(df, titulo){
-g <- ggplot(data = df, aes(x=var, y=cantidad)) + 
-  geom_bar(stat = "identity") + 
-  geom_text(aes(x=var,
-                y=cantidad,
-                label=paste0(porcentaje," (",cantidad,")")),
-                vjust=-0.2) +
-  ggtitle(titulo)
-
-g
+plot <- figure(title = titulo, height = 640, width = 480) %>% 
+  ly_bar(var, cantidad, data = df) %>% 
+  theme_axis("x", major_label_orientation = 60)
+plot
 }
 
 tabla_estado <- tabla_contingencia(df, "estado")
-p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado.")
+p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado")
 p1
 tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
-p2 <- grafico_barras_contingencia(tabla_condicion, "Respuestas a las solicitudes.")
+p2 <- grafico_barras_contingencia(tabla_condicion, 
+                                  "Respuestas a las solicitudes.")
 p2
 tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
 p3 <- grafico_barras_contingencia(tabla_plazo, 
-                                  "Plazo en las respuestas a las Solicitudes 2015.")
+                                  "Plazo en las Respuestas")
 p3
 ```
 
 #### ¿Quiénes piden información?
 
 ```{r}
-tabla_perfil <- tabla_contingencia(df, "perfil_del_solicitante")
-
-ggplot(tabla_perfil, aes(x=reorder(perfil_del_solicitante,cantidad), y=cantidad)) +
-  geom_bar(stat = "identity") + coord_flip() +
-    geom_text(aes(x=perfil_del_solicitante,
-                y=cantidad,
-                label=paste0(porcentaje," (",cantidad,")")),
-                hjust=-0.2) +
-  ggtitle("Cantidad de Solicitudes por Perfil del Solicitante")
 ```
