@@ -10,18 +10,19 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 
 ## Introducción
 
-La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015".
+La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015" mientras pruebo la librería de visualización [rbokeh: R Interface to bokeh](http://hafen.github.io/rbokeh/).
 
 Algunas preguntas que se me vienen en mente son:
 
  - ¿Quiénes piden información?
- - ¿Sobre qué temas?
+ - ¿Sobre qué temas en particular?
  - ¿Qué tan eficiente fue el estado para respoder?
  - ¿Qué cantidad de solicitudes se generan?
 
 ```{r}
 library(rbokeh)
 library(dplyr)
+library(lubridate)
 ```
 
 
@@ -29,17 +30,13 @@ library(dplyr)
 ```{r}
 df <- read.csv("http://datos.gob.ar/dataset/8bc053c8-efc2-485d-97d3-915c476d2741/resource/63952097-cdba-4fdd-be84-65fb400bdb1a/download/acceso-informacion-publica.csv")
 
-df$fecha_de_la_respuesta <- strptime(df$fecha_de_la_respuesta, 
-                                     format="%M/%d/%Y")
+df$fecha_de_la_respuesta3 <- dmy(df$fecha_de_la_respuesta)
 
-df$fecha_de_recepcion_de_la_solicitud_por_el_enlace <- strptime(
-  df$fecha_de_recepcion_de_la_solicitud_por_el_enlace,
-  format = "%M/%d/%Y")
+df$fecha_de_recepcion_de_la_solicitud_por_el_enlace <- dmy(
+  df$fecha_de_recepcion_de_la_solicitud_por_el_enlace)
 
-df$fecha_de_recepcion_de_la_solicitud_por_el_organismo <- strptime(
-  df$fecha_de_recepcion_de_la_solicitud_por_el_organismo,
-  format="%M/%d/%Y"
-)
+df$fecha_de_recepcion_de_la_solicitud_por_el_organismo <- dmy(
+  df$fecha_de_recepcion_de_la_solicitud_por_el_organismo)
 
 df$plazo_en_el_que_se_contesto_la_solicitud <- tolower(
   df$plazo_en_el_que_se_contesto_la_solicitud
@@ -96,7 +93,7 @@ df$perfil_del_solicitante <- tolower(df$perfil_del_solicitante)
 df$perfil_del_solicitante <- as.factor(df$perfil_del_solicitante)
 ```
 
-#### ¿Qué tan eficiente fue el estado para respoder?
+### Funciones Auxiliares
 ```{r}
 tabla_contingencia <- function(data = df, column = column){
   tabla <- df %>%
@@ -113,7 +110,11 @@ plot <- figure(title = titulo, height = 640, width = 480) %>%
   theme_axis("x", major_label_orientation = 60)
 plot
 }
+```
 
+
+#### ¿Qué tan eficiente fue el estado para respoder?
+```{r}
 tabla_estado <- tabla_contingencia(df, "estado")
 p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado")
 p1
@@ -127,7 +128,7 @@ p3 <- grafico_barras_contingencia(tabla_plazo,
 p3
 ```
 
-#### ¿Quiénes piden información?
-
+####
 ```{r}
+
 ```
