@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 
 ## Introducción
 
-La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015" mientras pruebo la librería de visualización [rbokeh: R Interface to bokeh](http://hafen.github.io/rbokeh/).
+La intención es jugar un poco con los datos publicados en el [Portal de Datos Abiertos de la Nacion](http://datos.gob.ar). Especificamente el dataset "Solicitudes de Acceso a la Información Pública 2015" mientras pruebo algunas modificaciones en el theme de ggplot inspirado por este post.
 
 Algunas preguntas que se me vienen en mente son:
 
@@ -20,10 +20,64 @@ Algunas preguntas que se me vienen en mente son:
  - ¿Qué cantidad de solicitudes se generan?
 
 ```{r}
-library(rbokeh)
+library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(ggthemes)
 ```
+
+```{r}
+theme_Publication <- function(base_size=14, base_family="helvetica") {
+      library(grid)
+      library(ggthemes)
+      (theme_foundation(base_size=base_size, base_family=base_family)
+       + theme(plot.title = element_text(face = "bold",
+                                         size = rel(1.2), hjust = 0.5),
+               text = element_text(),
+               panel.background = element_rect(colour = NA),
+               plot.background = element_rect(colour = NA),
+               panel.border = element_rect(colour = NA),
+               axis.title = element_text(face = "bold",size = rel(1)),
+               axis.title.y = element_blank(),
+               axis.title.x = element_blank(),
+               axis.text.y = element_blank(),
+               axis.text.x = element_text(angle=30,
+                                          vjust=1.35,
+                                          hjust=1, 
+                                          size=10), 
+               axis.line = element_line(colour="black"),
+               axis.ticks = element_blank(),
+               panel.grid.major = element_blank(),
+               panel.grid.minor = element_blank(),
+               #legend.key = element_rect(colour = NA),
+               #legend.position = "bottom",
+               #legend.direction = "horizontal",
+               #legend.key.size= unit(0.2, "cm"),
+               #legend.margin = unit(0, "cm"),
+               #legend.title = element_blank(),
+               plot.margin=unit(c(10,5,5,5),"mm"),
+               strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
+               strip.text = element_text(face="bold")
+          ))
+      
+}
+
+scale_fill_Publication <- function(...){
+      library(scales)
+      discrete_scale("fill","Publication",manual_pal(values = c("#386cb0","#fdb462","#7fc97f","#ef3b2c","#662506","#a6cee3","#fb9a99","#984ea3","#ffff33")), ...)
+
+}
+
+scale_colour_Publication <- function(...){
+      library(scales)
+      discrete_scale("colour","Publication",manual_pal(values = c("#386cb0","#fdb462","#7fc97f","#ef3b2c","#662506","#a6cee3","#fb9a99","#984ea3","#ffff33")), ...)
+
+}
+
+
+theme_set(theme_Publication())
+```
+
 
 
 ### Obtención de datos y Limpieza de Datos
@@ -105,30 +159,35 @@ tabla_contingencia <- function(data = df, column = column){
 }
 
 grafico_barras_contingencia <- function(df, titulo){
-plot <- figure(title = titulo, height = 640, width = 480) %>% 
-  ly_bar(var, cantidad, data = df) %>% 
-  theme_axis("x", major_label_orientation = 60)
-plot
+g <- ggplot(data = df, aes(x=var, y=cantidad)) + 
+  geom_bar(stat = "identity", fill="#004de6", width = 0.7) + 
+  geom_text(aes(x=var,
+                y=cantidad,
+                label=paste0(cantidad, " (",porcentaje,")")),
+                vjust=-0.4) +
+  ggtitle(titulo)
+
+g
 }
 ```
 
-
 #### ¿Qué tan eficiente fue el estado para respoder?
-```{r}
+```{r, fig.height=7, fig.width=5}
 tabla_estado <- tabla_contingencia(df, "estado")
 p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado")
 p1
-tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
-p2 <- grafico_barras_contingencia(tabla_condicion, 
-                                  "Respuestas a las solicitudes.")
-p2
+
+# tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
+# p2 <- grafico_barras_contingencia(tabla_condicion, 
+#                                   "Respuestas a las solicitudes.") 
+# p2
+
 tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
 p3 <- grafico_barras_contingencia(tabla_plazo, 
                                   "Plazo en las Respuestas")
 p3
 ```
 
-####
 ```{r}
 
 ```
