@@ -111,19 +111,19 @@ remuneracionEPEC <- df %>%
   filter(Sector == "EPEC") %>%
   group_by(Remuneracion) %>% 
   summarise(cantidad = n()) %>% 
-  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),"%"))
 
 remuneracionMunicipalidad <- df %>% 
   filter(Sector == "Municipalidad de Córdoba") %>%
   group_by(Remuneracion) %>% 
   summarise(cantidad = n()) %>% 
-  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),"%"))
 
 remuneracionBancarios <- df %>% 
   filter(Sector == "Bancarios") %>%
   group_by(Remuneracion) %>% 
   summarise(cantidad = n()) %>% 
-  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),"%"))
 
 tmp <- df %>% filter(Sector %in% c("EPEC", "Municipalidad de Córdoba", "Bancarios"))
 ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) + 
