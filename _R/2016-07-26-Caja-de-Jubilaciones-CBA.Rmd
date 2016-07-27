@@ -4,6 +4,7 @@ author: "Patricio del Boca"
 date: "July 26, 2016"
 output: html_document
 encoding: "utf-8"
+layout: post
 ---
 
 ```{r setup, include=FALSE}
@@ -11,14 +12,14 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 library(ggplot2)
 library(dplyr)
 ```
-Siguiendo la iniciativa de Datos Abiertos, la Caja de Jubilaciones pone a disposición las bases de datos de Jubilaciones y Pensiones, Aportantes y Espacio Illia. En la [Página de Transparencia de la Caja de Jubilaciones](http://www.cajajubilaciones.cba.gov.ar/portal/transparencia) ya hay un lindo resumen titulado **"La Caja en Números"** con información de interés para la comunidad. En un acto de pura curiosidad, desde [Open Data Córdoba](http://www.opendatacordoba.org), le dedicamos un poco más de tiempo a chusmear qué hay en estos datos para responder algunas preguntas que en dicho resumen no se contestan.
+Siguiendo la iniciativa de Datos Abiertos, la Caja de Jubilaciones pone a disposición las bases de datos de Jubilaciones y Pensiones, Aportantes y Espacio Illia. En la [Pagina de Transparencia de la Caja de Jubilaciones](http://www.cajajubilaciones.cba.gov.ar/portal/transparencia) ya hay un lindo resumen titulado **"La Caja en Números"** con información de interés para la comunidad. En un acto de pura curiosidad, desde [Open Data Cordoba](http://www.opendatacordoba.org), le dedicamos un poco más de tiempo a chusmear qué hay en estos datos para responder algunas preguntas que en dicho resumen no se contestan.
 
 ## Carga de Datos:
 
-Los Datos referidos a Jubilaciones y pensiones fueron obtenidos del [Catálogo de Datos de la Caja de Jubilaciones](http://www.cajajubilaciones.cba.gov.ar/portal/catalogo_de_datos).
+Los Datos referidos a Jubilaciones y pensiones fueron obtenidos del [Catalogo de Datos de la Caja de Jubilaciones](http://www.cajajubilaciones.cba.gov.ar/portal/catalogo_de_datos).
 
 ```{r, cache=TRUE}
-df <- read.csv('../_data/Beneficiarios_201606.csv', sep=";",
+df <- read.csv('../data/Beneficiarios_201606.csv', sep=";",
                  fileEncoding = 'iso-8859-1', row.names = NULL)
 
 names(df)[3] <- "Sector"
@@ -115,11 +116,86 @@ ggplot(tmp,
 
 ```
 
-##### Anexo: Recomendaciones para la Liberación de Datos Abiertos:
+## Remuneraciones
+
+```{r}
+remuneracionEPEC <- df %>% 
+  filter(Sector == "EPEC") %>%
+  group_by(Remuneracion) %>% 
+  summarise(cantidad = n()) %>% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+
+remuneracionMunicipalidad <- df %>% 
+  filter(Sector == "Municipalidad de Córdoba") %>%
+  group_by(Remuneracion) %>% 
+  summarise(cantidad = n()) %>% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+
+remuneracionBancarios <- df %>% 
+  filter(Sector == "Bancarios") %>%
+  group_by(Remuneracion) %>% 
+  summarise(cantidad = n()) %>% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+
+tmp <- df %>% filter(Sector %in% c("EPEC", "Municipalidad de Córdoba", "Bancarios"))
+ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat="identity", fill="steelblue") +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle("Porcentaje de Jubilados de EPEC \n por Rango de Remuneracion")
+
+ggplot(remuneracionMunicipalidad, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat="identity", fill="steelblue") +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle("Porcentaje de Jubilados de la Municipalidad de Córdoba \n por Rango de Remuneracion")
+
+ggplot(remuneracionBancarios, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat="identity", fill="steelblue") +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle("Porcentaje de Jubilados Bancarios \n por Rango de Remuneracion")
+```
+
+### Anexo: Recomendaciones para la Liberación de Datos Abiertos:
 
  - Gran parte de las herramientas de programación utilizadas para el anaĺisis y uso de los datos públicos tienen el Inglés como idioma por defecto. Esto hace que no se lleven muy bien con caracteres especiales del español como los acentos. Si bien es imposible quitar los acentos de los campos que contengan texto, **es recomendable que la primera fila del archivo (que usualmente nombra el campo) no contenga acentos** para evitar problemas a la hora de leer los archivos.
  - El formato estándar de liberación de datos es **csv** (Comma Separated Values). Por lo que es recomendable que el separador de campos sea una coma (,) y no un (;)
  - Asegurarse que en todas las filas, estén correctamente separados los campos por el delimitador elegido.
  - Por último, proveer de un link visible, único e invariante en el tiempo, permite que se pueda automatizar el análisis y que no se necesite de pasos manuales de descarga del archivo a disco. Lo ideal es que no se necesite entrar manualmente a la página web, seleccionar filtros y hacer click en un botón para descargar el set de datos.
+ - Los datos deben estar lo más desagregados y crudos posibles. Los campos como Remuneración son mejor colocarlos crudos y dejar que el analista decida cuáles son las categorias o rangos en los cuales separarlos.
  
 Si bien pueden sonar quisquillosas estas recomendaciones, ayudan a la hora de trabajar con datos abiertos y al momento de incorporarlos programáticamente a otros sistemas.
