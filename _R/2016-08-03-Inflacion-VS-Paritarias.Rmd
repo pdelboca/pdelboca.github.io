@@ -1,0 +1,90 @@
+---
+title: "Inflacion vs Paritarias"
+author: "Patricio del Boca"
+date: "August 3, 2016"
+output: html_document
+layout: post
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggthemes)
+library(lubridate)
+library(dplyr)
+```
+
+Chusmeando un poco en la página de [http://estadistica.cba.gov.ar](Estadísticas de la Provincia de Córdoba) me encontré con los datos de la Inflación de Córdoba desde el año '68 en adelante. Por lo que me propuse jugar un poco con estos datos.
+
+#### Datos IPC Córdoba
+```{r}
+# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspx
+df <- read.csv('../data/ipc_cordoba_acumulado.csv', stringsAsFactors = FALSE)
+df$variacion <- gsub(',','.',df$variacion)
+df$variacion <- as.numeric(df$variacion) * 100
+df$variacion <- round(df$variacion, 2)
+df$mes <- ymd(df$mes)
+df$metrica <- "Inflacion"
+```
+
+La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año '68 la Inflación?
+```{r, fig.align='center'}
+mes <- c('1975-06-01','1983-10-01', '1989-07-01', '2002-01-01', '2014-01-01', "2015-11-01")
+label <- c("Rodrigazo", "Alfonsin", "Hiperinflacion", "Devaluacion Dualde", "Devaluacion Kiciloff", "Devaluacion Prat-Gay")
+eventos <- data.frame(mes=ymd(mes), label=label)
+
+ggplot(df, aes(x=mes,y=variacion)) + 
+  geom_line() +
+  ggtitle("Inflación mensual según IPC de Córdoba en %.") +
+  geom_vline(xintercept=as.numeric(eventos$mes), linetype=3) +
+  geom_text(data=eventos,mapping=aes(x=mes, y=0, label=label),
+            angle=90, vjust=-0.4, hjust=-1, size=3.5, fontface='italic')+
+  theme_fivethirtyeight()
+```
+
+## Inflacion Anual (IPC Córdoba) vs Acuerdo paritariasitario Promedio
+Después se me ocurrió comparitariasar la Inflación de los últimos años del Gobierno Kirchnerista con el aumento salarial de las paritarias. El objetivo era corroborar si era cierto lo que dijo la ex-presidenta de que el poder adquisitivo de los trabajadores creció debido a que las paritarias siempre estuvieron por encima de la inflación.
+
+paritariasa ello tuve que juntar un poco de datos de la web. Busqué cuál fue el promedio de los acuerdos paritariasitarios por año:
+
+#### Datos paritarias
+```{r, fig.height=6, fig.width=8, fig.align='center'}
+paritarias <- data.frame()
+# http://www.ambito.com/diario/533729-en-paritarias-promedio-de-aumentos-alcanzo-el-26
+paritarias <- rbind(paritarias, c(2010, 26))
+# http://www.iprofesional.com/notas/118935-paritarias-en-2011-los-aumentos-ascendieron-a-283-en-promedio-
+paritarias <- rbind(paritarias, c(2011, 28.3))
+# http://www.ambito.com/diario/640796-alivio-las-paritarias-cierran-con-24-de-tope
+paritarias <- rbind(paritarias, c(2012, 25.5))
+# http://www.elciudadanoweb.com/el-numero-clave-de-las-paritarias-2013-es-el-24/
+paritarias <- rbind(paritarias, c(2013,24))
+# http://www.diaadia.com.ar/cordoba/mayoria-gremios-cerraron-paritarias-30-ciento
+paritarias <- rbind(paritarias, c(2014,30))
+# http://www.lanacion.com.ar/1794407-anuncian-subas-salariales-del-27-promedio-paritariasa-cinco-gremios
+paritarias <- rbind(paritarias, c(2015,27))
+names(paritarias) <- c("anio","variacion")
+paritarias$metrica <- "paritariasitaria"
+
+tmp <- df %>% 
+  filter(year(mes) %in% c(2010:2015)) %>% 
+  slice(1:70) %>% # Filtrar meses de Gestion Cambiemos y Devaluación del Dolar
+  group_by(anio = year(mes)) %>% 
+  summarise(variacion = sum(variacion))
+tmp$metrica <- "Inflacion"
+
+dataPlot <- rbind(tmp,paritarias)
+ggplot(dataPlot, 
+       aes(x=anio, 
+           y=variacion, 
+           fill=metrica, 
+           label = paste0(dataPlot$variacion,"%"))
+       ) +
+  geom_bar(stat="identity", position = "dodge" , width=.8) + 
+  ggtitle("Inflación Anual (IPC Córdoba) vs Acuerdo Paritario Promedio.") +
+  scale_color_fivethirtyeight("metrica") +
+  theme_fivethirtyeight() +
+  theme(legend.title=element_blank()) + 
+  annotate("text", x = 2010.5, y = 32, 
+           label="(Inflación 2015 hasta el mes de Octubre incluido.)", 
+           fontface="italic", size=3)
+```
+
