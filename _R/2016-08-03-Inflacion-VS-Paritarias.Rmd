@@ -66,7 +66,7 @@ paritarias$metrica <- "Paritarias"
 
 tmp <- df %>% 
   filter(year(mes) %in% c(2010:2015)) %>% 
-  slice(1:70) %>% # Filtrar meses de Gestion Cambiemos y Devaluación del Dolar
+  #slice(1:70) %>% # Filtrar meses de Gestion Cambiemos y Devaluación del Dolar
   group_by(anio = year(mes)) %>% 
   summarise(variacion = sum(variacion))
 tmp$metrica <- "Inflacion"
@@ -83,9 +83,9 @@ ggplot(dataPlot,
   scale_color_fivethirtyeight("metrica") +
   theme_fivethirtyeight() +
   theme(legend.title=element_blank()) + 
-  annotate("text", x = 2010.5, y = 32, 
-           label="(Inflación 2015 hasta el mes de Octubre incluido.)", 
-           fontface="italic", size=3) +
+  # annotate("text", x = 2010.5, y = 32, 
+  #          label="(Inflación 2015 hasta el mes de Octubre incluido.)", 
+  #          fontface="italic", size=3) +
   annotate("text", x = 2014, y = -2, 
            label="Fuente: https://pdelboca.github.io/2016/08/03/Inflacion-VS-Paritarias.html", 
            fontface="italic", size=2)
