@@ -61,7 +61,7 @@ paritarias <- rbind(paritarias, c(2014,30))
 # http://www.lanacion.com.ar/1794407-anuncian-subas-salariales-del-27-promedio-paritariasa-cinco-gremios
 paritarias <- rbind(paritarias, c(2015,27))
 names(paritarias) <- c("anio","variacion")
-paritarias$metrica <- "paritariasitaria"
+paritarias$metrica <- "Paritarias"
 
 tmp <- df %>% 
   filter(year(mes) %in% c(2010:2015)) %>% 
@@ -84,7 +84,10 @@ ggplot(dataPlot,
   theme(legend.title=element_blank()) + 
   annotate("text", x = 2010.5, y = 32, 
            label="(Inflación 2015 hasta el mes de Octubre incluido.)", 
-           fontface="italic", size=3)
+           fontface="italic", size=3) +
+  annotate("text", x = 2014, y = -2, 
+           label="Fuente: https://pdelboca.github.io/2016/08/03/Inflacion-VS-Paritarias.html", 
+           fontface="italic", size=2)
 {% endhighlight %}
 
 <img src="/figs/2016-08-03-Inflacion-VS-Paritarias/unnamed-chunk-3-1.png" title="center" alt="center" style="display: block; margin: auto;" />
