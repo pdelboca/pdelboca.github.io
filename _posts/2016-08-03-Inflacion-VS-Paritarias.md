@@ -7,7 +7,7 @@ layout: post
 ---
 
 
-Chusmeando un poco en la página de [http://estadistica.cba.gov.ar](Estadísticas de la Provincia de Córdoba) me encontré con los datos de la Inflación de Córdoba desde el año '68 en adelante. Por lo que me propuse jugar un poco con estos datos.
+Chusmeando un poco en la página de [Estadísticas de la Provincia de Córdoba](http://estadistica.cba.gov.ar) me encontré con los datos de la Inflación de Córdoba desde el año '68 en adelante. Por lo que me propuse jugar un poco con estos datos.
 
 #### Datos IPC Córdoba
 
