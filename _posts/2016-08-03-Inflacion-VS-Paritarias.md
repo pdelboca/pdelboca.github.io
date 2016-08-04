@@ -40,9 +40,7 @@ ggplot(df, aes(x=mes,y=variacion)) +
 <img src="/figs/2016-08-03-Inflacion-VS-Paritarias/unnamed-chunk-2-1.png" title="center" alt="center" style="display: block; margin: auto;" />
 
 ## Inflacion Anual (IPC Córdoba) vs Acuerdo Paritario Promedio
-Después se me ocurrió comparar la Inflación de los últimos años del Gobierno Kirchnerista con el aumento salarial de las paritarias. El objetivo era corroborar si era cierto lo que dijo la ex-presidenta de que el poder adquisitivo de los trabajadores creció debido a que las paritarias siempre estuvieron por encima de la inflación.
-
-Para ello tuve que juntar un poco de datos de la web. Busqué cuál fue el promedio de los acuerdos paritarios por año:
+Después se me ocurrió comparar la Inflación de los últimos años del Gobierno Kirchnerista con el aumento salarial de las paritarias. Para ello tuve que juntar un poco de datos de la web. Busqué cuál fue el promedio de los acuerdos paritarios por año:
 
 #### Promedio de las Paritarias por Año
 
@@ -87,8 +85,7 @@ ggplot(dataPlot,
   #          fontface="italic", size=3) +
   annotate("text", x = 2011, y = 32, 
            label="Fuente: https://pdelboca.github.io/2016/08/03/Inflacion-VS-Paritarias.html", 
-           fontface="italic", size=3) +
-  scale_x_continuous()
+           fontface="italic", size=3)
 {% endhighlight %}
 
 <img src="/figs/2016-08-03-Inflacion-VS-Paritarias/unnamed-chunk-3-1.png" title="center" alt="center" style="display: block; margin: auto;" />
