@@ -1,0 +1,71 @@
+---
+title: "Subsidios a la Energia"
+author: "Patricio del Boca"
+date: "August 10, 2016"
+output: html_document
+layout: post
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+```
+
+# Fuentes:
++ [Web del estudio](http://www.imf.org/external/pubs/ft/survey/so/2015/new070215a.htm)
++ [Link a la fuente de Datos](http://www.imf.org/external/np/fad/subsidies/data/codata.xlsx)
+
+# Obtencion Datos
+```{r}
+df <- read.csv("../data/Subsidios-a-la-Energia/energy-subsides-2015.csv")
+df$Country <- as.factor(df$Country)
+df$Country_Category <- as.factor(df$Country_Category) 
+```
+
+#### Datos de Argentina por Año
+```{r subsidio_gas}
+arg <- df %>% filter(Country == "Argentina")
+knitr::kable(melt(arg, id.vars = c()))
+```
+
+#### Top 20 Paises que subsidian
+```{r}
+top <- 20
+topNominal <- df %>% 
+    select(Country, Total_nominalBillons) %>% 
+    arrange(desc(Total_nominalBillons)) %>% 
+    slice(1:top)
+  
+topPercentGDP <-  df %>% 
+    select(Country, Total_percentGDP) %>% 
+    arrange(desc(Total_percentGDP)) %>% 
+    slice(1:top)
+    
+topPerCapita <- df %>% 
+    select(Country, Total_perCapitaNominal) %>% 
+    arrange(desc(Total_perCapitaNominal)) %>% 
+    slice(1:top)
+
+ggplot(topPerCapita, 
+       aes(x=reorder(Country,-Total_perCapitaNominal), 
+           y=Total_perCapitaNominal)) + 
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle = 30))
+
+ggplot(topPercentGDP, 
+       aes(x=reorder(Country,-Total_percentGDP), 
+           y=Total_percentGDP)) + 
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle = 30))
+
+ggplot(topNominal, 
+       aes(x=reorder(Country,-Total_nominalBillons), 
+           y=Total_nominalBillons)) + 
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle = 30))
+```
+
+
