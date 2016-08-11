@@ -1,5 +1,5 @@
 ---
-title: "Inflacion vs Paritarias"
+title: "Inflación vs Paritarias"
 author: "Patricio del Boca"
 date: "August 3, 2016"
 output: html_document

@@ -1,5 +1,5 @@
 ---
-title: "Inauguracion Portal Datos Abiertos de la Ciudad de Córdoba"
+title: "Inauguración Portal Datos Abiertos de la Ciudad de Córdoba"
 author: "Patricio del Boca"
 date: "August 11, 2016"
 output: html_document
