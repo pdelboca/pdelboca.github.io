@@ -8,7 +8,6 @@ layout: post
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(readr)
 library(dplyr)
 library(ggplot2)
 library(reshape2)
@@ -17,12 +16,20 @@ library(reshape2)
 # Fuentes:
 + [Web del estudio](http://www.imf.org/external/pubs/ft/survey/so/2015/new070215a.htm)
 + [Link a la fuente de Datos](http://www.imf.org/external/np/fad/subsidies/data/codata.xlsx)
++ [Link a la fuente de Consumo](https://en.wikipedia.org/wiki/List_of_countries_by_electricity_consumption)
 
 # Obtencion Datos
 ```{r}
 df <- read.csv("../data/Subsidios-a-la-Energia/energy-subsides-2015.csv")
 df$Country <- as.factor(df$Country)
 df$Country_Category <- as.factor(df$Country_Category) 
+
+consumo <- read.csv("./data/Subsidios-a-la-Energia/energy_consumption.csv")
+
+g20 <- c("Argentina","Australia", "Brazil","Canada","China","France",
+                   "Germany", "India", "Indonesia","Italy", "Japan","Mexico",
+                   "Russia", "Saudi Arabia", "South Africa",
+                   "Turkey", "United Kingdom", "United States", "Korea")
 ```
 
 #### Datos de Argentina por Año
@@ -66,6 +73,54 @@ ggplot(topNominal,
            y=Total_nominalBillons)) + 
   geom_bar(stat="identity") +
   theme(axis.text.x = element_text(angle = 30))
+```
+
+#### Ranking Nominal de Subsidios Energéticos
+```{r ranking_nominal}
+rankNominal <- df %>% 
+  select(Country, Total_nominalBillons) %>% 
+  arrange(desc(Total_nominalBillons)) %>% 
+  mutate(rank = 1:nrow(.))
+
+DT::datatable(rankNominal, 
+              rownames = FALSE,
+              colnames = c("Pais", "Total Nominal (US$ Billones)", "Ranking"),
+              caption = "Total Nominal destinado por País en Subsidios a la Energia en el 2015. (En Billones de Dólares)")
+
+```
+
+```{r ranking_gdp}
+rankGDP <- df %>% 
+  select(Country, Total_percentGDP) %>% 
+  arrange(desc(Total_percentGDP)) %>% 
+  mutate(rank = 1:nrow(.))
+
+
+DT::datatable(rankGDP, 
+              rownames = FALSE,
+              colnames = c("Pais", "Porcentaje del GDP.", "Ranking"),
+              caption = "Porcentaje del GDP que destina cada País en subsidio Energético.")
+```
+
+```{r ranking_per_capita}
+rankPerCapita <- df %>% 
+  select(Country, Total_perCapitaNominal) %>% 
+  arrange(desc(Total_perCapitaNominal)) %>% 
+  mutate(rank = 1:nrow(.))
+
+
+DT::datatable(rankPerCapita, 
+              rownames = FALSE,
+              colnames = c("Pais", "USD Per Capita.", "Ranking"),
+              caption = "USD por ciudadano que destina cada Pais en subsidio Energético.")
+```
+
+```{r rank_g20}
+DT::datatable(df %>% 
+                select(Country, Total_nominalBillons, Total_percentGDP, Total_perCapitaNominal) %>% 
+                filter(Country %in% g20),
+              option=list(pageLength = 20)
+)
 ```
 
 
