@@ -18,7 +18,7 @@ Charlando con la gente de [Open Data Córdoba](opendatacordoba.org) siempre sale
 #### Análisis
 El conjunto de datos no estaba en un formato que pueda ser utilizado directamente para el análisis, por lo fue requerido una primera limpieza manual con [LibreOffice Calc](https://es.libreoffice.org/descubre/calc/).
 
-```{r plot, fig.align='center', fig.height=5, fig.width=8}
+```{r plot, fig.align='center', fig.height=5, fig.width=9}
 df <- read.csv('../data/desempleo-masculino-vs-femenino/mercado_laboral.csv')
 
 difPromedio <- ave(df$Tasa.de.desocupacion.de.mujeres - df$Tasa.de.desocupacion.de.varones)
@@ -34,7 +34,7 @@ ggplot(df, aes(Trimestre)) +
     legend.title = element_blank()) +
   labs(
     title="Tasa de Desocupación por Género",
-    subtitle=paste0("Tasa de desocupación por género en la Ciudad de Córdoba del 2007 al 2015. Diferencia Promedio: ", round(difPromedio,2),"%"),
+    subtitle=paste0("Tasa de desocupación por género Aglomerado Gran Córdoba período 2007 al 2015. Diferencia Promedio: ", round(difPromedio,2),"%"),
     caption="Open Data Córdoba - Fuente: https://gobiernoabierto.cordoba.gov.ar/"
   )
 ```

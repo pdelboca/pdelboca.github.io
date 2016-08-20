@@ -31,7 +31,7 @@ ggplot(df, aes(Trimestre)) +
     legend.title = element_blank()) +
   labs(
     title="Tasa de Desocupación por Género",
-    subtitle=paste0("Tasa de desocupación por género en la Ciudad de Córdoba del 2007 al 2015. Diferencia Promedio: ", round(difPromedio,2),"%"),
+    subtitle=paste0("Tasa de desocupación por género Aglomerado Gran Córdoba período 2007 al 2015. Diferencia Promedio: ", round(difPromedio,2),"%"),
     caption="Open Data Córdoba - Fuente: https://gobiernoabierto.cordoba.gov.ar/"
   )
 {% endhighlight %}
