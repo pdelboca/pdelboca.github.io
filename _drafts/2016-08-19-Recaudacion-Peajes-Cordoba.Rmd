@@ -1,0 +1,33 @@
+---
+title: "Recaudacion Peajes Cordoba"
+author: "Patricio del Boca"
+date: "August 19, 2016"
+output: html_document
+layout: post
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```{r}
+dfPeajes <- read.csv('./data/recaudacion-peajes-cordoba/transito_peajes.csv',
+                     dec=",")
+dfPrecio <- read.csv('./data/recaudacion-peajes-cordoba/precio_peajes.csv',
+                     dec=",")
+
+
+xT <- as.data.frame(t(dfPrecio), stringsAsFactors = FALSE)
+colnames(xT) <- as.character(xT[1,])
+dfPrecio <- xT[-1,]
+dfPrecio[1:4,] <- lapply(dfPrecio[1:4,], as.numeric)
+for(i in 1:ncol(dfPrecio)){
+  dfPrecio[,i] <- as.numeric(dfPrecio[,i])
+}
+rm(xT)
+dfIngreso <- dfPeajes
+dfIngreso$TOTAL <- NULL
+dfIngreso$Ruta.20..V.Carlos.Paz. * rep(dfPrecio$`Ruta 20`, each=12) 
+```
+
