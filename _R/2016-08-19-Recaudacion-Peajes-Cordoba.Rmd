@@ -1,7 +1,7 @@
 ---
 title: "Recaudacion Peajes Cordoba"
 author: "Patricio del Boca"
-date: "August 19, 2016"
+date: "August 27, 2016"
 output: html_document
 layout: post
 ---
@@ -17,7 +17,7 @@ library(scales)
 ```
 
 En base a la información de la cantidad de automóviles que atraviesan cada peaje por mes,
-se me ocurrió hacer una estimación de la cantidad de pesos que ingresa en cada peaje.
+se me ocurrió hacer una estimación de la cantidad de pesos que ingresa en cada peaje. Influenciado por conocer si la Autovía Alta Gracia - Córdoba había recuperado el costo de inversión.
 
 Debido a que los datos no discriminan entre Categoría de Vehículo, la estimación de ingresos
 se realizará con el Precio de la Categoría 2 (Autos). Además, no se discriminará por las distintas formas de pago (Efectivo, CUIS, Barrera Levantada, etc).
