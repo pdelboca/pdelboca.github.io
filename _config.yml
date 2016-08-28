@@ -17,6 +17,9 @@ twitter_username: pdelboca
 github_username:  pdelboca
 disqus_shortname: pdelboca
 
+# Google Analytics: https://desiredpersona.com/google-analytics-jekyll/
+google_analytics: UA-50868918-2
+
 # Build settings
 markdown: kramdown
 encoding: utf-8
