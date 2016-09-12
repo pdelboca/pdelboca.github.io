@@ -1,0 +1,97 @@
+---
+title: "Nombres Registro Civil"
+author: "Patricio del Boca"
+date: "September 8, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+```
+
+El registro civil de Córdoba Publica el [Listado de Nombres Permitidos](http://registrocivilonline.cba.gov.ar/Paginas/Listado%20de%20Nombres%20permitidos.pdf) para nombrar a los recién nacidos. Pudimos acceder a esos datos en un formato reutilizable (csv) y jugar un poco con ellos.
+
+```{r}
+nombres <- read.csv('./data/nombres-registro-civil/nombres_registro_civil_cba.txt',
+                    stringsAsFactors = FALSE, header = FALSE)
+nombres <- nombres %>% 
+    filter(!(V1 %in% as.character(1:129))) # Sacar números de página de los datos
+
+nombres$Sexo <- stringr::str_sub(nombres$V1, -1)
+nombres$Nombre <- stringr::str_sub(nombres$V1,1,-2)
+nombres$Nombre <- tolower(nombres$Nombre)
+nombres$Nombre <- trimws(nombres$Nombre)
+nombres$PrimeraLetra <- stringr::str_sub(nombres$V1,1,1)
+nombres$CantidadLetras <- stringr::str_count(nombres$Nombre)
+nombres$V1 <- NULL
+```
+
+## Podremos ponerle nombre de Dioses griegos a nuestros hijos?
+```{r}
+dioses <- c("odin", "tor", "thor", "loki", "freya", "freyr", "friga", "heimdal")
+nombres %>% filter(Nombre %in% dioses)
+```
+Buenas noticias fanáticos de Vikings! **Freya**, **Odin** y **Thor** son nombres permitidos!
+
+## Cuál o cuáles son los nombres más cortos?
+```{r}
+nombres %>%  filter(CantidadLetras == min(CantidadLetras))
+```
+
+# Cuál o cuáles son los nombres más largos?
+```{r}
+nombres %>%  filter(CantidadLetras == max(CantidadLetras))
+```
+**maria luisa del corazón de jesus** es el nombre más largo con 32 letras.
+
+# 20 nombres más largos
+```{r}
+nombres %>% arrange(desc(CantidadLetras)) %>% head(10)
+```
+
+# Cantidad de nombres por genero
+```{r}
+table(nombres$Sexo)
+```
+
+# Cantidad de Nombres por Letra
+```{r}
+nombres %>% 
+  group_by(PrimeraLetra) %>% 
+  summarise(cantidad = n()) %>% 
+  ggplot(aes(x=reorder(PrimeraLetra,-cantidad), y=cantidad)) + 
+  geom_bar(stat="identity") + theme_fivethirtyeight() +
+  labs(title="Nombres por Primera Letra.",
+       subtitle="Cantidad de nombres según la primera letra del mismo.") 
+```
+
+# Cantidad de Nombres por Cantidad de Letras
+```{r}
+nombres %>% 
+  group_by(CantidadLetras) %>% 
+  summarise(cantidad = n()) %>% 
+  ggplot(aes(x=CantidadLetras, y=cantidad)) + 
+  geom_bar(stat="identity") + theme_fivethirtyeight() +
+  labs(title="Nombres por Cantidad de Letras.",
+       subtitle="Cantidad de nombres según la cantidad de letras del mismo.") + 
+  scale_x_continuous(breaks = 1:32)
+```
+
+# Buscador de Nombres
+
+# Nombres Ilegales
+```{r}
+padron <- read.csv('./data/nombres-registro-civil/padron_cba.csv')
+padron <- padron$nombres
+padron <- as.character(padron)
+padron <- tolower(trimws(padron))
+
+table(!(padron %in% nombres$Nombre))
+```
+
+
+
+# Nombres sin usar
