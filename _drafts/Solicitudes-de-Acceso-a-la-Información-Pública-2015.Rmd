@@ -24,61 +24,8 @@ library(ggplot2)
 library(dplyr)
 library(lubridate)
 library(ggthemes)
+library(riverplot)
 ```
-
-```{r}
-theme_Publication <- function(base_size=14, base_family="helvetica") {
-      library(grid)
-      library(ggthemes)
-      (theme_foundation(base_size=base_size, base_family=base_family)
-       + theme(plot.title = element_text(face = "bold",
-                                         size = rel(1.2), hjust = 0.5),
-               text = element_text(),
-               panel.background = element_rect(colour = NA),
-               plot.background = element_rect(colour = NA),
-               panel.border = element_rect(colour = NA),
-               axis.title = element_text(face = "bold",size = rel(1)),
-               axis.title.y = element_blank(),
-               axis.title.x = element_blank(),
-               axis.text.y = element_blank(),
-               axis.text.x = element_text(angle=30,
-                                          vjust=1.35,
-                                          hjust=1, 
-                                          size=10), 
-               axis.line = element_line(colour="black"),
-               axis.ticks = element_blank(),
-               panel.grid.major = element_blank(),
-               panel.grid.minor = element_blank(),
-               #legend.key = element_rect(colour = NA),
-               #legend.position = "bottom",
-               #legend.direction = "horizontal",
-               #legend.key.size= unit(0.2, "cm"),
-               #legend.margin = unit(0, "cm"),
-               #legend.title = element_blank(),
-               plot.margin=unit(c(10,5,5,5),"mm"),
-               strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
-               strip.text = element_text(face="bold")
-          ))
-      
-}
-
-scale_fill_Publication <- function(...){
-      library(scales)
-      discrete_scale("fill","Publication",manual_pal(values = c("#386cb0","#fdb462","#7fc97f","#ef3b2c","#662506","#a6cee3","#fb9a99","#984ea3","#ffff33")), ...)
-
-}
-
-scale_colour_Publication <- function(...){
-      library(scales)
-      discrete_scale("colour","Publication",manual_pal(values = c("#386cb0","#fdb462","#7fc97f","#ef3b2c","#662506","#a6cee3","#fb9a99","#984ea3","#ffff33")), ...)
-
-}
-
-
-theme_set(theme_Publication())
-```
-
-
 
 ### Obtención de datos y Limpieza de Datos
 ```{r}
@@ -154,19 +101,19 @@ tabla_contingencia <- function(data = df, column = column){
       select_(column) %>% 
       group_by_(var = column) %>% 
       summarise(cantidad = n()) %>% 
-      mutate(porcentaje = paste0(round(cantidad / sum(cantidad),3),"%"))
+      mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,1),"%"))
   tabla
 }
 
 grafico_barras_contingencia <- function(df, titulo){
 g <- ggplot(data = df, aes(x=var, y=cantidad)) + 
-  geom_bar(stat = "identity", fill="#004de6", width = 0.7) + 
+  geom_bar(stat = "identity", fill="steelblue") + 
   geom_text(aes(x=var,
                 y=cantidad,
                 label=paste0(cantidad, " (",porcentaje,")")),
                 vjust=-0.4) +
-  ggtitle(titulo)
-
+  theme_fivethirtyeight() + 
+  theme(axis.text.y=element_blank())
 g
 }
 ```
@@ -174,20 +121,47 @@ g
 #### ¿Qué tan eficiente fue el estado para respoder?
 ```{r, fig.height=7, fig.width=5}
 tabla_estado <- tabla_contingencia(df, "estado")
-p1 <- grafico_barras_contingencia(tabla_estado, "Tickets por Estado")
-p1
+p1 <- grafico_barras_contingencia(tabla_estado)
+p1 + labs(title="Solicitudes por Estado de Resolución",
+          subtitle="Solicitudes de Acceso a la Información Pública en el 2015, en el marco del Decreto 1172/2003.",
+          caption="Open Data Cordoba - Fuente: http://datos.gob.ar/")
 
-# tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
-# p2 <- grafico_barras_contingencia(tabla_condicion, 
-#                                   "Respuestas a las solicitudes.") 
-# p2
 
-tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
-p3 <- grafico_barras_contingencia(tabla_plazo, 
-                                  "Plazo en las Respuestas")
-p3
 ```
 
 ```{r}
-
+tabla_condicion <- tabla_contingencia(df, "condicion_de_respuesta")
+p2 <- grafico_barras_contingencia(tabla_condicion)
+p2 + theme(axis.text.x = element_text(angle=30, hjust=1, vjust=1)) +
+  labs(title="Solicitudes por Condicion de Respuesta",
+          subtitle="Solicitudes de Acceso a la Información Pública en el 2015, en el marco del Decreto 1172/2003.",
+          caption="Open Data Cordoba - Fuente: http://datos.gob.ar/")
 ```
+
+```{r}
+tabla_plazo <- tabla_contingencia(df, "plazo_en_el_que_se_contesto_la_solicitud")
+p3 <- grafico_barras_contingencia(tabla_plazo)
+p3 + labs(title="Solicitudes según Plazo de Resolución",
+          subtitle="Solicitudes de Acceso a la Información Pública en el 2015, en el marco del Decreto 1172/2003.",
+          caption="Open Data Cordoba - Fuente: http://datos.gob.ar/")
+```
+
+```{r}
+tabla_contingencia(df, "forma_del_pedido")
+```
+
+```{r}
+test <- df %>% group_by(sector_al_que_se_dirige_la_solicitud, sector_al_que_derivo_el_enlace_dentro_del_organismo) %>% 
+  summarise(cant = n())
+colnames(test) <- c("N1", "N2", "Value")
+test$N1 <- as.character(test$N1)
+test$N1 <- ifelse(test$N1 == "", NULL, test$N1)
+test <- test[complete.cases(test),]
+head(test)
+riverplot(test)
+```
+
+
+
+
+
