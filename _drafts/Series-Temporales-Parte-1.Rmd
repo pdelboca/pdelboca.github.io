@@ -1,0 +1,127 @@
+---
+title: 'Series Temporales: Parte 1'
+author: "Patricio Del Boca"
+date: "December 8, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introducción
+
+### Series Estacionarias
+
+Los tres criterios básicos para definir si una serie es temporal son:
+
+1. La media de la serie **no debe ser una función del tiempo**, debería ser una constante.
+2. La varianza de la serie **no debe ser una función del tiempo**,
+3. La covarianza del término *i th* y el término *(i+m) th* **no debe ser una función del tiempo**.
+
+#### ¿Porqué es importante este concepto?
+
+No es posible construir un Modelo de Series Temporales a menos que la serie en sí sea temporal, es decir, que cumpla con los tres requisitos mencionados anteriormente.
+
+En el caso que alguno de los criterios no se cumpla, es necesario primero estandarizar la serie y luego probar algunos [modelos estocásticos](https://es.wikipedia.org/wiki/Estoc%C3%A1stico) para poder predecir eventos futuros. 
+
+Antes de comenzar, recomiendo refrescar los detalles sobre el [paquete ts](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ts.html) que permite manejar Series Temporales en R.
+
+## Exploración de una Serie Temporal
+
+Vamos a revisar algunos métodos para explorar numérica y gráficamente las Series Temporales. Para ello nos vamos a basar en el dataset [AirPassengers](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/AirPassengers.html).
+
+### Cargando los Datos
+Las siguientes lineas permiten cargar la serie y analizar algunas métrica de alto nivel como: 
+
+ * tipo del objeto,
+ * fecha primera y útima observación,
+ * frecuencia de las observaciones (12 por año), 
+ * estadísticas básicas de los valores.
+ 
+```{r}
+data("AirPassengers")
+class(AirPassengers)
+start(AirPassengers)
+end(AirPassengers)
+frequency(AirPassengers)
+summary(AirPassengers)
+```
+
+
+### Graficando Series Temporales
+
+Para algunas métricas más detalladas y gráficos básicos podemos usar el método `plot` y `lm`.
+```{r}
+plot(AirPassengers)
+```
+
+Para agregar una linea que resuma la tendencia de la serie podemos agregar la siguiente línea de código. Nótese que la Regresión Lineal calculada depende únicamente del tiempo, que podemos extraer de la misma serie usando el método `time`. El parametro `reg` del método `abline` nos permite pasar por parámetro un objeto que tenga el atributo `coef` para extraer la pendiente y término independiente de la recta a dibujar.
+
+```{r}
+plot(AirPassengers)
+abline(reg=lm(AirPassengers~time(AirPassengers)), col="blue")
+```
+
+La función `cycle` nos permite imprimir en consola el ciclo de la serie temporal a través de los años:
+```{r}
+cycle(AirPassengers)
+```
+
+### Sumarizando Series Temporales
+
+La función `agreggate` nos permite dividir los datos en subconjuntos, calcular las estadísticas de resumen para cada uno y devolver el resultado. Para controlar el tamaño de la ventana de tiempo a dividir existe el parametro `nfrequency`. Para más detalle ver la documentación de [aggregate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/aggregate.html).
+
+Calcular la Media para cada año:
+```{r}
+plot(aggregate(AirPassengers,FUN=mean), type="b")
+```
+
+
+Calcular la media para un perídodo de 6 Meses:
+```{r}
+plot(aggregate(AirPassengers,FUN=mean, nfrequency=2), type="b")
+```
+
+El parámetro `nfrequency` puede ser un poco confuso. Básicamente lo que está haciendo internamente es dividir el conjunto de datos en bloques de longitud `frequency(AirPassengers) / nfrequency`. Es decir, si el parámetro tiene por valor 2, la función va a ser aplicada a un período de 6 observaciones `12 / 2`.
+
+Una forma más intuitiva de leerlo es: "Si nuestra serie temporal es mensual, es decir 12 observaciones por año (frequency = 12), `nfrequency = 2` me retorna dos observaciones por año, porque calcula la media cada 6 meses `(12 / 6)`."
+
+Si queremos calcular la media de valores por mes, un boxplot puede ayudarnos a ver qué tanto varia la serie según los meses.
+```{r}
+boxplot(AirPassengers ~ cycle(AirPassengers))
+```
+
+Nótese que usando `cycle` nos provee la media por cliclo definido en la creación de la Serie Temporal, en este caso, mensual.
+
+### Conclusiones Importantes:
+ 
+ * La tendencia año a año muestra que la cantidad de pasajeros fue en aumento.
+ * La varianza de los meses de Julio y Agosto es considerablemente mayor a la de los otros meses. La cantidad de pasajeros que viajaban en estos meses, aumentó en mayor medida a través de los años en comparación a los años anteriores.
+ * Aún cuando el valor de la media para cada mes es diferente, la variaza es pequeña. Por lo tanto, tenemos un fuerte efecto estacional con un ciclo de 12 meses o menos.
+ 
+El Análisis Exploratorio y las visualizaciones son importantes para saber con qué tipo de Serie Temporal estamos trabajando. En todo trabajo de Datos, la visualización de los mismos debe tener un rol clave. ([Véase Cuarteto de Anscombe](https://es.wikipedia.org/wiki/Cuarteto_de_Anscombe))
+
+## Introducción al Modelado de Series Temporales ARMA:
+
+Los modelos ARMA se usan comúnmente en el modelado de series temporales. *AR* significa auto-regresión y *MA* significa promedio móvil (por sus siglas en inglés: Moving Averages). Tanto AR como MA son sólamente aplicables a Series Temporales, es decir, las que cumplen con los tres criterios mencionados al inicio.
+
+En caso de que la Serie NO sea Temporal, es necesario primero "estacionar la serie" a través de la aplicación de varias transformadas que veremos a continuación.
+
+### Modelo de Series Temporales Auto-Regresivo y Moving Averages:
+
+Dado que no encuentro buena definición en español aquí las definiciones de Wikipedia:
+
+The [autoregressive model](https://en.wikipedia.org/wiki/Autoregressive_model) specifies that the output variable depends linearly on its own previous values and on a stochastic term (an imperfectly predictable term). 
+The [moving-average](https://en.wikipedia.org/wiki/Moving-average_model) model specifies that the output variable depends linearly on the current and various past values of a stochastic (imperfectly predictable) term.
+
+La principal diferencia entre AR y MA es la correlación entre los diferentes puntos en diferentes momentos del tiempo. La correlación entre x(t) y x(t-n) para cualquier n en un modelo **MA** es siempre cero. En cambio, en los modelos **AR**, la correlacion entre x(t) y x(t-n) disminuye gradualmente a medida que n se vuelve más grande
+
+El orden *p* de los modelos AR(p) y MA(p) es la cantidad de observaciones anteriores que influyen en la salida actual. Así, un modelo AR(0) depende sólo del error estocástico, y el modelo AR(1) depende del valor anterior más la influencia del término estocástico.
+
+### Gráficos ACF y PACF
+
+Cuando la serie temporal estacionaria ha sido obtenida, lo siguiente es reponder dos preguntas:
+ 
+ * Es un proceso AR o MA?
+ * Qué orden del proceso AR o MA tenemos que usar?
