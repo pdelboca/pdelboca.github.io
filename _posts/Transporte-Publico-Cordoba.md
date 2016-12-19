@@ -1,0 +1,96 @@
+---
+title: "Transporte Urbano Córdoba"
+author: "Patricio del Boca"
+date: "November 30, 2016"
+output: html_document
+---
+
+
+
+Esta semana en [Twitter](https://twitter.com/dronespleen/status/804065846196928514) se armó una charla acerca de la reciente noticia sobre el [aumento del precio del boleto en la ciudad de Córdoba](http://www.cba24n.com.ar/content/el-boleto-de-colectivo-subiria-un-37-por-ciento). De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés. 
+
+Pusimos manos a la obra y empezamos revisando el [Portal de Datos Abiertos de la Ciudad de Córdoba](https://gobiernoabierto.cordoba.gob.ar/data/datos-abiertos/categoria/transporte). Allí encontramos datos sobre el uso del Transporte Urbano de Córdoba.
+
+
+{% highlight r %}
+datos <- read.csv("../data/transporte-urbano-cordoba/pasajeros_y_kilometros_2012_a_2016.csv", 
+                 dec = ",",
+                 stringsAsFactors = FALSE)
+
+datos <- data.frame(lapply(datos, function(x) gsub(".", "", x, fixed = TRUE)), stringsAsFactors = FALSE)
+datos <- data.frame(lapply(datos, function(x) as.numeric(x)))
+colnames(datos) <- tolower(colnames(datos))
+{% endhighlight %}
+
+#### ¿Qué cantidad de Pasajeros tiene el Sistema de Transporte Urbano de la Ciudad de Córdoba?
+
+{% highlight r %}
+pasajeros2015 <- datos[datos$anio == 2015,"pasajeros.total"]
+ggplot(datos, aes(x=anio, y=pasajeros.total, fill=TRUE)) +
+  geom_bar(stat="identity") +
+  theme_minimal() + scale_fill_brewer() +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title="Pasajeros Transporte Urbano de Córdoba",
+       subtitle="Cantidad de pasajeros anuales del Transporte Urbano de Córdoba Capital",
+       caption="Fuente: Open Data Córdoba con datos de gobiernoabierto.cordoba.gob.ar") +
+  geom_hline(yintercept = pasajeros2015, show.legend = TRUE, linetype=3) +
+  geom_text(aes(x=2003, y=pasajeros2015), 
+            colour="steelblue",
+            label=paste("Pasajeros 2015:",pasajeros2015),
+            vjust=-.5)  + guides(fill=FALSE) +
+  xlab("Año") +
+  ylab("Pasajeros Transportados")
+{% endhighlight %}
+
+![center](/figs/Transporte-Publico-Cordoba/unnamed-chunk-2-1.png)
+
+#### Regresion Lineal
+¿Será posible hacer una aproximación lineal al estimado de la cantidad de pasajeros para los próximos años?
+
+
+{% highlight r %}
+modelo <- lm(pasajeros.total ~ anio, datos)
+
+datosPrediccion <- data.frame(anio = 2016:2020)
+datosPrediccion$pasajeros.total <- predict(modelo, datosPrediccion)
+
+datosFinal <- rbind(datos[,c("anio", "pasajeros.total")], datosPrediccion)
+datosFinal$prediccion <- ifelse(datosFinal$anio < 2016, FALSE, TRUE)
+
+
+ggplot(datosFinal, aes(x=anio,y=pasajeros.total, fill=prediccion)) + 
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  scale_fill_brewer() +
+  labs(title = "Estimacion de Pasajeros",
+       subtitle = "Estimación de Pasajeros del Transporte Urbano de Cordoba 2016-2020",
+       caption = "Fuente: Open Data Córdoba con datos de gobiernoabierto.cordoba.gob.ar") +
+  scale_y_continuous(labels = scales::comma) +
+  geom_smooth(method = "lm", color="black", fill="grey", size=.5) +
+  ylab("Cantidad de Pasajeros") +
+  xlab("Año") + guides(fill=FALSE)
+{% endhighlight %}
+
+![center](/figs/Transporte-Publico-Cordoba/unnamed-chunk-3-1.png)
+
+Se espera que para el 2019, la cantidad de Pasajeros Total del sistema de transporte supere los 200 millones. Podemos ver un detalle de los valores estimados:
+
+{% highlight r %}
+head(datosPrediccion)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##   anio pasajeros.total
+## 1 2016       190455652
+## 2 2017       195126938
+## 3 2018       199798224
+## 4 2019       204469510
+## 5 2020       209140795
+{% endhighlight %}
+
+Con este artículo se demuestra que con un poco de datos abiertos y algún manejo básico de técnicas estadísticas se puede generar información de interés para la ciudadanía. Estos datos fueron publicados en el [portal de noticias de CBA24N](http://www.cba24n.com.ar/content/pese-al-aumento-del-boleto-estiman-200-millones-de-pasajeros).
+
+
+
