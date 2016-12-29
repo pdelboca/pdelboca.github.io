@@ -1,0 +1,27 @@
+---
+title: "Reservas BCRA"
+author: "Patricio del Boca"
+date: "December 29, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dygraphs) # http://rstudio.github.io/dygraphs/gallery-event-lines.html
+library(magrittr)
+library(zoo)
+
+reservas <- read.csv("../data/reservas-bcra/reservas.csv")
+reservas$fecha <- as.Date(reservas$fecha, format="%Y/%m/%d")
+reservas.ts <- zoo(reservas$reservas_en_millones_usd, order.by = reservas$fecha, frequency = 12)
+summary(reservas.ts)
+```
+```{r}
+dygraph(reservas.ts, main = "Evolucion de las Reservas del BCRA") %>%
+  dySeries("V1", label = "Reservas (USD)") %>%
+  dyAxis("y", label = "Miles de Millones (USD)") %>%
+  dyShading(from = "2003-5-25", to = "2007-12-7", color = "#FFE6E6") %>%
+  dyEvent("2006-1-5", "Cancelacion Deuda FMI", labelLoc = "top") %>%
+  dyRangeSelector()
+```
+
