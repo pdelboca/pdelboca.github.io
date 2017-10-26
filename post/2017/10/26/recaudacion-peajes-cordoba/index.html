@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recaudación Peajes Cordoba | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Recaudación Peajes Cordoba</span></h1>
+<h2 class="author">Patricio Del Boca</h2>
+<h2 class="date">2017/10/26</h2>
+</div>
+
+<main>
+<p>En base a la información de la cantidad de automóviles que atraviesan cada peaje por mes, se me ocurrió hacer una estimación de la cantidad de pesos que ingresa en cada peaje. Influenciado por conocer si la Autovía Alta Gracia - Córdoba había recuperado el costo de inversión.</p>
+<p>Debido a que los datos no discriminan entre Categoría de Vehículo, la estimación de ingresos se realizará con el Precio de la Categoría 2 (Autos). Además, no se discriminará por las distintas formas de pago (Efectivo, CUIS, Barrera Levantada, etc).</p>
+<p>La Cantidad de Pesos será calculada como: La cantidad de vehículos que atravesaron el peaje por mes, multiplicado por el precio de la Categoría 2 para dicha fecha.</p>
+<p>Aclaración: <strong>Debido al poco detalle de los datos, y a las asumptions hechas, el valor indicado puede variar del valor real.</strong></p>
+<div id="datos" class="section level2">
+<h2>Datos</h2>
+<p>Los datos del tránsito registrado en los peajes, fue obtenido del <a href="https://gobiernoabierto.cordoba.gob.ar/data/datos-abiertos/categoria/turismo/datos-del-turismo-de-la-ciudad-de-cordoba/55">Portal de Datos Abiertos de la Ciudad de Córdoba</a>.</p>
+<p>Los datos del precio de los peajes, fueron recopilados a mano de distintas notas periodísticas de medios locales. A saber, <a href="http://www.lavoz.com.ar/noticias/politica/nuevas-tarifas-peajes-red-acceso-cordoba">2013</a>, <a href="http://www.lavoz.com.ar/ciudadanos/partir-de-este-miercoles-rigen-las-nuevas-tarifas-de-peajes">2014</a> y <a href="http://transitocordoba.com/2015/01/a-partir-de-hoy-rige-la-nueva-tarifa-en-los-peajes-de-la-rac/">2015</a></p>
+</div>
+<div id="limpieza-de-datos" class="section level2">
+<h2>Limpieza de Datos</h2>
+<pre class="r"><code>dfPrecio &lt;- read.csv(&#39;../../data/recaudacion-peajes-cordoba/precio_peajes.csv&#39;,
+                     dec=&quot;,&quot;, stringsAsFactors = FALSE)
+dfPrecio$Ruta &lt;- tolower(dfPrecio$Ruta)
+colnames(dfPrecio) &lt;- c(&quot;ruta&quot;, &quot;2013&quot;, &quot;2014&quot;, &quot;2015&quot;, &quot;2016&quot;)
+
+dfPeajes &lt;- read.csv(&#39;../../data/recaudacion-peajes-cordoba/transito_peajes.csv&#39;,
+                     dec=&quot;,&quot;)
+colnames(dfPeajes) &lt;- c(&quot;fecha&quot;, &quot;total&quot;, &quot;ruta 20&quot;, &quot;ruta 5&quot;, &quot;ruta 36 bower&quot;,
+                        &quot;ruta 9 sur&quot;, &quot;autopista cba-pilar&quot;, &quot;ruta 19&quot;, &quot;ruta 9 norte&quot;,
+                        &quot;ruta e-53&quot;, &quot;ruta e-55&quot;)
+dfPeajes$fecha &lt;- ymd(dfPeajes$fecha)
+
+
+dfPeajes &lt;- dfPeajes %&gt;% 
+  select(-total) %&gt;% 
+  melt(id.vars=&quot;fecha&quot;) %&gt;%  
+  mutate(anio = year(fecha)) %&gt;% 
+  rename(ruta=variable)
+
+dfPrecio &lt;- dfPrecio %&gt;% 
+  melt() %&gt;% 
+  rename(anio=variable)
+
+dfPrecio$anio &lt;- as.numeric(as.character(dfPrecio$anio))
+dfPeajes$ruta &lt;- as.character(dfPeajes$ruta)
+
+df &lt;- merge(dfPeajes, dfPrecio, by = c(&quot;ruta&quot;, &quot;anio&quot;))
+colnames(df) &lt;- c(&quot;ruta&quot;, &quot;anio&quot;, &quot;fecha&quot;, &quot;cantidad_autos&quot;, &quot;precio&quot;)
+df$recaudacion &lt;- df$cantidad_autos * df$precio</code></pre>
+</div>
+<div id="analisis" class="section level2">
+<h2>Análisis</h2>
+<div id="total-de-recaudacion-del-periodo-2013---2015" class="section level4">
+<h4>Total de Recaudación del período 2013 - 2015</h4>
+<pre class="r"><code>totalPorPeaje &lt;- df %&gt;% 
+  group_by(ruta) %&gt;% 
+  summarise(total=sum(recaudacion))
+
+total &lt;- sum(totalPorPeaje$total)
+
+ggplot(totalPorPeaje, aes(x=reorder(ruta, -total), y=total)) +
+  geom_bar(stat=&quot;identity&quot;) + 
+  labs(title=&quot;Recaudación por Peaje (Red Acceso a Córdoba)&quot;,
+       subtitle=&quot;Estimación de la recaudación por peaje, para el período 2013-2015, en base al precio de la Categoría 2.&quot;,
+       caption = &quot;Open Data Córdoba - Fuente: gobiernoabierto.cordoba.gob.ar&quot;) +
+  scale_y_continuous(labels = dollar) +
+  theme_fivethirtyeight() +
+  theme(axis.text.x = element_text(angle=30, hjust=1, vjust=1))+
+  annotate(&quot;text&quot;, x=&quot;ruta 19&quot;, y=300000000, vjust=-0.5,
+           label=paste0(&quot;Total Recaudado: $&quot;,paste(round(total / 1e6), &quot;M&quot;)),
+           family = &quot;sans&quot;,
+           alpha=.7) </code></pre>
+<p><img src="/post/2016-08-19-recaudacion-peajes-cordoba_files/figure-html/total_por_peaje-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="detalle-del-total-de-ingreso-por-peaje-para-el-periodo-2013-2015" class="section level4">
+<h4>Detalle del Total de Ingreso por Peaje para el período 2013-2015</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ruta</th>
+<th align="right">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ruta 20</td>
+<td align="right">471589096</td>
+</tr>
+<tr class="even">
+<td align="left">ruta e-53</td>
+<td align="right">395346688</td>
+</tr>
+<tr class="odd">
+<td align="left">ruta 5</td>
+<td align="right">174627382</td>
+</tr>
+<tr class="even">
+<td align="left">autopista cba-pilar</td>
+<td align="right">171432969</td>
+</tr>
+<tr class="odd">
+<td align="left">ruta e-55</td>
+<td align="right">91430283</td>
+</tr>
+<tr class="even">
+<td align="left">ruta 9 norte</td>
+<td align="right">88319304</td>
+</tr>
+<tr class="odd">
+<td align="left">ruta 19</td>
+<td align="right">83857321</td>
+</tr>
+<tr class="even">
+<td align="left">ruta 36 bower</td>
+<td align="right">78145655</td>
+</tr>
+<tr class="odd">
+<td align="left">ruta 9 sur</td>
+<td align="right">32338880</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="peaje-alta-gracia---cordoba" class="section level4">
+<h4>Peaje Alta Gracia - Córdoba</h4>
+<p><a href="http://www.lavoz.com.ar/noticias/politica/con-schiaretti-fue-habilitada-autovia-cordoba-alta-gracia">Según La Voz del Interior</a>, el costo de la Autovía Alta Gracia - Córdoba fue de <strong>153 Millones de pesos</strong>. La misma fue inaugurada a finales del 2012 ¿Habrá cubrido ya los costos de construcción?</p>
+<pre class="r"><code>total &lt;- df %&gt;% 
+  filter(ruta == &quot;ruta 5&quot;) %&gt;%  
+  summarize(total=sum(recaudacion)) %&gt;% 
+  as.numeric()
+
+fecha=c(&#39;2013-01-01&#39;,&#39;2014-01-01&#39;,&#39;2015-01-01&#39;)
+label=c(&#39;$8&#39;, &#39;$8 -&gt; $10&#39;, &#39;$10 -&gt; $15&#39;)
+y = c(4000000,6000000,4000000)
+aumentos &lt;- data.frame(fecha=ymd(fecha), label=label, y=y)
+
+ggplot(df[df$ruta==&quot;ruta 5&quot;, ], aes(x=fecha)) +
+  geom_line(aes(y=recaudacion), color=&quot;steelblue&quot;) +
+  labs(title=&quot;Recaudación Peaje Autovia Alta Gracia - Córdoba&quot;,
+       subtitle=&quot;Estimación de Recaudación por mes en base al Precio de la Categoría 2.&quot;,
+       caption = &quot;Open Data Córdoba - Fuente: gobiernoabierto.cordoba.gob.ar&quot;) + theme_fivethirtyeight() +
+  theme(axis.text.x = element_text(angle=30, hjust=1, vjust=1)) +
+  scale_y_continuous(labels = dollar) +
+  geom_vline(xintercept=as.numeric(aumentos$fecha), linetype=3) +
+  geom_text(data=aumentos,mapping=aes(x=fecha, y=y, label=label),
+            angle=90, vjust=-1, size=3.5, fontface=&#39;italic&#39;) +
+  annotate(&quot;text&quot;, x=ymd(&#39;2015-07-01&#39;), y=3000000, vjust=-0.5,
+           label=paste0(&quot;Total Recaudado: $&quot;,paste(round(total / 1e6), &quot;M&quot;)),
+           family = &quot;sans&quot;,
+           alpha=.7) </code></pre>
+<p><img src="/post/2016-08-19-recaudacion-peajes-cordoba_files/figure-html/ruta_5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>La estimación e Ingresos, para el período 2013 - 2015 del peaje de la autovía Alta Gracia - Córdoba es de <strong>$175 M</strong>, <strong>$22 M</strong> más que la inversión hecha de <strong>$153 M</strong>.</p>
+</div>
+<div id="transito-registrado-en-el-peaje-alta-gracia---cordoba" class="section level4">
+<h4>Tránsito Registrado en el Peaje Alta Gracia - Córdoba</h4>
+<p>Independientemente de los ingresos, que se ven afectados por la inflación, ¿Cómo fue el tránsito registrado en el peaje de Ruta 5?</p>
+<pre class="r"><code>ggplot(df[df$ruta==&quot;ruta 5&quot;, ], aes(x=fecha, y=cantidad_autos)) +
+  geom_line(color=&quot;steelblue&quot;) +
+  labs(title = &quot;Tránsito Peaje Alta Gracia - Córdoba&quot;,
+       subtitle = &quot;Tránsito registrado por mes en el Peaje de la Ruta 5, para el período 2013-2015.&quot;,
+       caption = &quot;Open Data Córdoba - Fuente: gobiernoabierto.cordoba.gob.ar&quot;) +
+  theme_fivethirtyeight() +
+  theme(axis.text.x = element_text(angle=30, hjust=1, vjust=1))</code></pre>
+<p><img src="/post/2016-08-19-recaudacion-peajes-cordoba_files/figure-html/transito_peaje_ruta_5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Powershell on Un Blog de Datos Minimalista</title>
+    <link>/categories/powershell/</link>
+    <description>Recent content in Powershell on Un Blog de Datos Minimalista</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/powershell/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Contando Procesos con PowerShell</title>
+      <link>/post/2017/10/10/testing/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2017/10/10/testing/</guid>
+      <description>El otro dia tuve que montar un cluster de Microsoft R Server (recientemente renombrado Machine Learning Server). En un momento dado tuve que realizar unas pruebas de performance y para ello necesitaba aumentar el número de Shell Pools que proveen los servicios para la ejecución de código remoto.
+Dado que el proceso de creación puede ser un poco lento y la cantidad de Pools grande tenía ganas de ir monitoreando en la inea de comandos la cantidad de procesos creados.</description>
+    </item>
+    
+  </channel>
+</rss>

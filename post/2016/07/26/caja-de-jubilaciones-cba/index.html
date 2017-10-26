@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Caja de Jubilaciones CBA | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Caja de Jubilaciones CBA</span></h1>
+<h2 class="author">Patricio Del Boca</h2>
+<h2 class="date">2016/07/26</h2>
+</div>
+
+<main>
+<p>Siguiendo la iniciativa de Datos Abiertos, la Caja de Jubilaciones pone a disposición las bases de datos de Jubilaciones y Pensiones, Aportantes y Espacio Illia. En la <a href="http://www.cajajubilaciones.cba.gov.ar/portal/transparencia">Pagina de Transparencia de la Caja de Jubilaciones</a> ya hay un lindo resumen titulado <strong>“La Caja en Números”</strong> con información de interés para la comunidad. En un acto de pura curiosidad, desde <a href="http://www.opendatacordoba.org">Open Data Cordoba</a>, le dedicamos un poco más de tiempo a chusmear que hay en estos datos para responder algunas preguntas que en dicho resumen no se contestan.</p>
+<div id="carga-de-datos" class="section level2">
+<h2>Carga de Datos:</h2>
+<p>Los Datos referidos a Jubilaciones y pensiones fueron obtenidos del <a href="http://www.cajajubilaciones.cba.gov.ar/portal/catalogo_de_datos">Catalogo de Datos de la Caja de Jubilaciones</a>.</p>
+<pre class="r"><code>df &lt;- read.csv(&#39;../../data/caja-de-jubilaciones-cba/Beneficiarios_201606.csv&#39;, sep=&quot;;&quot;,
+                 fileEncoding = &#39;iso-8859-1&#39;, row.names = NULL)
+
+names(df)[3] &lt;- &quot;Sector&quot;
+names(df)[11] &lt;- &quot;Remuneracion&quot;
+
+levelsRemuneraciones = c(&quot;1 a 4000&quot;, &quot;4001 a 8000&quot;, &quot;8001 a 12000&quot;, &quot;12001 a 16000&quot;, &quot;16001 a 20000&quot;, &quot;20001 a 24000&quot;, &quot;24001 a 28000&quot;, &quot;28001 a 32000&quot;, &quot;Mayor a 32000&quot;)
+df$Remuneracion &lt;- ordered(df$Remuneracion,
+                                        levels=levelsRemuneraciones)</code></pre>
+</div>
+<div id="cantidad-de-jubilados-por-rango-de-remuneracion" class="section level2">
+<h2>Cantidad de Jubilados por Rango de Remuneracion</h2>
+<p>El dataset nos divide la remuneración por rango. ¿Cuántos jubilados hay en cada rango de remuneración?</p>
+<pre class="r"><code>dfRangoCount &lt;- df %&gt;% 
+  group_by(Remuneracion) %&gt;% 
+  summarise(cantidad = n())
+
+ggplot(dfRangoCount, aes(x=Remuneracion, y=cantidad)) +
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
+  ggtitle(&quot;Cantidad de Jubilaciones por Remuneración \n (Prov. Córdoba - Junio 2016)&quot;) +
+  geom_text(data=dfRangoCount,
+            aes(x=Remuneracion,
+                y=cantidad,
+                label=cantidad),
+            vjust=-0.25) +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        )</code></pre>
+<p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/pressure-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Llama la atención que la curva se desvia de una distribución normal (esperable cuando se habla de ingresos) debido al alto porcentaje de jubilaciones mayores a $32000</p>
+</div>
+<div id="jubilaciones-de-privilegio" class="section level2">
+<h2>Jubilaciones de Privilegio</h2>
+<p>Entonces cabe preguntar, ¿Quiénes son los que cobran dichas Jubilaciones? o mejor dicho, ¿Cómo se distribuyen estas jubilaciones en los distintos sectores? ¿Quiénes en Córdoba tienen las jubilaciones más altas?</p>
+<pre class="r"><code>dfPriv &lt;- df %&gt;% 
+  filter(Remuneracion == &quot;Mayor a 32000&quot;) %&gt;% 
+  group_by(Sector) %&gt;% 
+  summarise(cantidad = n()) %&gt;% 
+  arrange(desc(cantidad))
+
+ggplot(dfPriv, aes(x=reorder(Sector, cantidad), y=cantidad)) + 
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) + 
+  coord_flip() + 
+  ggtitle(&quot;Quiénes cobran las 12015 jubilaciones más altas? \n (Jubilaciones &gt; $32000 - Prov Córdoba - Junio 2016)&quot;) +
+  geom_text(data=dfPriv,
+            aes(x=Sector,
+                y=cantidad,
+                label=cantidad),
+            hjust=-0.15) +
+  theme_minimal() + xlab(NULL) + ylab(NULL) + 
+  theme(axis.text.x = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank())</code></pre>
+<p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-2-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>Era de conocimiento que Municipalidad, EPEC y Bancarios tienen las mejores jubilaciones en la Provincia. Hoy lo confirmamos gracias a los datos abiertos por la Caja de Jubilaciones de la Provincia.</p>
+<pre class="r"><code>tmp &lt;- df %&gt;% filter(Remuneracion == &quot;Mayor a 32000&quot;)
+total &lt;- nrow(tmp)
+tmp &lt;- tmp %&gt;% filter(Sector %in% c(&quot;EPEC&quot;, &quot;Bancarios&quot;, &quot;Municipalidad de Córdoba&quot;)) 
+ebm &lt;- nrow(tmp)</code></pre>
+<p><strong>EPEC, Bancarios y Municipalidad se llevan el 59.35% de las Jubilaciones de Privilegio.</strong></p>
+</div>
+<div id="remuneraciones" class="section level2">
+<h2>Remuneraciones</h2>
+<pre class="r"><code>remuneracionEPEC &lt;- df %&gt;% 
+  filter(Sector == &quot;EPEC&quot;) %&gt;%
+  group_by(Remuneracion) %&gt;% 
+  summarise(cantidad = n()) %&gt;% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
+
+remuneracionMunicipalidad &lt;- df %&gt;% 
+  filter(Sector == &quot;Municipalidad de Córdoba&quot;) %&gt;%
+  group_by(Remuneracion) %&gt;% 
+  summarise(cantidad = n()) %&gt;% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
+
+remuneracionBancarios &lt;- df %&gt;% 
+  filter(Sector == &quot;Bancarios&quot;) %&gt;%
+  group_by(Remuneracion) %&gt;% 
+  summarise(cantidad = n()) %&gt;% 
+  mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
+
+tmp &lt;- df %&gt;% filter(Sector %in% c(&quot;EPEC&quot;, &quot;Municipalidad de Córdoba&quot;, &quot;Bancarios&quot;))
+ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle(&quot;Porcentaje de Jubilados de EPEC \n por Rango de Remuneración&quot;)</code></pre>
+<p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(remuneracionMunicipalidad, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle(&quot;Porcentaje de Jubilados de la Municipalidad de Córdoba \n por Rango de Remuneración&quot;)</code></pre>
+<p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(remuneracionBancarios, aes(x=Remuneracion, y=cantidad)) + 
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
+  geom_text(
+    aes(x=Remuneracion, 
+        y=cantidad, 
+        label=porcentaje),
+    vjust=-0.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank()
+        ) +
+  ggtitle(&quot;Porcentaje de Jubilados Bancarios \n por Rango de Remuneración&quot;)</code></pre>
+<p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="anexo-recomendaciones-para-la-liberacion-de-datos-abiertos" class="section level3">
+<h3>Anexo: Recomendaciones para la Liberación de Datos Abiertos:</h3>
+<ul>
+<li>Gran parte de las herramientas de programación utilizadas para el análisis y uso de los datos públicos tienen el Inglés como idioma por defecto. Esto hace que no se lleven muy bien con caracteres especiales del español como los acentos. Si bien es imposible quitar los acentos de los campos que contengan texto, <strong>es recomendable que la primera fila del archivo (que usualmente nombra el campo) no contenga acentos</strong> para evitar problemas a la hora de leer los archivos.</li>
+<li>El formato estándar de liberación de datos es <strong>csv</strong> (Comma Separated Values). Por lo que es recomendable que el separador de campos sea una coma (,) y no un (;)</li>
+<li>Asegurarse que en todas las filas, estÃ©n correctamente separados los campos por el delimitador elegido.</li>
+<li>Por último, proveer de un link visible, único e invariante en el tiempo, permite que se pueda automatizar el análisis y que no se necesite de pasos manuales de descarga del archivo a disco. Lo ideal es que no se necesite entrar manualmente a la página web, seleccionar filtros y hacer click en un botón para descargar el set de datos.</li>
+<li>Los datos deben estar lo más desagregados y crudos posibles. Los campos como Remuneración son mejor colocarlos crudos y dejar que el analista decida cuáles son las categorias o rangos en los cuales separarlos.</li>
+</ul>
+<p>Si bien pueden sonar quisquillosas estas recomendaciones, ayudan a la hora de trabajar con datos abiertos y al momento de incorporarlos programáticamente a otros sistemas.</p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+

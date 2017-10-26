@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inflacion vs Paritarias | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Inflacion vs Paritarias</span></h1>
+<h2 class="author">Patricio Del Boca</h2>
+<h2 class="date">2016/08/03</h2>
+</div>
+
+<main>
+<p>Chusmeando un poco en la página de <a href="http://estadistica.cba.gov.ar">Estadísticas de la Provincia de Córdoba</a> me encontré con los datos de la Inflación de Córdoba desde el año ’68 en adelante. Por lo que me propuse jugar un poco con estos datos.</p>
+<div id="datos-ipc-cordoba" class="section level4">
+<h4>Datos IPC Córdoba</h4>
+<pre class="r"><code># http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspx
+df &lt;- read.csv(&#39;../../data/inflacion-vs-paritarias/ipc_cordoba_acumulado.csv&#39;, stringsAsFactors = FALSE)
+df$variacion &lt;- gsub(&#39;,&#39;,&#39;.&#39;,df$variacion)
+df$variacion &lt;- as.numeric(df$variacion) * 100
+df$variacion &lt;- round(df$variacion, 2)
+df$mes &lt;- ymd(df$mes)
+df$metrica &lt;- &quot;Inflación&quot;</code></pre>
+<p>La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año ’68 la Inflación?</p>
+<pre class="r"><code>mes &lt;- c(&#39;1975-06-01&#39;,&#39;1983-10-01&#39;, &#39;1989-07-01&#39;, &#39;2002-01-01&#39;, &#39;2014-01-01&#39;, &quot;2015-11-01&quot;)
+label &lt;- c(&quot;Rodrigazo&quot;, &quot;Alfonsin&quot;, &quot;Hiperinflación&quot;, &quot;Devaluación Dualde&quot;, &quot;Devaluación Kiciloff&quot;, &quot;Devaluación Prat-Gay&quot;)
+eventos &lt;- data.frame(mes=ymd(mes), label=label)
+
+ggplot(df, aes(x=mes,y=variacion)) + 
+  geom_line() +
+  ggtitle(&quot;Inflación mensual según IPC de Córdoba en %.&quot;) +
+  geom_vline(xintercept=as.numeric(eventos$mes), linetype=3) +
+  geom_text(data=eventos,mapping=aes(x=mes, y=0, label=label),
+            angle=90, vjust=-0.4, hjust=-1, size=3.5, fontface=&#39;italic&#39;)+
+  theme_fivethirtyeight()</code></pre>
+<p><img src="/post/2016-08-03-inflacion-vs-paritarias_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="inflacion-anual-ipc-cordoba-vs-acuerdo-paritario-promedio" class="section level2">
+<h2>Inflacion Anual (IPC Córdoba) vs Acuerdo Paritario Promedio</h2>
+<p>Después se me ocurrió comparar la Inflación de los últimos años del Gobierno Kirchnerista con el aumento salarial de las paritarias. Para ello tuve que juntar un poco de datos de la web. Busqué cuál fue el promedio de los acuerdos paritarios por año:</p>
+<div id="promedio-de-las-paritarias-por-ano" class="section level4">
+<h4>Promedio de las Paritarias por Año</h4>
+<pre class="r"><code>paritarias &lt;- data.frame()
+# http://www.ambito.com/diario/533729-en-paritarias-promedio-de-aumentos-alcanzo-el-26
+paritarias &lt;- rbind(paritarias, c(2010, 26))
+# http://www.iprofesional.com/notas/118935-paritarias-en-2011-los-aumentos-ascendieron-a-283-en-promedio-
+paritarias &lt;- rbind(paritarias, c(2011, 28.3))
+# http://www.ambito.com/diario/640796-alivio-las-paritarias-cierran-con-24-de-tope
+paritarias &lt;- rbind(paritarias, c(2012, 25.5))
+# http://www.elciudadanoweb.com/el-numero-clave-de-las-paritarias-2013-es-el-24/
+paritarias &lt;- rbind(paritarias, c(2013,24))
+# http://www.diaadia.com.ar/cordoba/mayoria-gremios-cerraron-paritarias-30-ciento
+paritarias &lt;- rbind(paritarias, c(2014,30))
+# http://www.lanacion.com.ar/1794407-anuncian-subas-salariales-del-27-promedio-paritariasa-cinco-gremios
+paritarias &lt;- rbind(paritarias, c(2015,27))
+names(paritarias) &lt;- c(&quot;anio&quot;,&quot;variacion&quot;)
+paritarias$metrica &lt;- &quot;Paritarias&quot;
+
+tmp &lt;- df %&gt;% 
+  filter(year(mes) %in% c(2010:2015)) %&gt;% 
+  #slice(1:70) %&gt;% # Filtrar meses de Gestion Cambiemos y Devaluación del Dolar
+  group_by(anio = year(mes)) %&gt;% 
+  summarise(variacion = sum(variacion))
+tmp$metrica &lt;- &quot;Inflacion&quot;
+
+dataPlot &lt;- rbind(tmp,paritarias)
+ggplot(dataPlot, 
+       aes(x=anio, 
+           y=variacion, 
+           fill=metrica, 
+           label = paste0(dataPlot$variacion,&quot;%&quot;))
+       ) +
+  geom_bar(stat=&quot;identity&quot;, position = &quot;dodge&quot; , width=.8) + 
+  ggtitle(&quot;Inflación Anual (IPC Córdoba) vs Acuerdo Paritario Promedio.&quot;) +
+  scale_color_fivethirtyeight(&quot;metrica&quot;) +
+  theme_fivethirtyeight() +
+  theme(legend.title=element_blank()) + 
+  # annotate(&quot;text&quot;, x = 2010.5, y = 32, 
+  #          label=&quot;(Inflación 2015 hasta el mes de Octubre incluido.)&quot;, 
+  #          fontface=&quot;italic&quot;, size=3) +
+  annotate(&quot;text&quot;, x = 2011, y = 32, 
+           label=&quot;Fuente: https://pdelboca.github.io/2016/08/03/Inflacion-VS-Paritarias.html&quot;, 
+           fontface=&quot;italic&quot;, size=3)</code></pre>
+<p><img src="/post/2016-08-03-inflacion-vs-paritarias_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emisiones de gases de efecto invernadero | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Emisiones de gases de efecto invernadero</span></h1>
+<h2 class="author">Patricio Del Boca</h2>
+<h2 class="date">2017/10/25</h2>
+</div>
+
+<main>
+<p>Hoy me encontré con el nuevo portal de datos abiertos del <a href="http://datos.ambiente.gob.ar/">Ministerio de Ambiente y Desarrollo Sustentable</a> y chusmeando algunos de los datos encontré algo interesante sobre emisión de Gases de Efecto Invernadero (GEI).</p>
+<p>Trivia…. La emisión per-cápita en los últimos 20 años:</p>
+<ul>
+<li>¿Aumentó?</li>
+<li>¿Disminuyó?</li>
+<li>¿Se mantuvo constante?</li>
+</ul>
+<p>Aquí un poco de código para responder la pregunta:</p>
+<pre class="r"><code>library(ggplot2)
+library(stringr)
+library(dplyr)
+library(lubridate)
+
+url &lt;- &quot;http://datos.ambiente.gob.ar/dataset/09924bea-0458-4777-ab54-e74cbc5d3e8e/resource/f02bced4-8cd2-487e-b4e9-4443a83a2539/download/emisiones-gei-por-habitante.csv&quot;
+emisiones &lt;- read.csv(url, sep = &quot;;&quot;)
+colnames(emisiones) &lt;- str_replace(colnames(emisiones),
+                                   pattern = &quot;\\.&quot;,
+                                   replacement = &quot;&quot;)
+emisiones &lt;- emisiones %&gt;%
+  mutate(emisiones_gei_anio = dmy(paste0(&quot;01-01-&quot;,emisiones_gei_anio)))
+
+puntos &lt;- emisiones[c(1,18,25),]
+puntos$emisiones_gei_habitante &lt;- round(puntos$emisiones_gei_habitante, 2)
+
+ggplot(emisiones, aes(x=emisiones_gei_anio, y=emisiones_gei_habitante)) + 
+  geom_line(color = &quot;steelblue&quot;, size = 1.5) +
+  theme_minimal() +
+  labs(title=&quot;Emisiones de gases de efecto invernadero (GEI) por habitante&quot;,
+       subtitle = &quot;Inventario total de GEI de la República Argentina dividido por la cantidad de habitantes (población total).&quot;,
+       caption = &quot;Fuente: @pdelboca con datos de http://datos.ambiente.gob.ar&quot;,
+       y = &quot;Emisiones (tCO2eq/habitante)&quot;,
+       x = &quot;Año&quot;) +
+  scale_x_date(date_breaks = &quot;2 years&quot;,date_labels = &quot;%Y&quot;,date_minor_breaks = &quot;2 years&quot;) +
+  scale_y_continuous(limits = c(0,12)) +
+  geom_point(data=puntos, 
+             aes(x=emisiones_gei_anio, y=emisiones_gei_habitante), 
+             size = 3, 
+             color = &quot;cadetblue2&quot;) +
+  annotate(&quot;text&quot;, 
+           x = puntos$emisiones_gei_anio, 
+           y = puntos$emisiones_gei_habitante, 
+           label = puntos$emisiones_gei_habitante,
+           vjust = -1)</code></pre>
+<p><img src="/post/2017-10-25-emisiones-de-gases-de-efecto-invernadero_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+

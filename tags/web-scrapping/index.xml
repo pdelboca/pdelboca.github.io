@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web scrapping on Un Blog de Datos Minimalista</title>
+    <link>/tags/web-scrapping/</link>
+    <description>Recent content in Web scrapping on Un Blog de Datos Minimalista</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/web-scrapping/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Analisis Letras Folclore</title>
+      <link>/post/2017/06/09/analisis-letras-folclore/</link>
+      <pubDate>Fri, 09 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2017/06/09/analisis-letras-folclore/</guid>
+      <description>Letras del Folklore Argentino: ¿A qué le cantan?El siguiente es un análisis exploratorio para resolver una curiosidad: ¿A qué le canta el folclore Argentino?. El Objetivo es, inicialmente, extraer las palabras y frases más utilizadas. Luego trataremos de ampliar el análisis tratando de agrupar las canciones en distintas categorías, descubrir temáticas en común, agrupar autores por estilo, etc.
+Conjunto de Datoslibrary(dplyr)library(tidytext)library(wordcloud)library(RColorBrewer)library(ggplot2)knitr::opts_chunk$set(echo = TRUE)dat &amp;lt;- readr::read_csv(&amp;quot;.</description>
+    </item>
+    
+  </channel>
+</rss>

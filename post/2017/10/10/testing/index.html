@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contando Procesos con PowerShell | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Contando Procesos con PowerShell</span></h1>
+<h2 class="author">Patricio Del Boca</h2>
+<h2 class="date">2017/10/10</h2>
+</div>
+
+<main>
+<p>El otro dia tuve que montar un cluster de <em>Microsoft R Server</em> (recientemente renombrado <a href="https://docs.microsoft.com/es-mx/machine-learning-server/what-is-machine-learning-server">Machine Learning Server</a>). En un momento dado tuve que realizar unas pruebas de performance y para ello necesitaba aumentar el número de Shell Pools que proveen los servicios para la ejecución de código remoto.</p>
+<p>Dado que el proceso de creación puede ser un poco lento y la cantidad de Pools grande tenía ganas de ir monitoreando en la inea de comandos la cantidad de procesos creados. Dado que no estoy muy acostumbrado a administrar servidores Windows tuve que hacer una búsqueda de comandos de PowerShell que me permita acceder a los procesos del sistema. El resultado fue <a href="https://technet.microsoft.com/en-us/library/ee176855.aspx">Get-Process</a>.</p>
+<p>Siendo nuevo en el mundo Windows, aún tengo una relación amor-odio con PowerShell, no obstante recuperar un listado de procesos corriendo con un determinado nombre (Spotify por ejemplo) puede ser fácilmente obtenido con:</p>
+<pre class="powershell"><code>&gt; Get-Process Spotify</code></pre>
+<p>Hacer un conteo de la cantidad de procesos se obtiene a través del siguiente comando</p>
+<pre class="powershell"><code>&gt; @(Get-Process Spotify).count</code></pre>
+<p>Si no queremos darle un minimo de manejo de error y que no falle si no encuentra un proceso con el nombre definido podemos usar el siguiente parametro</p>
+<pre class="powershell"><code>&gt; @(Get-Process -ea SilentlyContinue Spotify).count</code></pre>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+
