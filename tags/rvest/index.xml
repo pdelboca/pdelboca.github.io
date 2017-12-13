@@ -6,10 +6,20 @@
     <description>Recent content in Rvest on Un Blog de Datos Minimalista</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Jun 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Dec 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/rvest/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Web Scrapping y Analisis de Texto</title>
+      <link>/post/2017/12/13/web-scrapping-y-analisis-de-texto/</link>
+      <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2017/12/13/web-scrapping-y-analisis-de-texto/</guid>
+      <description>El siguiente post nace de la necesidad de explicar un poco el procedimineto y las herramientas que usé para obtener los datos para los artículos donde analizo las letras de Folclore y Cuarteto:
+Letras del Folklore Argentino: ¿A qué le cantan?¿A qué le canta y quién escribe el cuarteto cordobés?Idea PrincipalLa idea principal surge de la curiosidad de entender o al menos chusmear a qué le cantaba el Folclore Argentino, luego gracias a una periodista interesada hice lo mismo pero para el Cuarteto Cordobés.</description>
+    </item>
     
     <item>
       <title>Analisis Letras Folclore</title>
