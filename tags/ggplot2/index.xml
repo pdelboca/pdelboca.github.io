@@ -6,10 +6,20 @@
     <description>Recent content in Ggplot2 on Un Blog de Datos Minimalista</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tablas vs Grafico de Barras</title>
+      <link>/post/2018/05/06/tablas-vs-grafico-de-barras/</link>
+      <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018/05/06/tablas-vs-grafico-de-barras/</guid>
+      <description>Hace poco estuve trabajando en un post para Open Data Córdoba en cual tenía que mostrar diversos valores para diversas categorías. Mi primer instinto fue cargar ggplot2 pero me enfrentaba a varias problemáticas:
+Los nombres de las categorías eran muy largos, lo cual complicaba los labels del gráficoLos valores numéricos eran ordenes de magnitud diferentes, teniendo en los 10 primeros millones y miles, lo cual hacía que las barras fueran confusasMe parecía demasiado overhead un gráfico para mostrar esos valoresSi bien, la diferencia entre los valores era importante, quería hacer énfasis en el valor numérico de cada variable.</description>
+    </item>
     
     <item>
       <title>Emisiones de gases de efecto invernadero</title>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tablas vs Grafico de Barras | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Tablas vs Grafico de Barras</span></h1>
+<h2 class="author">pdelboca</h2>
+<h2 class="date">2018/05/06</h2>
+</div>
+
+<main>
+<p>Hace poco estuve trabajando en un post para <a href="http://blog.opendatacordoba.org">Open Data Córdoba</a> en cual tenía que mostrar diversos valores para diversas categorías. Mi primer instinto fue cargar ggplot2 pero me enfrentaba a varias problemáticas:</p>
+<ul>
+<li>Los nombres de las categorías eran muy largos, lo cual complicaba los labels del gráfico</li>
+<li>Los valores numéricos eran ordenes de magnitud diferentes, teniendo en los 10 primeros millones y miles, lo cual hacía que las barras fueran confusas</li>
+<li>Me parecía demasiado overhead un gráfico para mostrar esos valores</li>
+<li>Si bien, la diferencia entre los valores era importante, quería hacer énfasis en el valor numérico de cada variable. Quería que el número sea claro.</li>
+</ul>
+<p>¿No sería más simple, mostrar esos valores en una simple tabla?</p>
+<div id="visualizando-valores-en-tablas" class="section level2">
+<h2>Visualizando valores en tablas</h2>
+<p>Buscando opciones de visualización me encontré con la funcion <strong>kable</strong> del paquete knitr, el paquete <a href="https://github.com/haozhu233/kableExtra">kableExtra</a> y el paquete <a href="https://github.com/renkun-ken/formattable">formattable</a> que me permitieron resolver la problemática de una manera súper elegante.</p>
+<p>Voy a replicar aquí la obtención de datos y la visualización</p>
+<div id="obtencion-de-datos" class="section level3">
+<h3>Obtención de Datos</h3>
+<pre class="r"><code>library(readr)
+library(dplyr)
+
+pauta201702 &lt;- read_csv(&quot;http://datos.gob.ar/dataset/122808ec-dcd1-4a9b-aafe-8fa80ac2a2f4/resource/79557a3e-c155-4a48-83f5-bd5bf1973555/download/pauta-oficial-segundo-semestre-2017.csv&quot;)
+pauta201701 &lt;- read_csv(&quot;http://datos.gob.ar/dataset/122808ec-dcd1-4a9b-aafe-8fa80ac2a2f4/resource/6cc9c4b4-fbc4-41dd-8f01-7d1dedbed596/download/pauta-publicitaria-primer-semestre-2017.csv&quot;)
+
+pauta201702$es_canje &lt;- NULL
+pauta &lt;- rbind(pauta201701, pauta201702)
+rm(pauta201702, pauta201701)
+
+pauta &lt;- pauta %&gt;%
+  filter(provincia_medio == &quot;Cordoba&quot;)</code></pre>
+</div>
+<div id="visualizacion-en-tabla" class="section level3">
+<h3>Visualización en Tabla</h3>
+<pre class="r"><code>library(knitr)
+library(kableExtra)
+library(formattable)
+
+# Reemplazo formatter::color_bar con version propia dado que el parametro rtl rompia la visualizacion
+color_bar &lt;- function(color = &quot;lightgray&quot;, fun = &quot;proportion&quot;, ...) {
+  fun &lt;- match.fun(fun)
+  formatter(&quot;span&quot;,
+    style = function(x) style(
+      display = &quot;inline-block&quot;,
+      #direction = &quot;rtl&quot;,
+      &quot;border-radius&quot; = &quot;4px&quot;,
+      &quot;padding-right&quot; = &quot;2px&quot;,
+      &quot;background-color&quot; = csscolor(color),
+      width = percent(fun(as.numeric(x), ...))
+    ))
+}
+
+pauta %&gt;%
+  group_by(campania) %&gt;%
+  summarise(total_con_iva = sum(total_con_iva)) %&gt;%
+  arrange(desc(total_con_iva)) %&gt;%
+  select(&#39;Campaña&#39; = campania,
+         Total = total_con_iva) %&gt;%
+  mutate(Total = currency(Total, &quot;$&quot;, format = &quot;d&quot;),
+         Total = color_bar(&quot;lightgreen&quot;)(Total)) %&gt;%
+  head(10) %&gt;%
+  kable(&quot;html&quot;, escape = FALSE) %&gt;%
+  kable_styling(&quot;hover&quot;, full_width = FALSE) %&gt;%
+  add_header_above(
+    c(&quot;Pauta Oficial Nacional en medios de Córdoba (2017) - Top 10&quot; = 2)
+    )</code></pre>
+<table class="table table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+Pauta Oficial Nacional en medios de Córdoba (2017) - Top 10
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+Campaña
+</th>
+<th style="text-align:left;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Presidencia de la Nacion - Haciendo Lo Que Hay Que Hacer
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 100.00%">$38,877,271</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Registro Nacional de Chicos Extraviados 2017
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 26.62%">$10,347,808</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Campaña Verano 2017- Ministerio de Turismo
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 25.54%">$9,929,693</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Campaña de Difusión de Ahorro y Eficiencia Energética - Min. de Energia y Mineria
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 21.64%">$8,412,694</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Presidencia de la Nacion - Difusion
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 13.21%">$5,137,385</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Niños Extraviados 2017 - Ministerio de Justicia
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 12.52%">$4,866,707</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Banco de la Nacion - Creditos Hipotecarios
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 11.95%">$4,647,010</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afip - Sinceramiento Fiscal
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 11.30%">$4,394,272</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Campaña Dengue 2016/2017 -Ministerio de Salud
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 9.99%">$3,884,393</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Presidencia de la Nacion - Obras en Ejecucion - Haciendo Lo Que Hay Que Hacer
+</td>
+<td style="text-align:left;">
+<span style="display: inline-block; border-radius: 4px; padding-right: 2px; background-color: lightgreen; width: 9.27%">$3,604,456</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="conclusiones" class="section level2">
+<h2>Conclusiones</h2>
+<p>Algunos de los beneficios de la Tabla Obtenida:</p>
+<ul>
+<li>Los paquetes son compatibles con el pipe de R y tidyverse</li>
+<li>Me permite visualizar correctamente los nombres de las Campañas</li>
+<li>Los valores de cada campaña son claramente legibles</li>
+<li>la función color_bar() me permite sutilmente dar a cuenta de un vistazo de la desproporción entre el valor de las variables</li>
+</ul>
+<p>Dejo un link con la documentación de todo lo que es posible hacer con <a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html">kableExtra</a> y de las ventajas de usar formattable.</p>
+</div>
+<div id="nota-sobre-la-funcion-color_bar" class="section level2">
+<h2>Nota sobre la función color_bar</h2>
+<p>formattable tiene un bug cuando los valores a mostrar son muy diferentes entre si (cuando la diferencia es exponencial). Para resolverlo sobreescribi la función original del paquete <a href="https://github.com/renkun-ken/formattable/issues/106">comentando el atributo direction</a>.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "pdelboca" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-50868918-2', 'auto');
+ga('send', 'pageview');
+</script>
+
+  
+  <hr/>
+  <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
+  
+  </footer>
+  </body>
+</html>
+

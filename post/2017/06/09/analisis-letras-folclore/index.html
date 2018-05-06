@@ -70,18 +70,18 @@ dat &lt;- dat %&gt;% filter(!grepl(&quot;Letra y Música:&quot;,letra))</code></
   select(artista, nombre_cancion) %&gt;%
   head(10)</code></pre>
 <pre><code>## # A tibble: 10 x 2
-##                      artista                nombre_cancion
-##                        &lt;chr&gt;                         &lt;chr&gt;
-##  1       Antonio Tarrago Ros                  Mi chacarera
-##  2                 Los Tekis        Siempre he de adorarte
-##  3             Jorge Cafrune                  Hombre con H
-##  4  Cuti y Roberto Carabajal                Alma challuera
-##  5           Luciano Pereyra Memorias de una vieja cancion
-##  6             Jorge Cafrune                   La alabanza
-##  7             Tamara Castro                      La vieja
-##  8 Los Manseros Santiagueños              Entra a mi hogar
-##  9                 Los Tekis                Coplas sueltas
-## 10             Jorge Cafrune         Milonga del solitario</code></pre>
+##    artista            nombre_cancion                         
+##    &lt;chr&gt;              &lt;chr&gt;                                  
+##  1 Soledad Pastorutti La villerita                           
+##  2 Raly Barrionuevo   Cuarto menguante                       
+##  3 Guitarreros        Estoy de vuelta                        
+##  4 Los Tucu Tucu      La tucumanita                          
+##  5 Raly Barrionuevo   Tata Nachi                             
+##  6 Ana Robles         Lluvia                                 
+##  7 Abel Pintos        Chacarera de un triste                 
+##  8 Abel Pintos        Incomparable                           
+##  9 Mercedes Sosa      La celedonia batista                   
+## 10 Peteco Carabajal   Transmisión Huaucke, soy santiagueño...</code></pre>
 </div>
 <div id="pre-analisis" class="section level3">
 <h3>Pre-Análisis</h3>
@@ -93,18 +93,18 @@ dat &lt;- dat %&gt;% filter(!grepl(&quot;Letra y Música:&quot;,letra))</code></
   arrange(desc(canciones)) %&gt;%
   head(10)</code></pre>
 <pre><code>## # A tibble: 10 x 2
-##                artista canciones
-##                  &lt;chr&gt;     &lt;int&gt;
-##  1       Jorge Cafrune       283
+##    artista             canciones
+##    &lt;chr&gt;                   &lt;int&gt;
+##  1 Jorge Cafrune             283
 ##  2 Chaqueño Palavecino       252
-##  3     Horacio Guarany       199
-##  4       Mercedes Sosa       182
-##  5  Soledad Pastorutti       172
+##  3 Horacio Guarany           199
+##  4 Mercedes Sosa             182
+##  5 Soledad Pastorutti        172
 ##  6 Antonio Tarrago Ros       162
-##  7    Peteco Carabajal       147
-##  8        Los Nocheros       124
-##  9         Abel Pintos       123
-## 10           Los Tekis       111</code></pre>
+##  7 Peteco Carabajal          147
+##  8 Los Nocheros              124
+##  9 Abel Pintos               123
+## 10 Los Tekis                 111</code></pre>
 </div>
 <div id="cual-es-la-cancion-mas-repetida-en-el-conjunto-de-datos" class="section level4">
 <h4>¿Cuál es la canción más repetida en el conjunto de datos?</h4>
@@ -114,18 +114,18 @@ dat &lt;- dat %&gt;% filter(!grepl(&quot;Letra y Música:&quot;,letra))</code></
   arrange(desc(cantidad)) %&gt;%
   head(10)</code></pre>
 <pre><code>## # A tibble: 10 x 2
-##                 nombre_cancion cantidad
-##                          &lt;chr&gt;    &lt;int&gt;
-##  1                   Añoranzas        7
-##  2      Chacarera de un triste        7
-##  3                   De Simoca        7
+##    nombre_cancion              cantidad
+##    &lt;chr&gt;                          &lt;int&gt;
+##  1 Añoranzas                          7
+##  2 Chacarera de un triste             7
+##  3 De Simoca                          7
 ##  4 Entre a mi pago sin golpear        7
-##  5       Canción del jangadero        6
-##  6                  Guitarrero        6
-##  7                Kilometro 11        6
-##  8                    Amargura        5
-##  9                  Balderrama        5
-## 10                Chakay manta        5</code></pre>
+##  5 Canción del jangadero              6
+##  6 Guitarrero                         6
+##  7 Kilometro 11                       6
+##  8 Amargura                           5
+##  9 Balderrama                         5
+## 10 Chakay manta                       5</code></pre>
 </div>
 </div>
 <div id="que-palabra-es-mas-cantada-en-el-folclore-argentino" class="section level3">
