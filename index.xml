@@ -103,12 +103,21 @@ Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3
     </item>
     
     <item>
-      <title>About Hugo XMin</title>
+      <title>About Patricio Del Boca</title>
       <link>/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>XMin is the first Hugo theme I have designed. The original reason that I wrote it was I needed a minimal example of Hugo themes when I was writing the blogdown book. Basically I wanted a simple theme that supports a navigation menu, a home page, other single pages, lists of pages, blog posts, categories, tags, and RSS. That is all. Nothing fancy. In terms of CSS and JavaScript, I really want to keep them minimal.</description>
+      <description>Information System Engineer &amp;amp; Data Enthusiast. MOOCs addict. Blogger at Open Data Cordoba. Minimalist style of life. Individuals and interactions over almost everything.
+Social Media  Github
+ Twitter
+ Linkedin
+  MOOCs and Trainigns Most recent trainings and courses I&amp;rsquo;ve made
+ Building Web Applications in R with Shiny Course
+ Cluster Analysis in R
+ Unsupervised Learning in R Course
+ Forecasting Using R
+ Introduction to Time Series Analysis</description>
     </item>
     
   </channel>
