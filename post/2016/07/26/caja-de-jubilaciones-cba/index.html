@@ -40,7 +40,7 @@
 <div id="carga-de-datos" class="section level2">
 <h2>Carga de Datos:</h2>
 <p>Los Datos referidos a Jubilaciones y pensiones fueron obtenidos del <a href="http://www.cajajubilaciones.cba.gov.ar/portal/catalogo_de_datos">Catalogo de Datos de la Caja de Jubilaciones</a>.</p>
-<pre class="r"><code>df &lt;- read.csv(&#39;../../data/caja-de-jubilaciones-cba/Beneficiarios_201606.csv&#39;, sep=&quot;;&quot;,
+<pre class="r"><code>df &lt;- read.csv(&#39;../../static/data/caja-de-jubilaciones-cba/Beneficiarios_201606.csv&#39;, sep=&quot;;&quot;,
                  fileEncoding = &#39;iso-8859-1&#39;, row.names = NULL)
 
 names(df)[3] &lt;- &quot;Sector&quot;
@@ -207,7 +207,7 @@ ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
 
 
   <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -229,14 +229,17 @@ ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
 
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-50868918-2', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-50868918-2', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
   

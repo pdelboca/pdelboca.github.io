@@ -33,6 +33,55 @@ function cv_handleHover(item, dimension, evt) {
 
 }
 
+function updateCanvasMask(maskCanvas) {
+    var ctx = maskCanvas.getContext('2d');
+    var imageData = ctx.getImageData(
+        0, 0, maskCanvas.width, maskCanvas.height);
+    var newImageData = ctx.createImageData(imageData);
+
+    var toneSum = 0;
+    var toneCnt = 0;
+    for (var i = 0; i < imageData.data.length; i += 4) {
+        var alpha = imageData.data[i + 3];
+        if (alpha > 128) {
+            var tone = imageData.data[i]
+                + imageData.data[i + 1]
+                + imageData.data[i + 2];
+            toneSum += tone;
+            ++toneCnt;
+        }
+    }
+    var threshold = toneSum / toneCnt;
+
+    for (var i = 0; i < imageData.data.length; i += 4) {
+        var tone = imageData.data[i]
+            + imageData.data[i + 1]
+            + imageData.data[i + 2];
+        var alpha = imageData.data[i + 3];
+
+        if (alpha < 128 || tone > threshold) {
+            // Area not to draw
+            newImageData.data[i] = 0;
+            newImageData.data[i + 1] = 0;
+            newImageData.data[i + 2] = 0;
+            newImageData.data[i + 3] = 0;
+        }
+        else {
+            // Area to draw
+            // The color must be same with backgroundColor
+            newImageData.data[i] = 255;
+            newImageData.data[i + 1] = 255;
+            newImageData.data[i + 2] = 255;
+            newImageData.data[i + 3] = 255;
+        }
+    }
+
+    ctx.putImageData(newImageData, 0, 0);
+    console.log(maskCanvas.toDataURL());
+}
+
+
+
 //mask function
 function maskInit(el,x){
   console.log(1)
@@ -47,76 +96,16 @@ function maskInit(el,x){
   newImg.height = el.clientHeight;
   // maskCanvas = init(el, x, newImg);
   vvalue = 128
-  var maskCanvas = document.createElement('canvas');
-  maskCanvas.width = newImg.width;
-  maskCanvas.height = newImg.height;
-  var ctx = maskCanvas.getContext('2d');
-  ctx.drawImage(newImg, 0, 0, newImg.width, newImg.height);
-  var imageData = ctx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
-  var newImageData = ctx.createImageData(imageData);
-  // M = 0
-  console.log(imageData.data.length);
-  for (var i = 0; i < imageData.data.length; i += 4) {
-    var tone = imageData.data[i] +
-      imageData.data[i + 1] +
-      imageData.data[i + 2];
-    var alpha = imageData.data[i + 3];
-
-    if (alpha < vvalue || tone > vvalue * 3) {
-      // Area not to draw
-      newImageData.data[i] =
-        newImageData.data[i + 1] =
-        newImageData.data[i + 2] = 255;
-      newImageData.data[i + 3] = 0;
-    } else {
-      // Area to draw
-      newImageData.data[i] =
-        newImageData.data[i + 1] =
-        newImageData.data[i + 2] = 0;
-      newImageData.data[i + 3] = 255;
-    }
-
-  }
-
-  ctx.putImageData(newImageData, 0, 0);
-//mask(el, x, maskCanvas);
-  var bctx = document.createElement('canvas').getContext('2d');
-  bctx.fillStyle = x.backgroundColor || '#fff';
-  bctx.fillRect(0, 0, 1, 1);
-  var bgPixel = bctx.getImageData(0, 0, 1, 1).data;
-  console.log(bgPixel);
-  var maskCanvasScaled = document.createElement('canvas');
-  maskCanvasScaled.width = el.clientWidth;
-  maskCanvasScaled.height = el.clientHeight;
-  ctx = maskCanvasScaled.getContext('2d');
-  console.log(maskCanvasScaled);
-  ctx.drawImage(maskCanvas,
-    0, 0, maskCanvas.width, maskCanvas.height);
-
-  imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-  newImageData = ctx.createImageData(imageData);
-  for (var j = 0; j < imageData.data.length; j += 4) {
-    if (imageData.data[j + 3] > vvalue) {
-      newImageData.data[j] = bgPixel[0];
-      newImageData.data[j + 1] = bgPixel[1];
-      newImageData.data[j + 2] = bgPixel[2];
-      newImageData.data[j + 3] = bgPixel[3];
-    } else {
-      // This color must not be the same w/ the bgPixel.
-      newImageData.data[j] = bgPixel[0];
-      newImageData.data[j + 1] = bgPixel[1];
-      newImageData.data[j + 2] = bgPixel[2];
-      newImageData.data[j + 3] = bgPixel[3] ? (bgPixel[3] - 1) : 0;
-    }
-  }
-
-  ctx.putImageData(newImageData, 0, 0);
 
   ctx = el.firstChild.getContext('2d');
-  ctx.drawImage(maskCanvasScaled, 0, 0);
 
-  maskCanvasScaled = ctx = imageData = newImageData = bctx = bgPixel = undefined;
+                ctx.drawImage(newImg, 0, 0, canvas.width, canvas.height);
+                updateCanvasMask(ctx);
+
+
+
+
+
             WordCloud(el.firstChild, { list: listData,
                   fontFamily: x.fontFamily,
                   fontWeight: x.fontWeight,
@@ -132,6 +121,7 @@ function maskInit(el,x){
                   rotateRatio: x.rotateRatio,
                   ellipticity: x.ellipticity,
                   clearCanvas: false,
+                  drawMask: true,
                   hover: x.hover || cv_handleHover,
                   abortThreshold: 3000
                   });

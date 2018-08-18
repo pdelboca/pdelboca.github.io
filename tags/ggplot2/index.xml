@@ -50,7 +50,7 @@ Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la 
       
       <guid>/post/2016/08/03/inflacion-vs-paritarias/</guid>
       <description>Chusmeando un poco en la página de Estadísticas de la Provincia de Córdoba me encontré con los datos de la Inflación de Córdoba desde el año ’68 en adelante. Por lo que me propuse jugar un poco con estos datos.
-Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspxdf &amp;lt;- read.csv(&amp;#39;../../data/inflacion-vs-paritarias/ipc_cordoba_acumulado.csv&amp;#39;, stringsAsFactors = FALSE)df$variacion &amp;lt;- gsub(&amp;#39;,&amp;#39;,&amp;#39;.&amp;#39;,df$variacion)df$variacion &amp;lt;- as.numeric(df$variacion) * 100df$variacion &amp;lt;- round(df$variacion, 2)df$mes &amp;lt;- ymd(df$mes)df$metrica &amp;lt;- &amp;quot;Inflación&amp;quot;La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año ’68 la Inflación?</description>
+Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspxdf &amp;lt;- read.csv(&amp;#39;../../static/data/inflacion-vs-paritarias/ipc_cordoba_acumulado.csv&amp;#39;, stringsAsFactors = FALSE)df$variacion &amp;lt;- gsub(&amp;#39;,&amp;#39;,&amp;#39;.&amp;#39;,df$variacion)df$variacion &amp;lt;- as.numeric(df$variacion) * 100df$variacion &amp;lt;- round(df$variacion, 2)df$mes &amp;lt;- ymd(df$mes)df$metrica &amp;lt;- &amp;quot;Inflación&amp;quot;La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año ’68 la Inflación?</description>
     </item>
     
     <item>

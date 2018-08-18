@@ -47,12 +47,12 @@
 </div>
 <div id="limpieza-de-datos" class="section level2">
 <h2>Limpieza de Datos</h2>
-<pre class="r"><code>dfPrecio &lt;- read.csv(&#39;../../data/recaudacion-peajes-cordoba/precio_peajes.csv&#39;,
+<pre class="r"><code>dfPrecio &lt;- read.csv(&#39;../../static/data/recaudacion-peajes-cordoba/precio_peajes.csv&#39;,
                      dec=&quot;,&quot;, stringsAsFactors = FALSE)
 dfPrecio$Ruta &lt;- tolower(dfPrecio$Ruta)
 colnames(dfPrecio) &lt;- c(&quot;ruta&quot;, &quot;2013&quot;, &quot;2014&quot;, &quot;2015&quot;, &quot;2016&quot;)
 
-dfPeajes &lt;- read.csv(&#39;../../data/recaudacion-peajes-cordoba/transito_peajes.csv&#39;,
+dfPeajes &lt;- read.csv(&#39;../../static/data/recaudacion-peajes-cordoba/transito_peajes.csv&#39;,
                      dec=&quot;,&quot;)
 colnames(dfPeajes) &lt;- c(&quot;fecha&quot;, &quot;total&quot;, &quot;ruta 20&quot;, &quot;ruta 5&quot;, &quot;ruta 36 bower&quot;,
                         &quot;ruta 9 sur&quot;, &quot;autopista cba-pilar&quot;, &quot;ruta 19&quot;, &quot;ruta 9 norte&quot;,
@@ -208,7 +208,7 @@ ggplot(df[df$ruta==&quot;ruta 5&quot;, ], aes(x=fecha)) +
 
 
   <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -230,14 +230,17 @@ ggplot(df[df$ruta==&quot;ruta 5&quot;, ], aes(x=fecha)) +
 
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-50868918-2', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-50868918-2', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
   

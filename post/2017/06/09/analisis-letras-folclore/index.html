@@ -54,7 +54,7 @@ library(wordcloud)
 library(RColorBrewer)
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
-dat &lt;- readr::read_csv(&quot;../../data/analisis-letras-folclore/datosCanciones.csv&quot;)
+dat &lt;- readr::read_csv(&quot;../../static/data/analisis-letras-folclore/datosCanciones.csv&quot;)
 
 # Un poco de Limpieza Extra: Hay 7 Canciones que tienen 2 canciones adentro
 # http://www.mifolkloreargentino.com.ar/letras-de-canciones-de-la-yunta/al-jardin-de-la-republica
@@ -70,18 +70,18 @@ dat &lt;- dat %&gt;% filter(!grepl(&quot;Letra y Música:&quot;,letra))</code></
   select(artista, nombre_cancion) %&gt;%
   head(10)</code></pre>
 <pre><code>## # A tibble: 10 x 2
-##    artista            nombre_cancion                         
-##    &lt;chr&gt;              &lt;chr&gt;                                  
-##  1 Soledad Pastorutti La villerita                           
-##  2 Raly Barrionuevo   Cuarto menguante                       
-##  3 Guitarreros        Estoy de vuelta                        
-##  4 Los Tucu Tucu      La tucumanita                          
-##  5 Raly Barrionuevo   Tata Nachi                             
-##  6 Ana Robles         Lluvia                                 
-##  7 Abel Pintos        Chacarera de un triste                 
-##  8 Abel Pintos        Incomparable                           
-##  9 Mercedes Sosa      La celedonia batista                   
-## 10 Peteco Carabajal   Transmisión Huaucke, soy santiagueño...</code></pre>
+##    artista                  nombre_cancion              
+##    &lt;chr&gt;                    &lt;chr&gt;                       
+##  1 Atahualpa Yupanqui       Zambita de alto verde       
+##  2 Jorge Cafrune            La familia de Juanito Laguna
+##  3 Luciano Pereyra          Parecido a mí               
+##  4 Chaqueño Palavecino      Mataco Diaz                 
+##  5 Cuti y Roberto Carabajal Cambalache                  
+##  6 Antonio Tormo            Cuando no me quieras        
+##  7 Mercedes Sosa            Venas abiertas              
+##  8 Jorge Cafrune            Zamba de un cantor          
+##  9 Jorge Cafrune            Albahaca sin carnaval       
+## 10 Tamara Castro            Coplitas de pie quebrado</code></pre>
 </div>
 <div id="pre-analisis" class="section level3">
 <h3>Pre-Análisis</h3>
@@ -159,8 +159,6 @@ ggplot(top, aes(x=reorder(palabra, n), y = n)) +
   head(50)
 
 wordcloud2::wordcloud2(wordsCloud, minRotation = -pi/6, maxRotation = pi/6)</code></pre>
-<pre><code>## Warning in if (class(data) == &quot;table&quot;) {: la condición tiene longitud &gt; 1 y
-## sólo el primer elemento será usado</code></pre>
 <div id="htmlwidget-1" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"word":["amor","corazón","vida","quiero","alma","noche","luna","cielo","tierra","ojos","canto","luz","voz","viento","flor","río","camino","canción","dolor","sueño","cantar","guitarra","zamba","volver","vino","soledad","piel","silencio","vuelve","chacarera","dios","canta","pena","mundo","sangre","sueños","boca","mar","vivir","sombra","manos","recuerdo","triste","adiós","pueblo","dulce","llorar","siento","viejo","olvido"],"freq":[3452,1748,1688,1578,1328,1258,938,922,919,916,895,805,779,739,717,699,663,576,574,572,569,553,520,515,506,505,503,477,461,458,456,454,454,443,440,435,424,422,417,416,409,402,401,389,386,382,379,373,372,371],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":0.052143684820394,"backgroundColor":"white","gridSize":0,"minRotation":-0.523598775598299,"maxRotation":0.523598775598299,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
 </div>
@@ -191,7 +189,7 @@ cancionesAmor</code></pre>
 
 
   <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -213,14 +211,17 @@ cancionesAmor</code></pre>
 
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-50868918-2', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-50868918-2', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
   
