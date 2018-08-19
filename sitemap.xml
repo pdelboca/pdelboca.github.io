@@ -92,6 +92,10 @@
   </url>
   
   <url>
+    <loc>/projects/</loc>
+  </url>
+  
+  <url>
     <loc>/categories/r/</loc>
     <lastmod>2017-12-13T00:00:00+00:00</lastmod>
     <priority>0</priority>

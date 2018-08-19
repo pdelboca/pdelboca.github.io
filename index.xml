@@ -113,11 +113,20 @@ Social Media  Github
  Twitter
  Linkedin
   MOOCs and Trainigns Most recent trainings and courses I&amp;rsquo;ve made
+ Building Dashboards with shinydashboard Course
  Building Web Applications in R with Shiny Course
  Cluster Analysis in R
- Unsupervised Learning in R Course
- Forecasting Using R
- Introduction to Time Series Analysis</description>
+ Unsupervised Learning in R Course</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
+Reservas BCRA Static Dashboard built with flexdashboard to visualize the Central Bank of Argentina reserves over time. Used dygraphs library to plot the timeline and rvest package to scrape the values from the Web.</description>
     </item>
     
   </channel>
