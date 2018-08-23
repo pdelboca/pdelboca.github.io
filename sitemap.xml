@@ -80,6 +80,10 @@
   </url>
   
   <url>
+    <loc>/projects/</loc>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
     <lastmod>2018-05-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -89,10 +93,6 @@
     <loc>/categories/powershell/</loc>
     <lastmod>2017-10-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/projects/</loc>
   </url>
   
   <url>
