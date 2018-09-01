@@ -113,8 +113,8 @@ Social Media  Github
  Twitter
  Linkedin
   MOOCs and Trainings Most recent trainings and courses I&amp;rsquo;ve made
- Building Dashboards with flexdashboard Course
- Building Dashboards with shinydashboard Course</description>
+ Shiny Fundamentals with R Track
+ Building Web Applications in R with Shiny: Case Studies Course</description>
     </item>
     
     <item>
@@ -124,7 +124,8 @@ Social Media  Github
       
       <guid>/projects/</guid>
       <description>Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
-Reservas BCRA Static Dashboard built with flexdashboard to visualize Argentina&amp;rsquo;s Central Bank reserves over time. Used dygraphs library to plot the timeline and rvest package to scrape the values from the Web. Link</description>
+georefar georefar is a R wrapper for Argentina&amp;rsquo;s Geographical Data Standardization Service API (georef-ar). The package is Open Source and is available to install from it&amp;rsquo;s github page.
+Reservas BCRA Static Dashboard built with flexdashboard to visualize Argentina&amp;rsquo;s Central Bank reserves over time.</description>
     </item>
     
   </channel>
