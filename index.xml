@@ -113,8 +113,8 @@ Social Media  Github
  Twitter
  Linkedin
   MOOCs and Trainings Most recent trainings and courses I&amp;rsquo;ve made
- Shiny Fundamentals with R Track
- Building Web Applications in R with Shiny: Case Studies Course</description>
+ Text Mining: Bag of Words
+ Shiny Fundamentals with R Track</description>
     </item>
     
     <item>
@@ -124,8 +124,8 @@ Social Media  Github
       
       <guid>/projects/</guid>
       <description>Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
-georefar georefar is a R wrapper for Argentina&amp;rsquo;s Geographical Data Standardization Service API (georef-ar). The package is Open Source and is available to install from it&amp;rsquo;s github page.
-Reservas BCRA Static Dashboard built with flexdashboard to visualize Argentina&amp;rsquo;s Central Bank reserves over time.</description>
+Relevamiento Precios Claros We&amp;rsquo;re building a tool to monitor inflation and prices in Argentina. The tool is a scrapper of Precios Claros portal and some Python code to analyze the data. Link
+georefar georefar is a R wrapper for Argentina&amp;rsquo;s Geographical Data Standardization Service API (georef-ar).</description>
     </item>
     
   </channel>
