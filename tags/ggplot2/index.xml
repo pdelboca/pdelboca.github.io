@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ggplot2 on Un Blog de Datos Minimalista</title>
+    <title>ggplot2 on Un Blog de Datos Minimalista</title>
     <link>/tags/ggplot2/</link>
-    <description>Recent content in Ggplot2 on Un Blog de Datos Minimalista</description>
+    <description>Recent content in ggplot2 on Un Blog de Datos Minimalista</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
@@ -40,7 +40,7 @@ library(ggplot2)library(stringr)library(dplyr)library(lubridate)url &amp;lt;
       
       <guid>/post/2016/11/30/transporte-publico-de-cordoba/</guid>
       <description>Esta semana en Twitter se armó una charla acerca de la reciente noticia sobre el aumento del precio del boleto en la ciudad de Córdoba. De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés.
-Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba. Allí encontramos datos sobre el uso del Transporte Urbano de Córdoba.</description>
+Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba.</description>
     </item>
     
     <item>

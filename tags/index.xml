@@ -6,13 +6,12 @@
     <description>Recent content in Tags on Un Blog de Datos Minimalista</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Dataviz</title>
+      <title>dataviz</title>
       <link>/tags/dataviz/</link>
       <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
       
@@ -21,7 +20,7 @@
     </item>
     
     <item>
-      <title>Ggplot2</title>
+      <title>ggplot2</title>
       <link>/tags/ggplot2/</link>
       <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
       
@@ -30,7 +29,7 @@
     </item>
     
     <item>
-      <title>Opendata</title>
+      <title>opendata</title>
       <link>/tags/opendata/</link>
       <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
       
@@ -39,7 +38,7 @@
     </item>
     
     <item>
-      <title>Rvest</title>
+      <title>rvest</title>
       <link>/tags/rvest/</link>
       <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
       
@@ -48,7 +47,7 @@
     </item>
     
     <item>
-      <title>Scripting</title>
+      <title>scripting</title>
       <link>/tags/scripting/</link>
       <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
       
@@ -57,7 +56,7 @@
     </item>
     
     <item>
-      <title>Web scrapping</title>
+      <title>web scrapping</title>
       <link>/tags/web-scrapping/</link>
       <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
       

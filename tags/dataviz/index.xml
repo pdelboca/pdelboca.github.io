@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Dataviz on Un Blog de Datos Minimalista</title>
+    <title>dataviz on Un Blog de Datos Minimalista</title>
     <link>/tags/dataviz/</link>
-    <description>Recent content in Dataviz on Un Blog de Datos Minimalista</description>
+    <description>Recent content in dataviz on Un Blog de Datos Minimalista</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>

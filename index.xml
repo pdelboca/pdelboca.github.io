@@ -70,7 +70,7 @@ Conjunto de Datoslibrary(dplyr)library(tidytext)library(wordcloud)library(RC
       
       <guid>/post/2016/11/30/transporte-publico-de-cordoba/</guid>
       <description>Esta semana en Twitter se armó una charla acerca de la reciente noticia sobre el aumento del precio del boleto en la ciudad de Córdoba. De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés.
-Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba. Allí encontramos datos sobre el uso del Transporte Urbano de Córdoba.</description>
+Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba.</description>
     </item>
     
     <item>
@@ -108,13 +108,14 @@ Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>Information System Engineer &amp;amp; Data Enthusiast. Lead Consultor and Data Scientist at Pi Data Strategy &amp;amp; Conslting. MOOCs addict &amp;amp; R lover. Member and blogger at Open Data Cordoba. Minimalist style of life. Individuals and interactions over almost everything&amp;hellip;
+      <description>Information System Engineer &amp;amp; Data Enthusiast. MOOCs addict. Lead Consultor and Data Scientist at Pi Data Strategy &amp;amp; Conslting. Member and blogger at Open Data Cordoba. Minimalist style of life. Civic Hacking &amp;amp; Open Gov FTW!
 Social Media  Github
  Twitter
  Linkedin
   MOOCs and Trainings Most recent trainings and courses I&amp;rsquo;ve made
- Text Mining: Bag of Words
- Shiny Fundamentals with R Track</description>
+ Python Beyond the Basics
+ Anomaly Detection ir R
+ Manipulating DataFrames with pandas</description>
     </item>
     
     <item>
@@ -123,9 +124,9 @@ Social Media  Github
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/projects/</guid>
-      <description>Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
-Relevamiento Precios Claros We&amp;rsquo;re building a tool to monitor inflation and prices in Argentina. The tool is a scrapper of Precios Claros portal and some Python code to analyze the data. Link
-georefar georefar is a R wrapper for Argentina&amp;rsquo;s Geographical Data Standardization Service API (georef-ar).</description>
+      <description>FuncionariosCBA Project in collaboration with Open Data Cordoba to detect and inform changes in Government Officials and Elected Authorities both for local and state agencies. Link
+Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
+Relevamiento Precios Claros We&amp;rsquo;re building a tool to monitor inflation and prices in Argentina.</description>
     </item>
     
   </channel>
