@@ -1,66 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>ggplot2 on Un Blog de Datos Minimalista</title>
-    <link>/tags/ggplot2/</link>
-    <description>Recent content in ggplot2 on Un Blog de Datos Minimalista</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Tablas vs Grafico de Barras</title>
-      <link>/post/2018/05/06/tablas-vs-grafico-de-barras/</link>
-      <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/05/06/tablas-vs-grafico-de-barras/</guid>
-      <description>Hace poco estuve trabajando en un post para Open Data Córdoba en cual tenía que mostrar diversos valores para diversas categorías. Mi primer instinto fue cargar ggplot2 pero me enfrentaba a varias problemáticas:
-Los nombres de las categorías eran muy largos, lo cual complicaba los labels del gráficoLos valores numéricos eran ordenes de magnitud diferentes, teniendo en los 10 primeros millones y miles, lo cual hacía que las barras fueran confusasMe parecía demasiado overhead un gráfico para mostrar esos valoresSi bien, la diferencia entre los valores era importante, quería hacer énfasis en el valor numérico de cada variable.</description>
-    </item>
-    
-    <item>
-      <title>Emisiones de gases de efecto invernadero</title>
-      <link>/post/2017/10/25/emisiones-de-gases-de-efecto-invernadero/</link>
-      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2017/10/25/emisiones-de-gases-de-efecto-invernadero/</guid>
-      <description>Hoy me encontré con el nuevo portal de datos abiertos del Ministerio de Ambiente y Desarrollo Sustentable y chusmeando algunos de los datos encontré algo interesante sobre emisión de Gases de Efecto Invernadero (GEI).
-Trivia…. La emisión per-cápita en los últimos 20 años:
-¿Aumentó?¿Disminuyó?¿Se mantuvo constante?Aquí un poco de código para responder la pregunta:
-library(ggplot2)library(stringr)library(dplyr)library(lubridate)url &amp;lt;- &amp;quot;http://datos.ambiente.gob.ar/dataset/09924bea-0458-4777-ab54-e74cbc5d3e8e/resource/f02bced4-8cd2-487e-b4e9-4443a83a2539/download/emisiones-gei-por-habitante.csv&amp;quot;emisiones &amp;lt;- read.csv(url, sep = &amp;quot;;&amp;quot;)colnames(emisiones) &amp;lt;- str_replace(colnames(emisiones),pattern = &amp;quot;\\.</description>
-    </item>
-    
-    <item>
-      <title>Transporte Público de Córdoba</title>
-      <link>/post/2016/11/30/transporte-publico-de-cordoba/</link>
-      <pubDate>Wed, 30 Nov 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/11/30/transporte-publico-de-cordoba/</guid>
-      <description>Esta semana en Twitter se armó una charla acerca de la reciente noticia sobre el aumento del precio del boleto en la ciudad de Córdoba. De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés.
-Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba.</description>
-    </item>
-    
-    <item>
-      <title>Inflacion vs Paritarias</title>
-      <link>/post/2016/08/03/inflacion-vs-paritarias/</link>
-      <pubDate>Wed, 03 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/08/03/inflacion-vs-paritarias/</guid>
-      <description>Chusmeando un poco en la página de Estadísticas de la Provincia de Córdoba me encontré con los datos de la Inflación de Córdoba desde el año ’68 en adelante. Por lo que me propuse jugar un poco con estos datos.
-Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspxdf &amp;lt;- read.csv(&amp;#39;../../static/data/inflacion-vs-paritarias/ipc_cordoba_acumulado.csv&amp;#39;, stringsAsFactors = FALSE)df$variacion &amp;lt;- gsub(&amp;#39;,&amp;#39;,&amp;#39;.&amp;#39;,df$variacion)df$variacion &amp;lt;- as.numeric(df$variacion) * 100df$variacion &amp;lt;- round(df$variacion, 2)df$mes &amp;lt;- ymd(df$mes)df$metrica &amp;lt;- &amp;quot;Inflación&amp;quot;La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año ’68 la Inflación?</description>
-    </item>
-    
-    <item>
-      <title>Caja de Jubilaciones CBA</title>
-      <link>/post/2016/07/26/caja-de-jubilaciones-cba/</link>
-      <pubDate>Tue, 26 Jul 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/07/26/caja-de-jubilaciones-cba/</guid>
-      <description>Siguiendo la iniciativa de Datos Abiertos, la Caja de Jubilaciones pone a disposición las bases de datos de Jubilaciones y Pensiones, Aportantes y Espacio Illia. En la Pagina de Transparencia de la Caja de Jubilaciones ya hay un lindo resumen titulado “La Caja en Números” con información de interés para la comunidad. En un acto de pura curiosidad, desde Open Data Cordoba, le dedicamos un poco más de tiempo a chusmear que hay en estos datos para responder algunas preguntas que en dicho resumen no se contestan.</description>
-    </item>
-    
-  </channel>
-</rss>

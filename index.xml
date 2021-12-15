@@ -1,133 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Home on Un Blog de Datos Minimalista</title>
-    <link>/</link>
-    <description>Recent content in Home on Un Blog de Datos Minimalista</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Tablas vs Grafico de Barras</title>
-      <link>/post/2018/05/06/tablas-vs-grafico-de-barras/</link>
-      <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/05/06/tablas-vs-grafico-de-barras/</guid>
-      <description>Hace poco estuve trabajando en un post para Open Data Córdoba en cual tenía que mostrar diversos valores para diversas categorías. Mi primer instinto fue cargar ggplot2 pero me enfrentaba a varias problemáticas:
-Los nombres de las categorías eran muy largos, lo cual complicaba los labels del gráficoLos valores numéricos eran ordenes de magnitud diferentes, teniendo en los 10 primeros millones y miles, lo cual hacía que las barras fueran confusasMe parecía demasiado overhead un gráfico para mostrar esos valoresSi bien, la diferencia entre los valores era importante, quería hacer énfasis en el valor numérico de cada variable.</description>
-    </item>
-    
-    <item>
-      <title>Web Scrapping y Analisis de Texto</title>
-      <link>/post/2017/12/13/web-scrapping-y-analisis-de-texto/</link>
-      <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2017/12/13/web-scrapping-y-analisis-de-texto/</guid>
-      <description>El siguiente post nace de la necesidad de explicar un poco el procedimineto y las herramientas que usé para obtener los datos para los artículos donde analizo las letras de Folclore y Cuarteto:
-Letras del Folklore Argentino: ¿A qué le cantan?¿A qué le canta y quién escribe el cuarteto cordobés?Idea PrincipalLa idea principal surge de la curiosidad de entender o al menos chusmear a qué le cantaba el Folclore Argentino, luego gracias a una periodista interesada hice lo mismo pero para el Cuarteto Cordobés.</description>
-    </item>
-    
-    <item>
-      <title>Emisiones de gases de efecto invernadero</title>
-      <link>/post/2017/10/25/emisiones-de-gases-de-efecto-invernadero/</link>
-      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2017/10/25/emisiones-de-gases-de-efecto-invernadero/</guid>
-      <description>Hoy me encontré con el nuevo portal de datos abiertos del Ministerio de Ambiente y Desarrollo Sustentable y chusmeando algunos de los datos encontré algo interesante sobre emisión de Gases de Efecto Invernadero (GEI).
-Trivia…. La emisión per-cápita en los últimos 20 años:
-¿Aumentó?¿Disminuyó?¿Se mantuvo constante?Aquí un poco de código para responder la pregunta:
-library(ggplot2)library(stringr)library(dplyr)library(lubridate)url &amp;lt;- &amp;quot;http://datos.ambiente.gob.ar/dataset/09924bea-0458-4777-ab54-e74cbc5d3e8e/resource/f02bced4-8cd2-487e-b4e9-4443a83a2539/download/emisiones-gei-por-habitante.csv&amp;quot;emisiones &amp;lt;- read.csv(url, sep = &amp;quot;;&amp;quot;)colnames(emisiones) &amp;lt;- str_replace(colnames(emisiones),pattern = &amp;quot;\\.</description>
-    </item>
-    
-    <item>
-      <title>Contando Procesos con PowerShell</title>
-      <link>/post/2017/10/10/testing/</link>
-      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2017/10/10/testing/</guid>
-      <description>El otro dia tuve que montar un cluster de Microsoft R Server (recientemente renombrado Machine Learning Server). En un momento dado tuve que realizar unas pruebas de performance y para ello necesitaba aumentar el número de Shell Pools que proveen los servicios para la ejecución de código remoto.
-Dado que el proceso de creación puede ser un poco lento y la cantidad de Pools grande tenía ganas de ir monitoreando en la inea de comandos la cantidad de procesos creados.</description>
-    </item>
-    
-    <item>
-      <title>Analisis Letras Folclore</title>
-      <link>/post/2017/06/09/analisis-letras-folclore/</link>
-      <pubDate>Fri, 09 Jun 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2017/06/09/analisis-letras-folclore/</guid>
-      <description>Letras del Folklore Argentino: ¿A qué le cantan?El siguiente es un análisis exploratorio para resolver una curiosidad: ¿A qué le canta el folclore Argentino?. El Objetivo es, inicialmente, extraer las palabras y frases más utilizadas. Luego trataremos de ampliar el análisis tratando de agrupar las canciones en distintas categorías, descubrir temáticas en común, agrupar autores por estilo, etc.
-Conjunto de Datoslibrary(dplyr)library(tidytext)library(wordcloud)library(RColorBrewer)library(ggplot2)knitr::opts_chunk$set(echo = TRUE)dat &amp;lt;- readr::read_csv(&amp;quot;.</description>
-    </item>
-    
-    <item>
-      <title>Transporte Público de Córdoba</title>
-      <link>/post/2016/11/30/transporte-publico-de-cordoba/</link>
-      <pubDate>Wed, 30 Nov 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/11/30/transporte-publico-de-cordoba/</guid>
-      <description>Esta semana en Twitter se armó una charla acerca de la reciente noticia sobre el aumento del precio del boleto en la ciudad de Córdoba. De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés.
-Pusimos manos a la obra y empezamos revisando el Portal de Datos Abiertos de la Ciudad de Córdoba.</description>
-    </item>
-    
-    <item>
-      <title>Recaudación Peajes Cordoba</title>
-      <link>/post/2016/08/19/recaudacion-peajes-cordoba/</link>
-      <pubDate>Fri, 19 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/08/19/recaudacion-peajes-cordoba/</guid>
-      <description>En base a la información de la cantidad de automóviles que atraviesan cada peaje por mes, se me ocurrió hacer una estimación de la cantidad de pesos que ingresa en cada peaje. Influenciado por conocer si la Autovía Alta Gracia - Córdoba había recuperado el costo de inversión.
-Debido a que los datos no discriminan entre Categoría de Vehículo, la estimación de ingresos se realizará con el Precio de la Categoría 2 (Autos).</description>
-    </item>
-    
-    <item>
-      <title>Inflacion vs Paritarias</title>
-      <link>/post/2016/08/03/inflacion-vs-paritarias/</link>
-      <pubDate>Wed, 03 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/08/03/inflacion-vs-paritarias/</guid>
-      <description>Chusmeando un poco en la página de Estadísticas de la Provincia de Córdoba me encontré con los datos de la Inflación de Córdoba desde el año ’68 en adelante. Por lo que me propuse jugar un poco con estos datos.
-Datos IPC Córdoba# http://estadistica.cba.gov.ar/Publicaciones/InformesEcon%C3%B3micos/tabid/896/language/es-AR/Default.aspxdf &amp;lt;- read.csv(&amp;#39;../../static/data/inflacion-vs-paritarias/ipc_cordoba_acumulado.csv&amp;#39;, stringsAsFactors = FALSE)df$variacion &amp;lt;- gsub(&amp;#39;,&amp;#39;,&amp;#39;.&amp;#39;,df$variacion)df$variacion &amp;lt;- as.numeric(df$variacion) * 100df$variacion &amp;lt;- round(df$variacion, 2)df$mes &amp;lt;- ymd(df$mes)df$metrica &amp;lt;- &amp;quot;Inflación&amp;quot;La primer pregunta fue de simple curiosidad: ¿cómo evolucionó desde el año ’68 la Inflación?</description>
-    </item>
-    
-    <item>
-      <title>Caja de Jubilaciones CBA</title>
-      <link>/post/2016/07/26/caja-de-jubilaciones-cba/</link>
-      <pubDate>Tue, 26 Jul 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2016/07/26/caja-de-jubilaciones-cba/</guid>
-      <description>Siguiendo la iniciativa de Datos Abiertos, la Caja de Jubilaciones pone a disposición las bases de datos de Jubilaciones y Pensiones, Aportantes y Espacio Illia. En la Pagina de Transparencia de la Caja de Jubilaciones ya hay un lindo resumen titulado “La Caja en Números” con información de interés para la comunidad. En un acto de pura curiosidad, desde Open Data Cordoba, le dedicamos un poco más de tiempo a chusmear que hay en estos datos para responder algunas preguntas que en dicho resumen no se contestan.</description>
-    </item>
-    
-    <item>
-      <title>About Patricio Del Boca</title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>Information System Engineer &amp;amp; Data Enthusiast. MOOCs addict. Lead Consultor and Data Scientist at Pi Data Strategy &amp;amp; Conslting. Member and blogger at Open Data Cordoba. Minimalist style of life. Civic Hacking &amp;amp; Open Gov FTW!
-Social Media  Github
- Twitter
- Linkedin
-  MOOCs and Trainings Most recent trainings and courses I&amp;rsquo;ve made
- Python Beyond the Basics
- Anomaly Detection ir R
- Manipulating DataFrames with pandas</description>
-    </item>
-    
-    <item>
-      <title>Personal Projects</title>
-      <link>/projects/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/projects/</guid>
-      <description>FuncionariosCBA Project in collaboration with Open Data Cordoba to detect and inform changes in Government Officials and Elected Authorities both for local and state agencies. Link
-Open Data Cordoba&amp;rsquo;s Blog Open Data Córdoba is a non-profit organization created to promote Open Data and Open Government standards. We also participate in Hackatons, events and develop Open Source applications to encourage Civic Hacking. Link
-Relevamiento Precios Claros We&amp;rsquo;re building a tool to monitor inflation and prices in Argentina.</description>
-    </item>
-    
-  </channel>
-</rss>
