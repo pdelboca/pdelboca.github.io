@@ -1,0 +1,15 @@
+body {
+    max-width: 800px;
+    margin: auto;
+    font-family: Georgia, serif;
+}
+
+.page-title {
+    text-align: center;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+}
