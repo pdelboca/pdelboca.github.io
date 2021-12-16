@@ -3,6 +3,7 @@ body {
     margin: auto;
     font-family: Georgia, serif;
     padding: 1em;
+    line-height: 1.25em;
 }
 
 .page-title {
@@ -15,4 +16,13 @@ body {
 footer {
     text-align: center;
     margin-bottom: 8px;
+}
+
+nav {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+nav a {
+    padding: 0.25em;
 }
