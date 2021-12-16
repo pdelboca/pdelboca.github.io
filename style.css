@@ -2,6 +2,7 @@ body {
     max-width: 800px;
     margin: auto;
     font-family: Georgia, serif;
+    padding: 1em;
 }
 
 .page-title {
