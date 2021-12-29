@@ -34,4 +34,7 @@
         <a href="https://twitter.com/pdelboca">Twitter</a>  |  <a href="https://www.github.com/pdelboca">Github</a>  |  <a href="https://www.linkedin.com/in/patriciodelboca/">LinkedIn</a>
     </footer>
 </body>
+<script>
+    fetch('https://simpleanalytics.herokuapp.com/collect?page=' + window.location.href, { method: 'POST' });
+</script>
 </html>
