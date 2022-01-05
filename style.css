@@ -41,7 +41,7 @@ nav a {
 
 .about {
     height: 75vh;
-    flex: 1 1 auto;
+    flex: 1 1;
     width: 100%;
 }
 
