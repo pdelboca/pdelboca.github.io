@@ -10,33 +10,11 @@
   </head>
 
   <body>
+  <header>
     <nav>
-    <ul class="menu">
-      
-      <li><a href="/">Home</a></li>
-      
-      <li><a href="/about/">About</a></li>
-      
-      <li><a href="/post/">Posts</a></li>
-      
-      <li><a href="/projects/">Projects</a></li>
-      
-      <li><a href="/categories/">Categories</a></li>
-      
-      <li><a href="/tags/">Tags</a></li>
-      
-      <li><a href="/index.xml">Subscribe</a></li>
-      
-    </ul>
-    <hr/>
+      <a href="/" style="text-decoration: none; color: inherit; line-height: 1.5em; font-size: 1.1rem;">> pdelboca</a>
     </nav>
-
-<div class="article-meta">
-<h1><span class="title">Web Scrapping y Analisis de Texto</span></h1>
-<h2 class="author">Patricio Del Boca</h2>
-<h2 class="date">2017/12/13</h2>
-</div>
-
+  </header>
 <main>
 
 
@@ -91,8 +69,8 @@ urlArtista &lt;- paginaArtistas  %&gt;%
   html_nodes(&quot;.nameartist a&quot;) %&gt;%
   html_attr(&quot;href&quot;)
 
-dataArtistas &lt;- data.frame(nombreArtista = nombreArtista, 
-                          urlArtista = str_c(baseUrl, urlArtista), 
+dataArtistas &lt;- data.frame(nombreArtista = nombreArtista,
+                          urlArtista = str_c(baseUrl, urlArtista),
                           stringsAsFactors = FALSE)</code></pre>
 </div>
 <div id="extraccion-de-url-y-texto-de-canciones" class="section level2">
@@ -129,7 +107,7 @@ getLetraCancion &lt;- function(urlCancion){
 <div id="limpieza-de-datos" class="section level1">
 <h1>Limpieza de datos</h1>
 <p>Vamos a remover Letras no disponibles, finales de linea y palabras entre paréntesis.</p>
-<pre class="r"><code>dataCanciones &lt;- dataCanciones %&gt;% 
+<pre class="r"><code>dataCanciones &lt;- dataCanciones %&gt;%
     filter(letraCancion != &quot;Letra no disponible&quot;) %&gt;%
     mutate(letraCancion = gsub( &quot; *\\(.*?\\) *&quot;, &quot;&quot;, letraCancion),
          letraCancion = gsub( &quot;\n&quot;, &quot; &quot;, letraCancion))</code></pre>
@@ -143,15 +121,15 @@ stopWords &lt;- c(stopWords, customStopWords)</code></pre>
 <p>Ahora, con textos completos y limpios procedemos a sacar las métricas. Para ello recurriremos al paquete tidytext que con un simple metodo unnest_tokens pasa cualquier texto al formato tidy, utilizando como elemento básico la palabra.</p>
 <pre class="r"><code>topN &lt;- 15
 dataCanciones %&gt;%
-    select(nombreArtista, letraCancion) %&gt;% 
-    unnest_tokens(palabra, letraCancion) %&gt;% 
+    select(nombreArtista, letraCancion) %&gt;%
+    unnest_tokens(palabra, letraCancion) %&gt;%
     filter(!(palabra %in% stopWords)) %&gt;%
     group_by(nombreArtista) %&gt;%
     count(palabra) %&gt;%
     arrange(nombreArtista, desc(n)) %&gt;%
-    slice(1:topN) %&gt;% 
-    mutate(ranking = row_number()) %&gt;% 
-    select(nombreArtista, palabra, ranking) %&gt;% 
+    slice(1:topN) %&gt;%
+    mutate(ranking = row_number()) %&gt;%
+    select(nombreArtista, palabra, ranking) %&gt;%
     spread(nombreArtista, palabra)</code></pre>
 </div>
 <div id="conclusion" class="section level1">
@@ -175,9 +153,9 @@ dataCanciones %&gt;%
   <div id="disqus_thread"></div>
 <script type="application/javascript">
     var disqus_config = function () {
-    
-    
-    
+
+
+
     };
     (function() {
         if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
@@ -203,15 +181,15 @@ if (!doNotTrack) {
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 	ga('create', 'UA-50868918-2', 'auto');
-	
+
 	ga('send', 'pageview');
 }
 </script>
 
-  
+
   <hr/>
   <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
-  
+
   </footer>
   </body>
 </html>

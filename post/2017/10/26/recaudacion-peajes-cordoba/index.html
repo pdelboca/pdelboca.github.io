@@ -10,31 +10,11 @@
   </head>
 
   <body>
+  <header>
     <nav>
-    <ul class="menu">
-      
-      <li><a href="/">Home</a></li>
-      
-      <li><a href="/about/">About</a></li>
-      
-      <li><a href="/post/">Posts</a></li>
-      
-      <li><a href="/categories/">Categories</a></li>
-      
-      <li><a href="/tags/">Tags</a></li>
-      
-      <li><a href="/index.xml">Subscribe</a></li>
-      
-    </ul>
-    <hr/>
+      <a href="/" style="text-decoration: none; color: inherit; line-height: 1.5em; font-size: 1.1rem;">> pdelboca</a>
     </nav>
-
-<div class="article-meta">
-<h1><span class="title">Recaudación Peajes Cordoba</span></h1>
-<h2 class="author">Patricio Del Boca</h2>
-<h2 class="date">2017/10/26</h2>
-</div>
-
+  </header>
 <main>
 <p>En base a la información de la cantidad de automóviles que atraviesan cada peaje por mes, se me ocurrió hacer una estimación de la cantidad de pesos que ingresa en cada peaje. Influenciado por conocer si la Autovía Alta Gracia - Córdoba había recuperado el costo de inversión.</p>
 <p>Debido a que los datos no discriminan entre Categoría de Vehículo, la estimación de ingresos se realizará con el Precio de la Categoría 2 (Autos). Además, no se discriminará por las distintas formas de pago (Efectivo, CUIS, Barrera Levantada, etc).</p>
@@ -60,14 +40,14 @@ colnames(dfPeajes) &lt;- c(&quot;fecha&quot;, &quot;total&quot;, &quot;ruta 20&q
 dfPeajes$fecha &lt;- ymd(dfPeajes$fecha)
 
 
-dfPeajes &lt;- dfPeajes %&gt;% 
-  select(-total) %&gt;% 
-  melt(id.vars=&quot;fecha&quot;) %&gt;%  
-  mutate(anio = year(fecha)) %&gt;% 
+dfPeajes &lt;- dfPeajes %&gt;%
+  select(-total) %&gt;%
+  melt(id.vars=&quot;fecha&quot;) %&gt;%
+  mutate(anio = year(fecha)) %&gt;%
   rename(ruta=variable)
 
-dfPrecio &lt;- dfPrecio %&gt;% 
-  melt() %&gt;% 
+dfPrecio &lt;- dfPrecio %&gt;%
+  melt() %&gt;%
   rename(anio=variable)
 
 dfPrecio$anio &lt;- as.numeric(as.character(dfPrecio$anio))
@@ -81,14 +61,14 @@ df$recaudacion &lt;- df$cantidad_autos * df$precio</code></pre>
 <h2>Análisis</h2>
 <div id="total-de-recaudacion-del-periodo-2013---2015" class="section level4">
 <h4>Total de Recaudación del período 2013 - 2015</h4>
-<pre class="r"><code>totalPorPeaje &lt;- df %&gt;% 
-  group_by(ruta) %&gt;% 
+<pre class="r"><code>totalPorPeaje &lt;- df %&gt;%
+  group_by(ruta) %&gt;%
   summarise(total=sum(recaudacion))
 
 total &lt;- sum(totalPorPeaje$total)
 
 ggplot(totalPorPeaje, aes(x=reorder(ruta, -total), y=total)) +
-  geom_bar(stat=&quot;identity&quot;) + 
+  geom_bar(stat=&quot;identity&quot;) +
   labs(title=&quot;Recaudación por Peaje (Red Acceso a Córdoba)&quot;,
        subtitle=&quot;Estimación de la recaudación por peaje, para el período 2013-2015, en base al precio de la Categoría 2.&quot;,
        caption = &quot;Open Data Córdoba - Fuente: gobiernoabierto.cordoba.gob.ar&quot;) +
@@ -153,9 +133,9 @@ ggplot(totalPorPeaje, aes(x=reorder(ruta, -total), y=total)) +
 <div id="peaje-alta-gracia---cordoba" class="section level4">
 <h4>Peaje Alta Gracia - Córdoba</h4>
 <p><a href="http://www.lavoz.com.ar/noticias/politica/con-schiaretti-fue-habilitada-autovia-cordoba-alta-gracia">Según La Voz del Interior</a>, el costo de la Autovía Alta Gracia - Córdoba fue de <strong>153 Millones de pesos</strong>. La misma fue inaugurada a finales del 2012 ¿Habrá cubrido ya los costos de construcción?</p>
-<pre class="r"><code>total &lt;- df %&gt;% 
-  filter(ruta == &quot;ruta 5&quot;) %&gt;%  
-  summarize(total=sum(recaudacion)) %&gt;% 
+<pre class="r"><code>total &lt;- df %&gt;%
+  filter(ruta == &quot;ruta 5&quot;) %&gt;%
+  summarize(total=sum(recaudacion)) %&gt;%
   as.numeric()
 
 fecha=c(&#39;2013-01-01&#39;,&#39;2014-01-01&#39;,&#39;2015-01-01&#39;)
@@ -205,10 +185,10 @@ ggplot(df[df$ruta==&quot;ruta 5&quot;, ], aes(x=fecha)) +
  hljs.configure({languages: []});
  hljs.initHighlightingOnLoad();
 </script>
-  
+
   <hr/>
   <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
-  
+
   </footer>
   </body>
 </html>

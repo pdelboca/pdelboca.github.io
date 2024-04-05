@@ -10,32 +10,11 @@
   </head>
 
   <body>
+  <header>
     <nav>
-    <ul class="menu">
-      
-      <li><a href="/">Home</a></li>
-      
-      <li><a href="/about/">About</a></li>
-      
-      <li><a href="/post/">Posts</a></li>
-      
-      <li><a href="/projects/">Projects</a></li>
-      
-      <li><a href="/categories/">Categories</a></li>
-      
-      <li><a href="/tags/">Tags</a></li>
-      
-      <li><a href="/index.xml">Subscribe</a></li>
-      
-    </ul>
-    <hr/>
+      <a href="/" style="text-decoration: none; color: inherit; line-height: 1.5em; font-size: 1.1rem;">> pdelboca</a>
     </nav>
-
-<div class="article-meta">
-<h1><span class="title">Transporte Público de Córdoba</span></h1>
-<h2 class="author">Patricio Del Boca</h2>
-<h2 class="date">2016/11/30</h2>
-</div>
+  </header>
 
 <main>
 
@@ -43,7 +22,7 @@
 
 <p>Esta semana en <a href="https://twitter.com/dronespleen/status/804065846196928514">Twitter</a> se armó una charla acerca de la reciente noticia sobre el <a href="http://www.cba24n.com.ar/content/el-boleto-de-colectivo-subiria-un-37-por-ciento">aumento del precio del boleto en la ciudad de Córdoba</a>. De la charla surgieron ideas como cruzar datos como inflación, cantidad de pasajeros o kilómetros recorridos para extraer algo extra de información que pueda ser de interés.</p>
 <p>Pusimos manos a la obra y empezamos revisando el <a href="https://gobiernoabierto.cordoba.gob.ar/data/datos-abiertos/categoria/transporte">Portal de Datos Abiertos de la Ciudad de Córdoba</a>. Allí encontramos datos sobre el uso del Transporte Urbano de Córdoba.</p>
-<pre class="r"><code>datos &lt;- read.csv(&quot;../../static/data/transporte-urbano-cordoba/pasajeros_y_kilometros_2012_a_2016.csv&quot;, 
+<pre class="r"><code>datos &lt;- read.csv(&quot;../../static/data/transporte-urbano-cordoba/pasajeros_y_kilometros_2012_a_2016.csv&quot;,
                  dec = &quot;,&quot;,
                  stringsAsFactors = FALSE)
 
@@ -61,7 +40,7 @@ ggplot(datos, aes(x=anio, y=pasajeros.total, fill=TRUE)) +
        subtitle=&quot;Cantidad de pasajeros anuales del Transporte Urbano de Córdoba Capital&quot;,
        caption=&quot;Fuente: Open Data Córdoba con datos de gobiernoabierto.cordoba.gob.ar&quot;) +
   geom_hline(yintercept = pasajeros2015, show.legend = TRUE, linetype=3) +
-  geom_text(aes(x=2003, y=pasajeros2015), 
+  geom_text(aes(x=2003, y=pasajeros2015),
             colour=&quot;steelblue&quot;,
             label=paste(&quot;Pasajeros 2015:&quot;,pasajeros2015),
             vjust=-.5)  + guides(fill=FALSE) +
@@ -81,7 +60,7 @@ datosFinal &lt;- rbind(datos[,c(&quot;anio&quot;, &quot;pasajeros.total&quot;)],
 datosFinal$prediccion &lt;- ifelse(datosFinal$anio &lt; 2016, FALSE, TRUE)
 
 
-ggplot(datosFinal, aes(x=anio,y=pasajeros.total, fill=prediccion)) + 
+ggplot(datosFinal, aes(x=anio,y=pasajeros.total, fill=prediccion)) +
   geom_bar(stat=&quot;identity&quot;) +
   theme_minimal() +
   scale_fill_brewer() +
@@ -120,9 +99,9 @@ ggplot(datosFinal, aes(x=anio,y=pasajeros.total, fill=prediccion)) +
   <div id="disqus_thread"></div>
 <script type="application/javascript">
     var disqus_config = function () {
-    
-    
-    
+
+
+
     };
     (function() {
         if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
@@ -148,15 +127,15 @@ if (!doNotTrack) {
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 	ga('create', 'UA-50868918-2', 'auto');
-	
+
 	ga('send', 'pageview');
 }
 </script>
 
-  
+
   <hr/>
   <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
-  
+
   </footer>
   </body>
 </html>

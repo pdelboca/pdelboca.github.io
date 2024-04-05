@@ -10,33 +10,11 @@
   </head>
 
   <body>
+  <header>
     <nav>
-    <ul class="menu">
-      
-      <li><a href="/">Home</a></li>
-      
-      <li><a href="/about/">About</a></li>
-      
-      <li><a href="/post/">Posts</a></li>
-      
-      <li><a href="/projects/">Projects</a></li>
-      
-      <li><a href="/categories/">Categories</a></li>
-      
-      <li><a href="/tags/">Tags</a></li>
-      
-      <li><a href="/index.xml">Subscribe</a></li>
-      
-    </ul>
-    <hr/>
+      <a href="/" style="text-decoration: none; color: inherit; line-height: 1.5em; font-size: 1.1rem;">> pdelboca</a>
     </nav>
-
-<div class="article-meta">
-<h1><span class="title">Caja de Jubilaciones CBA</span></h1>
-<h2 class="author">Patricio Del Boca</h2>
-<h2 class="date">2016/07/26</h2>
-</div>
-
+  </header>
 <main>
 
 
@@ -58,8 +36,8 @@ df$Remuneracion &lt;- ordered(df$Remuneracion,
 <div id="cantidad-de-jubilados-por-rango-de-remuneracion" class="section level2">
 <h2>Cantidad de Jubilados por Rango de Remuneracion</h2>
 <p>El dataset nos divide la remuneración por rango. ¿Cuántos jubilados hay en cada rango de remuneración?</p>
-<pre class="r"><code>dfRangoCount &lt;- df %&gt;% 
-  group_by(Remuneracion) %&gt;% 
+<pre class="r"><code>dfRangoCount &lt;- df %&gt;%
+  group_by(Remuneracion) %&gt;%
   summarise(cantidad = n())
 
 ggplot(dfRangoCount, aes(x=Remuneracion, y=cantidad)) +
@@ -70,7 +48,7 @@ ggplot(dfRangoCount, aes(x=Remuneracion, y=cantidad)) +
                 y=cantidad,
                 label=cantidad),
             vjust=-0.25) +
-  theme_minimal() + 
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1.1, vjust = 1.8),
         axis.text.y = element_blank(),
         panel.grid.major = element_blank(),
@@ -84,22 +62,22 @@ ggplot(dfRangoCount, aes(x=Remuneracion, y=cantidad)) +
 <div id="jubilaciones-de-privilegio" class="section level2">
 <h2>Jubilaciones de Privilegio</h2>
 <p>Entonces cabe preguntar, ¿Quiénes son los que cobran dichas Jubilaciones? o mejor dicho, ¿Cómo se distribuyen estas jubilaciones en los distintos sectores? ¿Quiénes en Córdoba tienen las jubilaciones más altas?</p>
-<pre class="r"><code>dfPriv &lt;- df %&gt;% 
-  filter(Remuneracion == &quot;Mayor a 32000&quot;) %&gt;% 
-  group_by(Sector) %&gt;% 
-  summarise(cantidad = n()) %&gt;% 
+<pre class="r"><code>dfPriv &lt;- df %&gt;%
+  filter(Remuneracion == &quot;Mayor a 32000&quot;) %&gt;%
+  group_by(Sector) %&gt;%
+  summarise(cantidad = n()) %&gt;%
   arrange(desc(cantidad))
 
-ggplot(dfPriv, aes(x=reorder(Sector, cantidad), y=cantidad)) + 
-  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) + 
-  coord_flip() + 
+ggplot(dfPriv, aes(x=reorder(Sector, cantidad), y=cantidad)) +
+  geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
+  coord_flip() +
   ggtitle(&quot;Quiénes cobran las 12015 jubilaciones más altas? \n (Jubilaciones &gt; $32000 - Prov Córdoba - Junio 2016)&quot;) +
   geom_text(data=dfPriv,
             aes(x=Sector,
                 y=cantidad,
                 label=cantidad),
             hjust=-0.15) +
-  theme_minimal() + xlab(NULL) + ylab(NULL) + 
+  theme_minimal() + xlab(NULL) + ylab(NULL) +
   theme(axis.text.x = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -109,36 +87,36 @@ ggplot(dfPriv, aes(x=reorder(Sector, cantidad), y=cantidad)) +
 <p>Era de conocimiento que Municipalidad, EPEC y Bancarios tienen las mejores jubilaciones en la Provincia. Hoy lo confirmamos gracias a los datos abiertos por la Caja de Jubilaciones de la Provincia.</p>
 <pre class="r"><code>tmp &lt;- df %&gt;% filter(Remuneracion == &quot;Mayor a 32000&quot;)
 total &lt;- nrow(tmp)
-tmp &lt;- tmp %&gt;% filter(Sector %in% c(&quot;EPEC&quot;, &quot;Bancarios&quot;, &quot;Municipalidad de Córdoba&quot;)) 
+tmp &lt;- tmp %&gt;% filter(Sector %in% c(&quot;EPEC&quot;, &quot;Bancarios&quot;, &quot;Municipalidad de Córdoba&quot;))
 ebm &lt;- nrow(tmp)</code></pre>
 <p><strong>EPEC, Bancarios y Municipalidad se llevan el 59.35% de las Jubilaciones de Privilegio.</strong></p>
 </div>
 <div id="remuneraciones" class="section level2">
 <h2>Remuneraciones</h2>
-<pre class="r"><code>remuneracionEPEC &lt;- df %&gt;% 
+<pre class="r"><code>remuneracionEPEC &lt;- df %&gt;%
   filter(Sector == &quot;EPEC&quot;) %&gt;%
-  group_by(Remuneracion) %&gt;% 
-  summarise(cantidad = n()) %&gt;% 
+  group_by(Remuneracion) %&gt;%
+  summarise(cantidad = n()) %&gt;%
   mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
 
-remuneracionMunicipalidad &lt;- df %&gt;% 
+remuneracionMunicipalidad &lt;- df %&gt;%
   filter(Sector == &quot;Municipalidad de Córdoba&quot;) %&gt;%
-  group_by(Remuneracion) %&gt;% 
-  summarise(cantidad = n()) %&gt;% 
+  group_by(Remuneracion) %&gt;%
+  summarise(cantidad = n()) %&gt;%
   mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
 
-remuneracionBancarios &lt;- df %&gt;% 
+remuneracionBancarios &lt;- df %&gt;%
   filter(Sector == &quot;Bancarios&quot;) %&gt;%
-  group_by(Remuneracion) %&gt;% 
-  summarise(cantidad = n()) %&gt;% 
+  group_by(Remuneracion) %&gt;%
+  summarise(cantidad = n()) %&gt;%
   mutate(porcentaje = paste0(round(cantidad / sum(cantidad) * 100,2),&quot;%&quot;))
 
 tmp &lt;- df %&gt;% filter(Sector %in% c(&quot;EPEC&quot;, &quot;Municipalidad de Córdoba&quot;, &quot;Bancarios&quot;))
-ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) + 
+ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
   geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
   geom_text(
-    aes(x=Remuneracion, 
-        y=cantidad, 
+    aes(x=Remuneracion,
+        y=cantidad,
         label=porcentaje),
     vjust=-0.5) +
   theme_minimal() +
@@ -151,11 +129,11 @@ ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
         ) +
   ggtitle(&quot;Porcentaje de Jubilados de EPEC \n por Rango de Remuneración&quot;)</code></pre>
 <p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ggplot(remuneracionMunicipalidad, aes(x=Remuneracion, y=cantidad)) + 
+<pre class="r"><code>ggplot(remuneracionMunicipalidad, aes(x=Remuneracion, y=cantidad)) +
   geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
   geom_text(
-    aes(x=Remuneracion, 
-        y=cantidad, 
+    aes(x=Remuneracion,
+        y=cantidad,
         label=porcentaje),
     vjust=-0.5) +
   theme_minimal() +
@@ -168,11 +146,11 @@ ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
         ) +
   ggtitle(&quot;Porcentaje de Jubilados de la Municipalidad de Córdoba \n por Rango de Remuneración&quot;)</code></pre>
 <p><img src="/post/2016-07-26-caja-de-jubilaciones-cba_files/figure-html/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ggplot(remuneracionBancarios, aes(x=Remuneracion, y=cantidad)) + 
+<pre class="r"><code>ggplot(remuneracionBancarios, aes(x=Remuneracion, y=cantidad)) +
   geom_bar(stat=&quot;identity&quot;, fill=&quot;steelblue&quot;) +
   geom_text(
-    aes(x=Remuneracion, 
-        y=cantidad, 
+    aes(x=Remuneracion,
+        y=cantidad,
         label=porcentaje),
     vjust=-0.5) +
   theme_minimal() +
@@ -214,9 +192,9 @@ ggplot(remuneracionEPEC, aes(x=Remuneracion, y=cantidad)) +
   <div id="disqus_thread"></div>
 <script type="application/javascript">
     var disqus_config = function () {
-    
-    
-    
+
+
+
     };
     (function() {
         if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
@@ -242,15 +220,15 @@ if (!doNotTrack) {
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 	ga('create', 'UA-50868918-2', 'auto');
-	
+
 	ga('send', 'pageview');
 }
 </script>
 
-  
+
   <hr/>
   <a href="https://github.com/pdelboca">Github</a> | <a href="https://twitter.com/pdelboca">Twitter</a> | Basado en <a href="https://github.com/yihui/hugo-xmin">hugo-xmin</a> de <a href="https://yihui.name">Yihui Xie</a>
-  
+
   </footer>
   </body>
 </html>
