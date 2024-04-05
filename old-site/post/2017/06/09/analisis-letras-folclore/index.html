@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Analisis Letras Folclore | Un Blog de Datos Minimalista</title>
+    <link rel="stylesheet" href="/old-site/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+  <header>
+    <nav>
+      <a href="/" style="text-decoration: none; color: inherit; line-height: 1.5em; font-size: 1.1rem;">> pdelboca</a>
+    </nav>
+  </header>
+<main>
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="/rmarkdown-libs/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/wordcloud2/wordcloud2-all.js"></script>
+<script src="/rmarkdown-libs/wordcloud2/hover.js"></script>
+<script src="/rmarkdown-libs/wordcloud2-binding/wordcloud2.js"></script>
+
+
+<div id="letras-del-folklore-argentino-a-que-le-cantan" class="section level2">
+<h2>Letras del Folklore Argentino: ¿A qué le cantan?</h2>
+<p>El siguiente es un análisis exploratorio para resolver una curiosidad: ¿A qué le canta el folclore Argentino?. El Objetivo es, inicialmente, extraer las palabras y frases más utilizadas. Luego trataremos de ampliar el análisis tratando de agrupar las canciones en distintas categorías, descubrir temáticas en común, agrupar autores por estilo, etc.</p>
+<div id="conjunto-de-datos" class="section level3">
+<h3>Conjunto de Datos</h3>
+<pre class="r"><code>library(dplyr)
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+dat &lt;- readr::read_csv(&quot;../../static/data/analisis-letras-folclore/datosCanciones.csv&quot;)
+
+# Un poco de Limpieza Extra: Hay 7 Canciones que tienen 2 canciones adentro
+# http://www.mifolkloreargentino.com.ar/letras-de-canciones-de-la-yunta/al-jardin-de-la-republica
+dat &lt;- dat %&gt;% filter(!grepl(&quot;Letra y Música:&quot;,letra))</code></pre>
+<p>Los datos fueron extraidos de <a href="http://www.mifolkloreargentino.com.ar/" class="uri">http://www.mifolkloreargentino.com.ar/</a>:</p>
+<ul>
+<li>Cantidad de Artistas: 132</li>
+<li>Cantidad de Canciones: 3665</li>
+</ul>
+<p>Hay que tener en cuenta que el Universo de canciones a analizar no es exhaustivo, está acotado a lo disponible en la fuente de datos. Otra consideración importante es que si varios artistas cantan la misma canción, las palabras y frases de dicha canción serán contabilizadas todas las veces. Algunos ejemplos de las canciones:</p>
+<pre class="r"><code>dat %&gt;%
+  slice(sample(1:nrow(dat), 10)) %&gt;%
+  select(artista, nombre_cancion) %&gt;%
+  head(10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    artista                  nombre_cancion
+##    &lt;chr&gt;                    &lt;chr&gt;
+##  1 Atahualpa Yupanqui       Zambita de alto verde
+##  2 Jorge Cafrune            La familia de Juanito Laguna
+##  3 Luciano Pereyra          Parecido a mí
+##  4 Chaqueño Palavecino      Mataco Diaz
+##  5 Cuti y Roberto Carabajal Cambalache
+##  6 Antonio Tormo            Cuando no me quieras
+##  7 Mercedes Sosa            Venas abiertas
+##  8 Jorge Cafrune            Zamba de un cantor
+##  9 Jorge Cafrune            Albahaca sin carnaval
+## 10 Tamara Castro            Coplitas de pie quebrado</code></pre>
+</div>
+<div id="pre-analisis" class="section level3">
+<h3>Pre-Análisis</h3>
+<div id="quienes-son-los-autores-con-mas-canciones-en-el-conjunto-de-datos" class="section level4">
+<h4>¿Quiénes son los autores con más canciones en el conjunto de datos?</h4>
+<pre class="r"><code>dat %&gt;%
+  group_by(artista) %&gt;%
+  summarise(canciones = n()) %&gt;%
+  arrange(desc(canciones)) %&gt;%
+  head(10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    artista             canciones
+##    &lt;chr&gt;                   &lt;int&gt;
+##  1 Jorge Cafrune             283
+##  2 Chaqueño Palavecino       252
+##  3 Horacio Guarany           199
+##  4 Mercedes Sosa             182
+##  5 Soledad Pastorutti        172
+##  6 Antonio Tarrago Ros       162
+##  7 Peteco Carabajal          147
+##  8 Los Nocheros              124
+##  9 Abel Pintos               123
+## 10 Los Tekis                 111</code></pre>
+</div>
+<div id="cual-es-la-cancion-mas-repetida-en-el-conjunto-de-datos" class="section level4">
+<h4>¿Cuál es la canción más repetida en el conjunto de datos?</h4>
+<pre class="r"><code>dat %&gt;%
+  group_by(nombre_cancion) %&gt;%
+  summarise(cantidad = n()) %&gt;%
+  arrange(desc(cantidad)) %&gt;%
+  head(10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##    nombre_cancion              cantidad
+##    &lt;chr&gt;                          &lt;int&gt;
+##  1 Añoranzas                          7
+##  2 Chacarera de un triste             7
+##  3 De Simoca                          7
+##  4 Entre a mi pago sin golpear        7
+##  5 Canción del jangadero              6
+##  6 Guitarrero                         6
+##  7 Kilometro 11                       6
+##  8 Amargura                           5
+##  9 Balderrama                         5
+## 10 Chakay manta                       5</code></pre>
+</div>
+</div>
+<div id="que-palabra-es-mas-cantada-en-el-folclore-argentino" class="section level3">
+<h3>¿Qué palabra es más cantada en el Folclore Argentino?</h3>
+<pre class="r"><code># TidyText no tiene por defecto un diccionario de Stop Words en Español -.-&quot;
+stopWords &lt;- scan(&quot;http://www.webmining.cl/wp-content/uploads/2011/03/stopwords.es.txt&quot;, character())
+customStopWords &lt;- strsplit(&quot;ay am do re rem mi mi7 mim fa sol la la7 lam si si7 vas pa vos bis has estribillo&quot;, &quot; &quot;)[[1]]
+
+stopWords &lt;- c(stopWords, customStopWords)
+tidyText &lt;- dat %&gt;%
+  unnest_tokens(palabra, letra) %&gt;%
+  filter(!(palabra %in% stopWords))
+
+top &lt;- tidyText %&gt;%
+  count(palabra, sort = TRUE) %&gt;%
+  head(15)
+
+ggplot(top, aes(x=reorder(palabra, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = &quot;15 Palabras más usadas en el Folklore Argentino&quot;,
+       subtitle = &quot;El gráfico contabiliza cuántas veces la palabra aparece en la letra de alguna canción. \nAnálisis en base a más de 3600 canciones.&quot;,
+       caption = &quot;Fuente: Open Data Córdoba - blog.opendatacordoba.org&quot;,
+       x = &quot;Palabra&quot;, y = &quot;Cantidad de veces usada&quot;)</code></pre>
+<p><img src="/old-site/post/2017-06-09-analisis-letras-folclore_files/figure-html/grafico_top-1.png" width="768" /></p>
+<p>Amor es la palabra más cantada… Qué belleza!</p>
+<pre class="r"><code>wordsCloud &lt;- tidyText %&gt;%
+  count(palabra, sort = TRUE) %&gt;%
+  select(palabra, n) %&gt;%
+  head(50)
+
+wordcloud2::wordcloud2(wordsCloud, minRotation = -pi/6, maxRotation = pi/6)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"word":["amor","corazón","vida","quiero","alma","noche","luna","cielo","tierra","ojos","canto","luz","voz","viento","flor","río","camino","canción","dolor","sueño","cantar","guitarra","zamba","volver","vino","soledad","piel","silencio","vuelve","chacarera","dios","canta","pena","mundo","sangre","sueños","boca","mar","vivir","sombra","manos","recuerdo","triste","adiós","pueblo","dulce","llorar","siento","viejo","olvido"],"freq":[3452,1748,1688,1578,1328,1258,938,922,919,916,895,805,779,739,717,699,663,576,574,572,569,553,520,515,506,505,503,477,461,458,456,454,454,443,440,435,424,422,417,416,409,402,401,389,386,382,379,373,372,371],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":0.052143684820394,"backgroundColor":"white","gridSize":0,"minRotation":-0.523598775598299,"maxRotation":0.523598775598299,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+</div>
+<div id="en-cuantas-canciones-aparece-la-palabra-amor" class="section level3">
+<h3>¿En cuántas canciones aparece la palabra amor?</h3>
+<pre class="r"><code>cancionesAmor &lt;- dat %&gt;%
+  select(nombre_cancion, letra) %&gt;%
+  distinct() %&gt;%
+  filter(grepl(&quot;amor&quot;, letra)) %&gt;%
+  nrow()
+cancionesAmor</code></pre>
+<pre><code>## [1] 1429</code></pre>
+<p>En 1429 canciones aparece la palabra Amor!</p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/powershell.min.js"></script>
+
+<script>
+ hljs.configure({languages: []});
+ hljs.initHighlightingOnLoad();
+</script>
+  </footer>
+  </body>
+</html>
+
