@@ -43,25 +43,13 @@
     {% block body %}
       <header>
         {% block header %}
-          <hgroup><h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a></h1>{% if SITESUBTITLE %}<p>{{ SITESUBTITLE }}</p>{% endif %}</hgroup>
+          <nav>
+            <a href="index.html">> pdelboca</a>
+            <a class="flex-push-right" href="projects.html">projects</a>
+            <a href="writings.html">writings</a>
+            <a href="about.html">about</a>
+          </nav>
         {% endblock header %}
-        {% block nav %}
-          <nav><ul>
-            {% for title, link in MENUITEMS %}
-              <li><a href="{{ link }}">{{ title }}</a></li>
-            {% endfor %}
-            {% if DISPLAY_PAGES_ON_MENU %}
-              {% for p in pages %}
-                <li><a href="{{ SITEURL }}/{{ p.url }}" {% if p==page %} aria-current="page" {% endif %}>{{ p.title }}</a></li>
-              {% endfor %}
-            {% endif %}
-            {% if DISPLAY_CATEGORIES_ON_MENU %}
-              {% for cat, null in categories %}
-                <li><a href="{{ SITEURL }}/{{ cat.url }}" {% if cat==category %} aria-current="page" {% endif %}>{{ cat}}</a></li>
-              {% endfor %}
-            {% endif %}
-          </ul></nav>
-        {% endblock nav %}
       </header>
       <main>
         {% block content %}
@@ -69,10 +57,12 @@
       </main>
       <footer>
         {% block footer %}
-          <address>
-            Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>,
-            which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
-          </address>
+          <div><p>© Patricio Del Boca 2016 - 2024</p></div>
+          <ul>
+            <li><a aria-label="Github" href="https://github.com/pdelboca" target="_blank">Github</a></li>
+            <li><a aria-label="Linkedin" href="https://www.linkedin.com/in/patriciodelboca/" target="_blank">Linkedin</a></li>
+            <li><a aria-label="Curriculum Vitae" href="/static/cv.pdf">CV</a></li>
+          </ul>
         {% endblock footer %}
       </footer>
     {% endblock body %}

@@ -36,3 +36,4 @@ DEFAULT_PAGINATION = False
 
 THEME = "theme/"
 STYLESHEET_URL = "theme/css/style.css"
+INDEX_SAVE_AS = 'writings.html'
