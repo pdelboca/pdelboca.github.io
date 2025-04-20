@@ -24,4 +24,3 @@ THEME = "theme/"
 STYLESHEET_URL = "theme/css/style.css"
 INDEX_SAVE_AS = 'writings.html'
 STATIC_PATHS = ['old-site']
-THEME_STATIC_DIR = ''
