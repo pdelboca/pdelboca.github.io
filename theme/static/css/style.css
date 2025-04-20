@@ -10,8 +10,15 @@ body {
 }
 
 main {
-  max-width: 60ch;
   margin: auto;
+}
+
+.writting {
+  max-width: 60ch;
+}
+
+.writting-list li {
+  margin-bottom: 5px;
 }
 
 nav {

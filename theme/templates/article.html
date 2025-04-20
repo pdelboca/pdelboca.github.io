@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block content %}
-  <article>
+  <article class="writting">
       <h1>{{ article.title }}</h1>
       <small><i>Published: <time datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time></i></small>
     {{ article.content }}

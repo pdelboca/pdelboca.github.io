@@ -1,7 +1,7 @@
 {% extends "base.html" %}
   {% block content %}
   <h2>latest writings...</h2>
-  <ul>
+  <ul class="writting-list">
     {% for article in articles_page.object_list %}
     <li>
       <strong><time datetime="{{ article.date.isoformat() }}">{{ article.date.strftime("%Y-%m-%d") }}</time></strong>
