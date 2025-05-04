@@ -1,8 +1,4 @@
-Title: opinión: uso y desuso de los datos abiertos
-Date: 2017-06-01
-Category: open data, datos abiertos
-
-### _Algunas reflecciones sobre el uso de datos abiertos en el debate público.._
+# Algunas reflecciones sobre el uso de datos abiertos en el debate público.
 
 Hace ya varios días que la publicación de la nómina de empleados municipales generó un caótico debate. Y digo caótico porque se discutió sobre privacidad, sobre salarios, sobre puja distributiva, sobre eficiencia de los servicios municipales, sobre corrupción política, sobre acomodos, sobre mafias, sobre roles sindicales, sobre transparencia y sobre cloacas desbordadas. Y es que cada uno tomó estos datos y los usó para acompañar su discurso sobre algo que tenía ganas de expresar o decir. La nómina fue como esa pequeña discrepancia que, en los malos momentos, las parejas utilizan como excusa para decirse a la cara lo que se venían guardando o nunca pudieron decir.
 

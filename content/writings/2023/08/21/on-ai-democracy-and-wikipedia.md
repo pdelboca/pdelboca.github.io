@@ -1,8 +1,4 @@
-Title: on ai, democracy and wikipedia
-Date: 2023-08-21
-Category: ai
-
-### _Let's not blame AI for the lack of critical thinking in our society._
+### Let's not blame AI for the lack of critical thinking in our society.
 
 Lately I ran across this great article [How AI could take over elections - and undermine democracy](https://medium.com/the-conversation/how-ai-could-take-over-elections-and-undermine-democracy-83a923b54b4a). The article opens with the following question: **Could organizations use artificial intelligence language models such as ChatGPT to induce voters to behave in specific ways?** and follows the question with on a concrete example of a tool that could be used to achieve one goal: to change people's voting behavior.
 

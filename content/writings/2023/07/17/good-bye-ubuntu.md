@@ -1,8 +1,4 @@
-Title: good-bye ubuntu: wellcome debian!
-Date: 2023-07-17
-Category: technology
-
-### _Changing to a more robust OS after 15 years._
+# Changing to a more robust OS after 15 years.
 
 I have been an Ubuntu user since they shipped a CD with [Feisty Fawn](https://wiki.ubuntu.com/FeistyFawn) to my house. I was introduced to it by my brother and I still remember the sensation of freedom when I installed it for the first time. The feeling I got when I opened for the first time the Software Center and I saw hundreds of free and open source software will that I could easily install without cracking will remain in me. That feeling of freedom will mark me forever and will define my future career as an Information System Engineer.
 
