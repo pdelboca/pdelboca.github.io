@@ -87,7 +87,7 @@ def process_writings(template_env, public_dir):
         {
             'title': w['title'],
             'url': w['url'],
-            'date': w['date'].strftime('%B %d, %Y'),
+            'date': w['date'].strftime('%Y-%m-%d'),
             'is_external': w['is_external']
         }
         for w in writings

@@ -3,15 +3,14 @@
 {% block title %}Writings{% endblock %}
 
 {% block content %}
-<h1>Writings</h1>
+<h2>latest writings</h2>
 <ul>
-{% for writing in writings %}
-    <li>
-        <a href="{{ writing.url }}" {% if writing.is_external %}target="_blank"{% endif %}>
-            {{ writing.title }}
-        </a>
-        <time>{{ writing.date }}</time>
-    </li>
-{% endfor %}
+  {% for writing in writings %}
+  <li>
+    <strong><time>{{ writing.date }}</time></strong>
+    -
+    <a href="{{ writing.url }}" {% if writing.is_external %}target="_blank"{% endif %}> {{ writing.title }} </a>
+  </li>
+  {% endfor %}
 </ul>
 {% endblock %}
