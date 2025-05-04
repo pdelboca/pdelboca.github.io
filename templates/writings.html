@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Writings{% endblock %}
+
+{% block content %}
+<h1>Writings</h1>
+<ul>
+{% for writing in writings %}
+    <li>
+        <a href="{{ writing.url }}" {% if writing.is_external %}target="_blank"{% endif %}>
+            {{ writing.title }}
+        </a>
+        <time>{{ writing.date }}</time>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,7 +1,10 @@
 [project]
 name = "pdelboca-github-io"
 version = "0.1.0"
-description = "Add your description here"
+description = "Patricio Del Boca's personal website."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "jinja2>=3.1.6",
+    "markdown>=3.8",
+]
