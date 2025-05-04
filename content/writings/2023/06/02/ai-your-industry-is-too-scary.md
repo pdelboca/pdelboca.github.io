@@ -1,4 +1,6 @@
-# People are starting to be afraid of Artificial Intelligence.
+title: ai: your industry is too scary!
+
+### People are starting to be afraid of Artificial Intelligence.
 
 I sometimes find myself rewatching this old talk by Maciej Ceglowski: [Haunted by Data](https://www.youtube.com/watch?v=GAXLHM-1Psk) and I'm always finding it insightful and relevant. With the latest news and whispers that AI is coming for all of our jobs I cannot stop thinking in one of his slides: Your industry is too scary!
 

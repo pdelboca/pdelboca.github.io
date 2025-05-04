@@ -1,4 +1,6 @@
-# AI will not be revolutionary unless they adopt openess as a design principle.
+title: AI as a stabilizer of the status-quo
+
+### AI will not be revolutionary unless they adopt openess as a design principle.
 
 The rise of advances in Artificial Intelligence over the past few months is overwhelming. Clearly, the world and society are once again being subjected to a process in which technological progress is greater than society's ability to assimilate it.
 
