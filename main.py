@@ -84,7 +84,8 @@ def process_writings(template_env, public_dir):
 
     # Render writings listing page
     writings_template = template_env.get_template('writings.html')
-    rendered = writings_template.render(writings=[
+    rendered = writings_template.render(
+        writings=[
         {
             'title': w['title'],
             'url': w['url'],
@@ -92,7 +93,9 @@ def process_writings(template_env, public_dir):
             'is_external': w['is_external']
         }
         for w in writings
-    ])
+            ],
+       title='Writings'
+    )
 
     with open(os.path.join(public_dir, 'writings.html'), 'w', encoding='utf-8') as f:
         f.write(rendered)
