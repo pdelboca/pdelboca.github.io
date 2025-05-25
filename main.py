@@ -1,3 +1,4 @@
+import shutil
 import os
 import re
 import markdown
@@ -128,6 +129,9 @@ def main():
     # Process core pages
     process_writings(template_env, public_dir)
     process_projects(template_env, public_dir)
+
+    # Copy Static Files
+    shutil.copytree('./static/', public_dir + '/static', dirs_exist_ok=True)
 
     # Render index page
     index_template = template_env.get_template('index.html')
