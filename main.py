@@ -117,6 +117,26 @@ def process_projects(template_env, public_dir):
     with open(os.path.join(public_dir, 'projects.html'), 'w', encoding='utf-8') as f:
         f.write(rendered)
 
+def process_about(template_env, public_dir):
+    about_md = os.path.join('content', 'about.md')
+    if not os.path.exists(about_md):
+        return
+
+    with open(about_md, 'r', encoding='utf-8') as f:
+        md_text = f.read()
+
+    metadata, content = parse_metadata_and_content(md_text)
+    html_content = markdown.markdown(content)
+
+    projects_template = template_env.get_template('about.html')
+    rendered = projects_template.render(
+        title=metadata.get('title', 'About me'),
+        content=html_content
+    )
+
+    with open(os.path.join(public_dir, 'about.html'), 'w', encoding='utf-8') as f:
+        f.write(rendered)
+
 def main():
     public_dir = 'docs'
     os.makedirs(public_dir, exist_ok=True)
@@ -129,6 +149,7 @@ def main():
     # Process core pages
     process_writings(template_env, public_dir)
     process_projects(template_env, public_dir)
+    process_about(template_env, public_dir)
 
     # Copy Static Files
     shutil.copytree('./static/', public_dir + '/static', dirs_exist_ok=True)
