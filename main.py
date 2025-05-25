@@ -118,7 +118,7 @@ def process_projects(template_env, public_dir):
         f.write(rendered)
 
 def main():
-    public_dir = 'public'
+    public_dir = 'docs'
     os.makedirs(public_dir, exist_ok=True)
 
     # Set up Jinja2 environment
