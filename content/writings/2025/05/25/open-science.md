@@ -1,0 +1,48 @@
+title: voices in open science: #thetechwewant
+date: 2025-05-25
+
+*Originally posted on [Linkedin](https://www.linkedin.com/pulse/voices-open-science-gjsd-6xtif/?trackingId=Ulq90EXCRrqKdg3NUcvMUg%3D%3D) by GILE Journal of Skills Development - GJSD for a series of mini-interviews.*
+
+**Judit: You have worked across both private companies and NGOs. How has this cross-sector experience shaped your perspective on the role of technology in advancing Open Science?**
+
+**Patricio:** Technology can be the driver or it can be the last nail in the coffin of Open Science. For both the NGO sector and business technology is a tool for achieving set goals but there are substantial differences in the technology the two worlds create and the impact this has.
+
+NGOs are oriented towards collaborative work, something inherently more aligned with Open Science values than the traditional philosophy of private companies. Private companies tend to adopt practices that are detrimental to Open Science and progress like using proprietary formats for their data, not using open licenses for their work, not creating a community or not providing reusable tools.
+
+Fundamentally, only technology that is built to be shared can advance Open Science and progress.
+
+
+**Judit: As an open activist from a young age, what originally drew you to the open movement, and how has your motivation evolved over time?**
+
+**Patricio:** Private Software is always about barriers and frictions in the digital experience: licenses, key-codes, paywalls, close-source, etc. Navigating those barriers as a young kid growing in a low-income household in the Global South was difficult. This hostile and exclusionary paradigm always left me with a feeling of discomfort.
+
+The Freedom and the collaborative nature of the open movement was an eye-opening experience for me. The feeling I had the first time I installed GNU/Linux (thanks to the CDs that Ubuntu shipped for free) made me realise that you can build and you can create value outside the traditional capitalist for-profit paradigm. No more cracks, no more piracy, no more cloning CDs, no more private software. I still remember the feeling of opening the Applications Manager of Ubuntu and being able to choose and install from a wide range of programs that people created and shared, without strings attached and without friction.
+
+Moreover, my motivation grew dramatically when I realised that I could become a contributor and a producer and not just be a consumer. Now that I can craft open software, build and participate in communities and what’s more, make a good living out of it, I feel extremely motivated towards expanding the open movement and want to show people that other ways of experiencing the digital world are possible.
+
+**Judit: The Open Knowledge Foundation is a key player in advocating for openness. What are some current projects or initiatives you are most excited about?**
+
+**Patricio:** Our current main focus is to make technology simple and affordable again and this is strictly related to your first question: the way private for-profit companies shaped the technological landscape are leading the world to a place where technology is monopolised, its nature is complex and the access to it has become expensive. We are working to change that.
+
+We have several projects related to Open Science: CKAN (a framework to implement Data Catalogues), Frictionless Data (a toolkit for reproducible research) and Open Data Editor (a desktop application to validate and publish tabular data). We are also advocating for a better way to build technology in an umbrella project called #TheTechWeWant to openly discuss how we are building technology and how we can simplify it.
+
+The one I am most excited about right now is the Open Data Editor. It is a tool that is shaping how we build technology inside the organisation and that has generated a lot of reflections and learning moments revealing how we can create a more sustainable technological future. As NGOs we are not isolated from Tech Trends, so learning how to navigate a world designed for and by BigTech is quite an exciting journey!
+
+
+**Judit: In your experience, what are some of the biggest barriers technologists face when trying to implement open practices in scientific environments? OR an alternative question can be: How can Civic Tech tools empower communities to access and use scientific knowledge, especially in contexts where trust in institutions or access to information is limited?**
+
+**Patricio:** The main barriers are political, institutional and cultural. Hence, technology is not THE tool to tackle the challenge of access to information.
+
+The main problem is that we are still in the mindset that only secrecy and money drives innovation and growth. We saw a concrete example in the last pandemic: while people were dying and local economies were being ruined, decision makers still relied on the old for-profit patent economy for managing the production and delivery of vaccines. Access to knowledge (produced with public funds, by the way) that could have speed-up the production of vaccines was deprioritised in favour of capital gains with the argument that, if big pharma didn't see an economic incentive, they would not innovate.
+
+I still think that technology has an important role to play in our world, but only provided that it is designed to fill the gaps that our society has. For example, tools that allow non-technical people to benefit from open data or affordable tools that couldand tools: this would allow small governments or micro-companies to publish data. We need to start building technology that acknowledges the local realities and that takes into consideration the huge gaps that exist, both in terms of economics and in terms of know-how.
+
+**Judit: What is your top tip for young professionals or researchers who want to contribute to Open Science but aren’t sure where to start?**
+
+**Patricio:** Quite simply: join a community. Communities can be manifested in different forms: email list, discord chat, local meetup or an online forum. It doesn't matter which form it takes, but the first step is to join a community. First introduce yourself, spend some time understanding how the community works and then slowly start helping.
+At my young age I participated in several online forums and my first collaborations were always to answer repeated questions, this is always a great way to contribute and start building confidence. Over time, you will find that there are going to be new questions that you will be able to answer by yourself. Once that happens, you are going to feel confident about increasing your contribution in other ways. You will find yourself collaborating, sharing and building from an Open perspective and trust me, it feels great.
+
+**Judit: Thank you for the interview, Patricio.**
+
+**Patricio:** It was my pleasure.
+
