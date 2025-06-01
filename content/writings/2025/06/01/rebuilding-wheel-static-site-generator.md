@@ -47,6 +47,6 @@ Basic architecture:
  - A template for listing all the writings (the name I chose for my blogs)
  - A template for every single writing.
 
-The resulting project needs a little bit of polishing but I was able to get my own Static Site Generator in less than 200 lines of python.
+The resulting project needs a little bit of polishing but I was able to get my own Static Site Generator in less than 200 lines of python ([link to the repository](https://github.com/pdelboca/pdelboca.github.io)).
 
-Now I can start writting and publishing again...
+Now, hopefully, I can start writting and publishing again...
