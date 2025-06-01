@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patricio Del Boca - Rebuilding the Wheel: My static site Generator</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">> pdelboca</a>
+        <a class="flex-push-right" href="/writings.html">writings</a>
+        <a href="/projects.html">projects</a>
+        <a href="/about.html">about</a>
+      </nav>
+    </header>
+    <main>
+<article class="writting">
+    <h1>Rebuilding the Wheel: My static site Generator</h1>
+    <h5><i>June 01, 2025</i></h5>
+    <div>
+        <h3>A 200-lines Python script to render my personal website.</h3>
+<p>Lately I feel like I want to start writing again but I get stuck in the publishing part of it in a constant look of finding the right tool for it. I tried several Static Site Generators out there but I couldn't found any that
+fits my quarks so I decided to give it a try and create my with one goal: simple enough to get me up and running again.</p>
+<p>Things I want:</p>
+<ul>
+<li>My website to look like a website and not like a blog: Home page, About, Projects, Blog.</li>
+<li>To be able to customize the look and feel using tools I know: HTML and CSS.</li>
+<li>Store the content of my website in Markdown.</li>
+<li>Minimal dependencies so I don't botter updating packages every 6 months.</li>
+<li>Keep hosting and old static sites from the days where I used to blog using RMarkdown.</li>
+</ul>
+<p>Thigs I do not care about:</p>
+<ul>
+<li>Comments section.</li>
+<li>RSS Feed.</li>
+<li>Social media integration.</li>
+<li>Tags and categories.</li>
+<li>Search.</li>
+</ul>
+<p>Basic architecture:</p>
+<ul>
+<li><code>static/</code> for CSS and all the files of my old site.</li>
+<li><code>content/</code> folder with Markdwon files stored in <code>YYYY/MM/DD</code> folder.</li>
+<li><code>template/</code> folder with a bunch of templates.</li>
+<li><code>docs/</code> folder to host the static site (for Github publishing)</li>
+<li><code>main.py</code> file to read the content using <code>markdown</code> library and render the website using jinja2.</li>
+<li>Push to Github repository to host the static website</li>
+</ul>
+<p><strong>For the processing part:</strong> I decided to go with a really simple Python script that uses <code>markdown</code> to read the contents and <code>jinja2</code> to render the website. With the help of a junior AI assistant I was able to get it done in less than an hour since the concept is quite easy:</p>
+<ul>
+<li>Iterate through the content folder.</li>
+<li>Use <code>markdown</code> library to read the files.</li>
+<li>For every blogpost create a context object with some metadata.</li>
+<li>Pass the context object to <code>jinja2</code> render function.</li>
+</ul>
+<p><strong>For the front end:</strong> I reused some HTML and CSS that I had and created the <code>jinja2</code> templates. Since the website is quite minimalistic this was quite straight forward since it follows the same pattern of every Flask/Djando application:</p>
+<ul>
+<li>A base.html file for loading styles and boilerplate HTML code.</li>
+<li>One template for every page: index, about, projects.</li>
+<li>A template for listing all the writings (the name I chose for my blogs)</li>
+<li>A template for every single writing.</li>
+</ul>
+<p>The resulting project needs a little bit of polishing but I was able to get my own Static Site Generator in less than 200 lines of python.</p>
+<p>Now I can start writting and publishing again...</p>
+    </div>
+</article>
+    </main>
+    <footer>
+      <div><p>© Patricio Del Boca 2016 - 2025</p></div>
+      <ul>
+        <li><a aria-label="Github" href="https://github.com/pdelboca" target="_blank">Github</a></li>
+        <li><a aria-label="Linkedin" href="https://www.linkedin.com/in/patriciodelboca/" target="_blank">Linkedin</a></li>
+        <li><a aria-label="Curriculum Vitae" href="/static/pdfs/cv.pdf">CV</a></li>
+      </ul>
+    </footer>
+  </body>
+</html>
