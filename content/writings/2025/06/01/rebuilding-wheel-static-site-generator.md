@@ -3,8 +3,7 @@ date: 2025-06-01
 
 ### A 200-lines Python script to render my personal website.
 
-Lately I feel like I want to start writing again but I get stuck in the publishing part of it in a constant look of finding the right tool for it. I tried several Static Site Generators out there but I couldn't found any that
-fits my quarks so I decided to give it a try and create my with one goal: simple enough to get me up and running again.
+Lately I feel like I want to start writing again but I get stuck in the publishing part of it in a constant look of finding the right tool for it. I tried several Static Site Generators out there but I couldn't found any that fits my **quarks** so I decided to give it a try and create one my own. One rule: simple enough to get me up and running again.
 
 Things I want:
 
@@ -30,8 +29,6 @@ Basic architecture:
   - `docs/` folder to host the static site (for Github publishing)
   - `main.py` file to read the content using `markdown` library and render the website using `jinja2`.
   - Push to Github repository to host the static website
-
-
 
 **For the processing part:** I decided to go with a really simple Python script that uses `markdown` to read the contents and `jinja2` to render the website. With the help of a junior AI assistant I was able to get it done in less than an hour since the concept is quite easy:
 
