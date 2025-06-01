@@ -1,4 +1,4 @@
-title: Rebuilding the Wheel: My static site Generator
+title: rebuilding the wheel: my static site generator
 date: 2025-06-01
 
 ### A 200-lines Python script to render my personal website.
