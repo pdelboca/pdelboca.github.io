@@ -6,6 +6,12 @@ from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 
 def parse_metadata_and_content(md_text):
+    """Returns the metadata and the content from the given string.
+
+    Each Markdown file has two sections:
+      - metadata: a list of <key>: <value> pairs one for each line.
+      - content: the markdown content itself.
+    """
     metadata = {}
     lines = md_text.split('\n')
     content = []
@@ -28,6 +34,19 @@ def parse_metadata_and_content(md_text):
     return metadata, '\n'.join(content).lstrip()
 
 def process_writings(template_env, public_dir):
+    """Render the HTML file for Writing contents.
+
+    This method will generate all the writings HTML files and also
+    the page with the list to all the writings.
+
+    For each writing file:
+      - Input: ./content/writings/<YYYY>/<MM>/<DD>/<filename>.md
+      - Output: ./docs/writings/<YYYY>/<MM>/<DD>/<filename>.html
+
+    Writings with a `url` in the metadata are considered externals and
+    therefore no HTML file will be generated, instead the list of all
+    writings will have a link element to the external site.
+    """
     writings = []
     content_writings_dir = os.path.join('content', 'writings')
 
@@ -79,7 +98,6 @@ def process_writings(template_env, public_dir):
                     'is_external': is_external
                 })
 
-    # Sort writings by date descending
     writings.sort(key=lambda x: x['date'], reverse=True)
 
     # Render writings listing page
@@ -101,6 +119,7 @@ def process_writings(template_env, public_dir):
         f.write(rendered)
 
 def process_projects(template_env, public_dir):
+    """Renders the projects page."""
     projects_md = os.path.join('content', 'projects.md')
     if not os.path.exists(projects_md):
         return
@@ -121,6 +140,7 @@ def process_projects(template_env, public_dir):
         f.write(rendered)
 
 def process_about(template_env, public_dir):
+    """Renders the about page."""
     about_md = os.path.join('content', 'about.md')
     if not os.path.exists(about_md):
         return
@@ -141,6 +161,7 @@ def process_about(template_env, public_dir):
         f.write(rendered)
 
 def main():
+    """Generates the static site in the docs folder."""
     public_dir = 'docs'
     os.makedirs(public_dir, exist_ok=True)
 
