@@ -9,6 +9,7 @@ Things I want:
 
   - My website to look like a website and not like a blog: Home page, About, Projects, Blog.
   - To be able to customize the look and feel using tools I know: HTML and CSS.
+  - I write a lot for external blogs, so I want to also list all the external content.
   - Store the content of my website in Markdown.
   - Minimal dependencies so I don't botter updating packages every 6 months.
   - Keep hosting and old static sites from the days where I used to blog using RMarkdown.
