@@ -1,3 +1,10 @@
+@media all and (max-width: 450px) {
+  /* Hide text in the home button on mobile devices*/
+  nav a span {
+    display: none;
+  }
+}
+
 body {
   font-family: 'Trebuchet MS', sans-serif;
   display: grid;
@@ -15,6 +22,7 @@ main {
 
 .writting {
   max-width: 60ch;
+  text-align: justify;
 }
 
 .writting-list li {
@@ -31,6 +39,14 @@ nav {
 nav a {
   text-decoration: none;
   color: inherit;
+}
+
+code {
+  background: lightgrey;
+  border-radius: .4rem;
+  font-size: 86%;
+  padding: .2rem .5rem;
+  white-space: nowrap;
 }
 
 .flex-push-right {
