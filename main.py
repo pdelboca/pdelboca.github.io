@@ -41,7 +41,7 @@ def process_writings(template_env, public_dir):
                 if len(path_parts) < 4:
                     continue  # Skip files not in YYYY/MM/DD structure
 
-                year, month, day, filename = path_parts[0], path_parts[1], path_parts[2], path_parts[3]
+                year, month, day, filename = path_parts
                 date = datetime(int(year), int(month), int(day))
 
                 with open(full_path, 'r', encoding='utf-8') as f:
