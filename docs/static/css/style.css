@@ -42,12 +42,11 @@ nav a {
 }
 
 code {
-    background: lightgrey;
-    border-radius: .4rem;
-    font-size: 86%;
-    margin: 0 .2rem;
-    padding: .2rem .5rem;
-    white-space: nowrap;
+  background: lightgrey;
+  border-radius: .4rem;
+  font-size: 86%;
+  padding: .2rem .5rem;
+  white-space: nowrap;
 }
 
 .flex-push-right {
