@@ -13,11 +13,6 @@ django-dcat y Catálogo Social
 
 [django-dcat](https://github.com/pdelboca/django-dcat) is a Django package that implements a model layer for the [DCAT 3.0](https://www.w3.org/TR/vocab-dcat-3/) specification. With it, I built [Catálogo Social](https://catalogosocial.fly.dev), a site to backup and reference open data portals from Argentina.
 
-findyourfind.com
-----------------
-
-FindYourFind.com is a private friendly app that will search and display all relevant articles in `Wikipedia` that are geolocated around you. [Link](https://www.findyourfind.com)
-
 ckan core developer
 -------------------
 
