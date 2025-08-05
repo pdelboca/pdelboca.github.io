@@ -3,6 +3,11 @@ Date: 2016-07-25 10:20
 save_as: projects.html
 
 
+MarkdownWiki
+------------
+
+[MarkdownWiki](https://github.com/pdelboca/markdownwiki) is a desktop application for note taking in Markdown. The main goal is to have a simple, offline, privacy-friendly application to write, previsualize and organize a collection of markdown documents (like a Wiki). It is open source and the installation files (currently only Debian/Ubuntu) can be found in the [official Release pages](https://github.com/pdelboca/markdownwiki/releases).
+
 thecommonwire.org
 -----------------
 
