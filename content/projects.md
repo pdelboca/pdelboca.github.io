@@ -2,6 +2,11 @@ Title: Projects
 Date: 2016-07-25 10:20
 save_as: projects.html
 
+ckan-rescue
+-----------
+
+[ckan-rescue](https://github.com/pdelboca/ckan-rescue) is a Python CLI tool to rescue (download) all the metadata and files from a CKAN data portal.
+
 
 MarkdownWiki
 ------------
