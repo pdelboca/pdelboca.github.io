@@ -1,0 +1,39 @@
+title: When AI meets Open Data
+date: 2025-10-16
+
+I had the pleasure of being invited to the OGP Summit to participate in a panel titled: When AI Meets Open Data. The following is a summary of my intervention.
+
+## Introduction
+
+Before going to the main topic, let's lay down 3 key points to guide the conversation:
+
+1. What do we understand for AI? Although AI has been experiencing a boom in the last 15 years, AI has been around for decades now. We are now witnessing the generative AI wave (triggered by the raise of LLMs) following the previous wave of Predictive AI (triggered by the rise of machine learning around 2015). So let's keep in mind that AI can mean a lot of things.
+2. We need to understand the current context and how it can impact on the expectations of what AI can do. The current context reminds me a lot to the *Big Data* era a decade ago, when business speechs where plagued by how Big Data was going to change the way we live only to became a boring technology powering a small subsets of the current digital world. So let's keep in mind two things:
+    1. Currently there is a lot of speculative investment in AI with a well-documented glogal race on AI.
+    2. Overall, outside the tech circles working on these technologies, there is a lack of understanding on how this technologies work and what are they capable of.
+3. Artificial Intelligence, as we are experiencing right it now, is neither artificial nor intelligence: it is a technological tool. A powerful one, capable of doing really interesting things but a tool nethertheless.
+
+## Boring vs Shiny
+
+Now that the context has been layed, let's explore what happens when Artificial Intelligence meets Open Data. For this I will distinguish between **boring** applications and **shiny** ones. I will go through several use cases focused on CKAN and Open Data Editor. Two applications I work with and are the backbone of the current Open Data Infrastructure.
+
+### Boring AI use cases
+
+I picked **boring** as a funny name to talk about all the AI uses cases that were a boom back in 2015 and that have became a normal and expected feature in "modern" systems. These are more stable and consolidated software that provide value but that no longer attracts the interest of investors.
+
+Open data portals (like CKAN) can be hugly benefited by several AI applications:
+ - Automatic Metadata Tagging: classifying datasets can help with metadata filing.
+ - Translations: Lots of dataportals are localised for different languages, translations (powered by AI) can save hours of human work and lower the barrier for publishing data.
+ - Classification: the same way only shops suggest people to but stuff based on their historical purchases and what other people are buying. Open Data portals could suggest similar datasets. Discoverability an navigation of portals can get a huge boost.
+
+### Shiny AI use cases:
+
+With the current wave of Generative AI there is new hype, mostly around LLMs and ChatBots. This new technology promises to finally became the natural language interface to the digital world. Are we finally on the doorsteps of accessibility to information and the promised citizen engagement with Open Data portals? Will see, for that we need to overcome a great technical barrier: hallucinations.
+
+The hallucinations term is the ultimate marketing strategy to mascarade that, by nature, LLMs are systems that make mistakes. This is, LLMs outputs are based on regurgitated results from extremelly sintetized information that will undoubtedly return flaky information. Either due to bad probabilities calculation, biased sources, old training data or inexisting data the outputs will never be 100% accurate. Due to this nature of the LLMs, the current effort in the development community is focused on creating systems that could return verifyable results or that can query real data sources instead of relying on what the LLM "knows".
+
+There is a lot of progress in this direction, take for example Brave Search Engine: it will return a sumarized result with links to the web page where the source of information comes from. Open Data Portals are following a similar path: to provide citizens with a search interface that, given a question asked in natural language, will return a result citing which dataset from that portal is using as a source. This would be an exiting development but there is a risk: hallucitations could kill your reputation and keep undermining the already damaged trust in Governments.
+
+## Conclusions
+
+AI and Open Data is a mixture that naturally goes well together and there are plenty of use cases to explore. The current wave of LLMs are promising a huge improvements on how citizens can access the information provided in Open Data portals but the community is still working towards that. We are starting to see some pilots and demos but so far (at the moment of writing this blogpost) none of the major portals have implemented them. We, at the Open Knowledge Foundation, are going to be working on this during 2026 and will be sharing not only the code but also the learnings on how to integrate AI into Open Data portals so stay tunned!
