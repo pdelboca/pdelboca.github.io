@@ -3,6 +3,9 @@
   nav a span {
     display: none;
   }
+  h1 {
+    font-size: 2rem;
+  }
 }
 
 body {
@@ -22,7 +25,6 @@ main {
 
 .writting {
   max-width: 60ch;
-  text-align: justify;
 }
 
 .writting-list li {
@@ -46,7 +48,8 @@ code {
   border-radius: .4rem;
   font-size: 86%;
   padding: .2rem .5rem;
-  white-space: nowrap;
+  overflow: auto;
+  display: inline-flex;
 }
 
 .flex-push-right {
@@ -91,4 +94,5 @@ footer ul li {
 }
 p {
   margin-bottom: 25px;
+  text-align: justify;
 }

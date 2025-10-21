@@ -4,6 +4,7 @@ date: 2025-09-06
 Based on [my experience rescuing Argentinian Data Portals](https://www.youtube.com/watch?v=8dUyi4OYAdM) _[*]_ at the beginning of 2024, I decided to create a small Python cli tool to quiclky download the portal metadata and and all its files. I have some of this logic as part of [django-dcat](https://github.com/pdelboca/django-dcat) but I wanted to extract it into its own package so it is easier to use for people whose only requiement is just to download all the data.
 
 The usage is quite simple, just open a terminal and run:
+
 ```
 uvx --from ckan-rescue ckan-dcat-download https://datos.gob.ar/data.json
 ```
