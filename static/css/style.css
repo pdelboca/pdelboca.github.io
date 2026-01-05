@@ -96,3 +96,6 @@ p {
   margin-bottom: 25px;
   text-align: justify;
 }
+img {
+  max-width: 100%;
+}
