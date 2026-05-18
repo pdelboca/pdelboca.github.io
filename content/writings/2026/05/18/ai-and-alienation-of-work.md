@@ -1,7 +1,7 @@
 title: on ai and the alienation of software development.
 date: 2026-05-18
 
-It's not a secret that since the arrival of LLMs and coding agents software developers are going through an existencial crisis.
+It's not a secret that since the arrival of LLMs and coding agents some software developers are going through an existencial crisis.
 Nowadays all social networks are full of publications of professionals questioning the value of their work,
 the future of the profession and how this new technologies killed the fun and joy of programming.
 
