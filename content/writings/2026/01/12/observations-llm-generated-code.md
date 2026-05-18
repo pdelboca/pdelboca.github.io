@@ -1,4 +1,4 @@
-title: On reviewing and interacting with LLM generated code
+title: on reviewing and interacting with llm generated code
 date: 2026-01-12
 
 Lately I have been interacting a lot of LLM generated code. Here are some observations of how **I'm experiencing** the integration of this tools into our day-to-day lives (as a programmer that needs to review that code).

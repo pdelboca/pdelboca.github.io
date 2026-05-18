@@ -1,4 +1,4 @@
-title: Personal Digital Sovereignty: How I'm moving out of Big Tech.
+title: personal digital sovereignty: how i'm moving out of big tech.
 date: 2026-01-19
 
 I'm happy to see the trend of moving out of Big Tech to more open and sovereign solutions. Personally, I could share that it is not as difficult as people might think. Some of my experience:

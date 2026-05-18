@@ -1,4 +1,4 @@
-title: Zero Downtime: Self-Hosting Open Source solutions is reliable.
+title: zero downtime: self-hosting open source solutions is reliable.
 date: 2026-01-05
 
 ![alt text](/static/imgs/uptime.png)

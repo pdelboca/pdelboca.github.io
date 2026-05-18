@@ -1,4 +1,4 @@
-title: When AI meets Open Data
+title: when ai meets open data
 date: 2025-10-16
 
 I had the pleasure of being invited to the OGP Summit to participate in a panel titled: When AI Meets Open Data. The following is a summary of my intervention.
