@@ -5,6 +5,50 @@ import markdown
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 
+SITE_URL = 'https://pdelboca.me'
+DEFAULT_DESCRIPTION = (
+    'Writings on software engineering, open source and civic tech '
+    'by Patricio Del Boca.'
+)
+
+def strip_markdown(text):
+    """Removes common inline markdown syntax from a text snippet."""
+    text = re.sub(r'!\[[^\]]*\]\([^)]*\)', '', text)       # images
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)  # links -> label
+    text = re.sub(r'[*_`~]+', '', text)                     # emphasis / code
+    text = re.sub(r'^#{1,6}\s*', '', text)                  # heading markers
+    return re.sub(r'\s+', ' ', text).strip()
+
+def extract_description(content, limit=200):
+    """Builds a short description from the first heading or paragraph.
+
+    Posts usually start with a `### subtitle` line followed by the first
+    paragraph, which makes a great preview text when shared.
+    """
+    for line in content.split('\n'):
+        stripped = line.strip()
+        if not stripped or stripped == '---':
+            continue
+        text = strip_markdown(stripped)
+        if len(text) > limit:
+            text = text[:limit - 1].rsplit(' ', 1)[0] + '\u2026'
+        return text
+    return DEFAULT_DESCRIPTION
+
+def resolve_og_image(metadata):
+    """Returns the absolute URL of the OG image for a post.
+
+    Posts can declare `image: <filename>` in their metadata to use a
+    custom image stored in static/imgs. Otherwise a site-wide default
+    is used.
+    """
+    image = metadata.get('image')
+    if not image:
+        return f'{SITE_URL}/static/imgs/og-default.png'
+    if image.startswith('http'):
+        return image
+    return f'{SITE_URL}/static/imgs/{image}'
+
 def parse_metadata_and_content(md_text):
     """Returns the metadata and the content from the given string.
 
@@ -83,7 +127,12 @@ def process_writings(template_env, public_dir):
                     rendered = writing_template.render(
                         title=title,
                         content=html_content,
-                        date=date.strftime('%B %d, %Y')
+                        date=date.strftime('%B %d, %Y'),
+                        description=extract_description(content),
+                        canonical_url=f'{SITE_URL}{post_url}',
+                        og_type='article',
+                        og_image=resolve_og_image(metadata),
+                        published_time=date.strftime('%Y-%m-%d')
                     )
 
                     with open(output_path, 'w', encoding='utf-8') as f:
@@ -103,6 +152,7 @@ def process_writings(template_env, public_dir):
     # Render writings listing page
     writings_template = template_env.get_template('writings.html')
     rendered = writings_template.render(
+        canonical_url=f'{SITE_URL}/writings.html',
         writings=[
         {
             'title': w['title'],
@@ -133,6 +183,8 @@ def process_projects(template_env, public_dir):
     projects_template = template_env.get_template('projects.html')
     rendered = projects_template.render(
         title=metadata.get('title', 'Projects'),
+        description=extract_description(content),
+        canonical_url=f'{SITE_URL}/projects.html',
         content=html_content
     )
 
@@ -154,21 +206,40 @@ def process_about(template_env, public_dir):
     projects_template = template_env.get_template('about.html')
     rendered = projects_template.render(
         title=metadata.get('title', 'About me'),
+        description=extract_description(content),
+        canonical_url=f'{SITE_URL}/about.html',
         content=html_content
     )
 
     with open(os.path.join(public_dir, 'about.html'), 'w', encoding='utf-8') as f:
         f.write(rendered)
 
+def clean_public_dir(public_dir):
+    """Removes previously generated pages so stale output doesn't linger.
+
+    Without this, deleted or renamed posts keep being served from docs/.
+    """
+    shutil.rmtree(os.path.join(public_dir, 'writings'), ignore_errors=True)
+    for page in ('index.html', 'writings.html', 'projects.html', 'about.html'):
+        path = os.path.join(public_dir, page)
+        if os.path.exists(path):
+            os.remove(path)
+
 def main():
     """Generates the static site in the docs folder."""
     public_dir = 'docs'
     os.makedirs(public_dir, exist_ok=True)
+    clean_public_dir(public_dir)
 
     # Set up Jinja2 environment
     template_env = Environment(loader=FileSystemLoader('templates'))
     template_env.trim_blocks = True
     template_env.lstrip_blocks = True
+    template_env.globals.update(
+        site_url=SITE_URL,
+        default_description=DEFAULT_DESCRIPTION,
+        default_og_image=f'{SITE_URL}/static/imgs/og-default.png',
+    )
 
     # Process core pages
     process_writings(template_env, public_dir)
@@ -181,7 +252,7 @@ def main():
     # Render index page
     index_template = template_env.get_template('index.html')
     with open(os.path.join(public_dir, 'index.html'), 'w', encoding='utf-8') as f:
-        f.write(index_template.render())
+        f.write(index_template.render(canonical_url=f'{SITE_URL}/'))
 
 if __name__ == '__main__':
     main()
