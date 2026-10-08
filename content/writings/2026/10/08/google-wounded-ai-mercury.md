@@ -19,7 +19,7 @@ The list go on but the situation is this: the solution that Google envisioned le
 Going into the year 2027 the problem got out of hands. Search engines (and the web itself) got so enshittified that trying to find something useful is no longer possible. Let's recap what a modern experience of browsing the web looks like:
 
 1. We go to a search engine,
- 2. We enter my search text and I pray I get some decents hits
+ 2. We enter a search text and pray to get some decents hits
  3. We get redirected to the results page.
  4. We need to skip the paid ads (usually the first results),
  5. We pull out our internal [click-bait](https://en.wikipedia.org/wiki/Clickbait) classifier to avoid clicking sites we know are shit,
